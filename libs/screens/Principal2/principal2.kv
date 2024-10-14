@@ -1,0 +1,381 @@
+<BaseMDNavigationItem>:
+    MDNavigationItemIcon:
+        icon: root.icon
+
+    MDNavigationItemLabel:
+        text: root.text
+
+
+<BaseScreen>:
+
+    #FitImage:
+        #source: f"https://picsum.photos/{root.image_size}/{root.image_size}"
+        #size_hint: .9, .9
+        #pos_hint: {"center_x": .5, "center_y": .5}
+        #radius: dp(24)
+
+<Eu>:
+    size_hint_y: None
+    pos_hint: {'right': .90}
+    height: self.texture_size[1]
+    padding: 12, 18
+    theme_text_color: 'Custom'
+    text_color: 0, 0, 0, 1
+    canvas.before:
+        Color:
+            rgb: root.color_eu()
+
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [23, 23, 0, 23]
+<Ele>:
+    id: ele
+    orientation: 'horizontal'  # Alinha a imagem e o texto na horizontal
+    size_hint_y: None
+    height: self.minimum_height
+    padding: [12, 18]  # Espaçamento ao redor do layout inteiro
+    spacing: dp(10)  # Espaçamento entre a imagem e o texto
+
+    # Adiciona a imagem
+    AsyncImage:
+        halign: 'left'
+        source: root.image_source
+        size_hint: None, None
+        size: dp(60), dp(60)  # Tamanho da imagem
+        allow_stretch: True
+        keep_ratio: True
+
+    # Layout para o texto com o fundo arredondado
+    MDBoxLayout:
+        id: box
+        orientation: 'vertical'
+        size_hint_x: root.size_hint_x if root.size_hint_x else None
+        padding: [12, 18]  # Espaçamento interno ao redor do texto
+        radius: [23, 23, 23, 23]  # Arredondamento do fundo
+        spacing: dp(10)  # Espaçamento dentro do box para o texto
+
+        MDLabel:
+            id: label
+            text: root.text
+            halign: root.halign if root.halign else 'left'
+            font_size: root.font_size
+            theme_text_color: 'Custom'
+            text_size: self.width, None
+            text_color: 0, 0, 0, 1
+
+<PrincipalScreen>:
+    name: 'principal'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        id: centro
+
+        MDScreenManager:
+            id: screen_manager
+
+            BaseScreen:
+                name: "Home"
+                FloatLayout:
+                    id: centro_home
+                    MDScrollView:
+                        id: scroll
+                        pos_hint: {'center_x': 0.5, 'top': 1}  # Posiciona logo abaixo do MDDivider
+                        do_scroll_x: True
+                        do_scroll_y: False
+
+                        MDBoxLayout:
+                            id: perfis
+                            pos_hint: {'center_y': 0.9}
+                            orientation: 'horizontal'
+                            size: (root.width, root.height)
+                            height: self.minimum_height
+                            width: self.minimum_width
+                            size_hint: None, None
+                            cools: 1
+                            spacing: 5
+
+                    MDIconButton:
+                        icon: 'arrow-right'
+                        pos_hint: {'center_x': 0.95, 'center_y': 0.9}
+                        icon_color: 'black'
+                        size_hint: None, None
+                        theme_font_size: "Custom"
+                        theme_bg_color: 'Custom'
+                        font_size: "30sp"
+                        md_bg_color: 1, 1, 1, 1
+                        size: "30dp", "30dp"
+                        on_release: root.adicionar_scroll()
+
+                    MDIconButton:
+                        icon: 'arrow-left'
+                        pos_hint: {'center_x': 0.05, 'center_y': 0.9}
+                        icon_color: 'black'
+                        size_hint: None, None
+                        theme_font_size: "Custom"
+                        theme_bg_color: 'Custom'
+                        font_size: "30sp"
+                        md_bg_color: 1, 1, 1, 1
+                        size: "30dp", "30dp"
+                        on_release: root.remove_scroll()
+
+                    MDCard:
+                        style: "elevated"
+                        pos_hint: {"center_x": .5, "center_y": .45}
+                        size_hint_x: 0.9
+                        size_hint_y: 0.65
+                        # Sets custom properties.
+                        theme_shadow_color: "Custom"
+                        shadow_color: "blue"
+                        theme_bg_color: "Custom"
+                        md_bg_color: "white"
+                        md_bg_color_disabled: "grey"
+                        theme_shadow_offset: "Custom"
+                        shadow_offset: (1, -2)
+                        theme_shadow_softness: "Custom"
+                        shadow_softness: 1
+                        theme_elevation_level: "Custom"
+                        elevation_level: 2
+
+                        MDRelativeLayout:
+
+                            AsyncImage:
+                                id: img_perfil
+                                source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1728068944/waifu1_bqagln.jpg'
+                                allow_stretch: True
+                                size_hint: None, None
+                                size: dp(50), dp(50)
+                                pos_hint: {'center_x': 0.1, 'center_y': 0.9}  # Centralizar a imagem
+                                # Propriedades adicionais para manter a proporção
+                                keep_ratio: True
+
+                            MDLabel:
+                                text: "Suporte Chatto"
+                                adaptive_size: True
+                                font_style: 'Title'
+                                role: 'medium'
+                                color: "grey"
+                                pos_hint: {'center_y': 0.9, 'center_x': 0.35}
+                                halign: 'center'
+                                bold: True
+
+                            MDDivider:
+                                size_hint_x: .99
+                                pos_hint: {'center_x': .5, 'center_y': .83}
+                                color: 'black'
+
+                            AsyncImage:
+                                id: img_perfil
+                                source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1728129718/Captura_de_Tela_22_mmfmyj.png'
+                                allow_stretch: True
+                                size_hint: None, None
+                                size: dp(350), dp(370)
+                                pos_hint: {'center_x': 0.49, 'center_y': 0.42}  # Centralizar a imagem
+                                # Propriedades adicionais para manter a proporção
+
+                            MDLabel:
+                                text: 'Aguarde futuras atualizações'
+                                adaptive_size: True
+                                font_style: 'Title'
+                                role: 'large'
+                                color: "white"
+                                pos_hint: {'center_y': 0.06, 'center_x': 0.5}
+                                halign: 'center'
+                                bold: True
+
+            BaseScreen:
+                name: "Chat"
+
+
+                FloatLayout:
+
+                    MDIconButton:
+                        icon: 'arrow-left'
+                        theme_icon_color: 'Custom'
+                        icon_color: 'black'
+                        size_hint: None, None
+                        theme_font_size: "Custom"
+                        font_size: "40sp"
+                        size: "30dp", "30dp"
+                        pos_hint: {'center_y': 0.94, 'center_x': 0.13}
+                        on_release: root.sair_do_chat()
+
+                    MDLabel:
+                        text: 'Bate-papo'
+                        font_style: 'Headline'
+                        role: 'medium'
+                        bold: True
+                        pos_hint: {'center_y': 0.93, 'center_x': 0.5}
+                        halign: 'center'
+
+                    MDDivider:
+                        size_hint_x: .99
+                        pos_hint: {'center_x': .5, 'center_y': .88}
+                        color: 'black'
+
+                    MDScrollView:
+                        id: message_scroll
+                        size_hint: 0.9, 0.6
+                        pos_hint: {'center_x': 0.5, 'top': 0.80}  # Posiciona logo abaixo do MDDivider
+                        do_scroll_x: False
+                        do_scroll_y: True
+
+                        MDBoxLayout:
+                            id: chat_list
+                            orientation: 'vertical'
+                            size: (root.width, root.height)
+                            height: self.minimum_height
+                            size_hint: None, None
+                            cools: 1
+                            spacing: 5
+
+                    MDTextField:
+                        id: message
+                        pos_hint: {"center_y": 0.06, "center_x": 0.44}
+                        size_hint: 0.8, None
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 0, 0, 0, 1
+                        theme_line_color: 'Custom'
+                        line_color_normal: 'white'
+                        line_color_focus: 'white'
+                        font_size: '18sp'
+                        padding: [15, 15, 15, 15]  # Define o padding para o texto não ficar muito próximo da borda
+                        icon_right: "account"
+                        mode: "outlined"
+                        on_text: root.limitar()
+
+
+                        MDTextFieldHintText:
+                            id: text_hint
+                            text: "Digitar.."
+                            #text_color_normal: 1, 170/255, 23/255, 1
+
+                    MDIconButton:
+                        icon: "send"
+                        halign: 'center'
+                        theme_text_color: "Custom"
+                        text_color:"white" if root.theme_cls.theme_style == "Dark" else "black"
+                        pos_hint: {"center_y": 0.063, 'center_x': 0.91}
+                        theme_font_size: "Custom"
+                        font_size: "30sp"
+                        user_font_size: '18sp'
+                        theme_bg_color: 'Custom'
+                        md_bg_color: root.color_ele()
+                        size_hint: None, None
+                        size: "55dp", "55dp"
+                        padding: "16dp"
+                        on_release: root.send()
+
+            BaseScreen:
+                name: "Perfil"
+
+                FloatLayout:
+                    id: centro2
+                    MDLabel:
+                        id: itadori
+                        text: root.nome()
+                        font_style: 'Headline'
+                        role: 'large'
+                        bold: True
+                        pos_hint: {'center_x': 0.58, 'center_y': 0.9}
+
+                    MDCard:
+                        size_hint: None, None
+                        size: "95dp", "95dp"
+                        radius: 50, 50
+                        pos_hint: {'center_x': 0.18, 'center_y': 0.79}
+                        on_release: root.abrir_galeria()
+
+                        AsyncImage:
+                            id: img_perfil
+                            source: root.caminho_imagem()
+                            allow_stretch: True
+                            size_hint: 1, 1
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}  # Centralizar a imagem
+                            # Propriedades adicionais para manter a proporção
+                            keep_ratio: True
+
+
+
+
+                    MDLabel:
+                        text: 'seguidores'
+                        font_style: 'Title'
+                        role: 'large'
+                        pos_hint: {'center_x': 0.9, 'center_y': 0.75}
+                        bold: True
+
+                    MDLabel:
+                        text: root.seguidores()
+                        font_style: 'Title'
+                        role: 'large'
+                        bold: True
+                        pos_hint: {'center_x': 0.98, 'center_y': 0.8}
+
+                    MDLabel:
+                        text: 'seguindo'
+                        font_style: 'Title'
+                        role: 'large'
+                        pos_hint: {'center_x': 1.22, 'center_y': 0.75}
+                        bold: True
+
+                    MDLabel:
+                        text: root.seguindo()
+                        font_style: 'Title'
+                        role: 'large'
+                        bold: True
+                        pos_hint: {'center_x': 1.27, 'center_y': 0.8}
+
+                    MDBoxLayout:
+                        id: layout
+                        pos_hint: {'center_x': 0.56, 'center_y': 1.02}
+                        orientation: "vertical"
+                        padding: [0, 00, 20, 00]
+                        MDLabel:
+                            id: bio
+                            text: root.text_bio()
+                            font_style: 'Title'
+                            role: 'medium'
+                            halign: 'justify'
+                            text_size: self.width, None
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            padding: [0, 0, 20, 0]
+
+                        MDIconButton:
+                            id: editar_icon
+                            icon: 'border-color'
+                            pos_hint: {'right': .94}
+                            theme_color_icon: 'Custom'
+                            theme_font_size: 'Custom'
+                            font_size: '30sp'
+                            color_icon: 'black'
+                            on_release: root.adicionar_bio()
+
+                    MDIconButton:
+                        id: edit
+                        icon: 'account-edit'
+                        theme_color_icon: 'Custom'
+                        theme_font_size: 'Custom'
+                        font_size: '30sp'
+                        color_icon: '#000000'
+                        pos_hint: {'top': 0.93, 'right': 0.92}
+                        on_release: root.adicionar_textfield_nome()
+
+
+        MDNavigationBar:
+            id: navigation
+            on_switch_tabs: root.on_switch_tabs(*args)
+
+            BaseMDNavigationItem:
+                icon: "home"
+                text: "Home"
+
+            BaseMDNavigationItem:
+                icon: "chat"
+                text: "Chat"
+
+            BaseMDNavigationItem:
+                icon: "account-circle"
+                text: "Perfil"
+
