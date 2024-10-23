@@ -6,13 +6,15 @@
         MDButton:
             style: "text"
             pos_hint: {"top": 0.99, "center_x": 0.8}
+            on_release: root.cadastroscreen()
 
             MDButtonText:
-                text: "Create account"
+                text: "Criar uma conta"
                 theme_text_color: "Custom"
                 text_color:"white" if root.theme_cls.theme_style == "Dark" else "black"
                 font_style: "Title"
                 role: "small"
+
 
         MDLabel:
             text: "Login"
