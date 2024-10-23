@@ -6,11 +6,11 @@
         id: centro
 
         MDLabel:
-            pos_hint: {'center_y': 0.95, 'right': 1.05}
+            pos_hint: {'center_y': 0.84}
             theme_text_color: 'Custom'
             text_color: 'black'
-            text: 'Chatto'
-            halign: 'left'
+            text: 'Cadastrar'
+            halign: 'center'
             valign: 'center'
             theme_font_size: 'Custom'
             font_size: '40sp'
@@ -23,11 +23,12 @@
             theme_text_color: 'Custom'
             text_color: 'black'
             role: "small"
-            pos_hint: {'center_y': 0.83, 'center_x': 0.5}
+            halign: 'center'
+            pos_hint: {'center_y': 0.75, 'center_x': 0.5}
             spacing: 10
 
         MDCard:
-            pos_hint: {"center_y": 0.66, "center_x": 0.5}
+            pos_hint: {"center_y": 0.62, "center_x": 0.5}
             size_hint: 0.87, 0.1
             theme_bg_color: 'Custom'
             md_bg_color: 1, 1, 1, 1
@@ -45,7 +46,7 @@
                     size_hint: 1, None
                     icon_right: "account"
                     mode: "outlined"
-                    #radius: 30, 30
+                    radius: 15, 15, 15, 15
 
                     MDTextFieldLeadingIcon:
                         icon: "account-circle-outline"
@@ -70,7 +71,7 @@
                     pos_hint: {'center_y': 0.1}
 
         MDCard:
-            pos_hint: {"center_y": 0.54, "center_x": 0.5}
+            pos_hint: {"center_y": 0.51, "center_x": 0.5}
             size_hint: 0.87, 0.1
             theme_bg_color: 'Custom'
             md_bg_color: 1, 1, 1, 1
@@ -90,7 +91,7 @@
                     size_hint: 1, None
                     icon_right: "account"
                     mode: "outlined"
-                    #radius: 30, 30
+                    radius: 15, 15, 15, 15
 
                     MDTextFieldLeadingIcon:
                         icon: "email"
@@ -115,10 +116,11 @@
                     halign: 'right'
 
         MDCard:
-            pos_hint: {"center_y": 0.42, "center_x": 0.5}
+            pos_hint: {"center_y": 0.4, "center_x": 0.5}
             size_hint: 0.87, 0.1
             theme_bg_color: 'Custom'
             md_bg_color: 1, 1, 1, 1
+            border: [15,]
 
             MDRelativeLayout:
                 MDTextField:
@@ -133,7 +135,7 @@
                     size_hint: 1, None
                     icon_right: "account"
                     mode: "outlined"
-                    #radius: 30, 30
+                    radius: 15, 15, 15, 15
 
                     MDTextFieldLeadingIcon:
                         icon: "lock"
@@ -165,10 +167,8 @@
             padding: "16dp"
             theme_shadow_color: "Custom"
             shadow_color: "black"
-            theme_line_color: 'Custom'
-            line_color: 'black'
             theme_bg_color: "Custom"
-            md_bg_color: 0, 0, 0, 1
+            md_bg_color: (0.03, 0.4, 1)
             md_bg_color_disabled: "grey"
             theme_shadow_offset: "Custom"
             shadow_offset: (1, -2)
@@ -196,47 +196,14 @@
                     font_style: "Title"
                     bold: True
 
-        MDCard:
-            id: card
-            style: 'elevated'
-            size_hint: 1, 0.06
-            padding: "16dp"
-            theme_shadow_color: "Custom"
-            pos_hint: {'center_x': 0.35, 'center_y': 0.13}
-            shadow_color: "white"
-            theme_line_color: 'Custom'
-            line_color: 'white'
-            theme_bg_color: "Custom"
-            md_bg_color: 1, 1, 1, 1
-            md_bg_color_disabled: "grey"
-            theme_shadow_offset: "Custom"
-            shadow_offset: (1, -2)
-            theme_shadow_softness: "Custom"
-            shadow_softness: 1
-            theme_elevation_level: "Custom"
-            elevation_level: 2
+        MDIconButton:
+            icon: 'arrow-left'
+            theme_font_size: 'Custom'
+            font_size: '35dp'
+            theme_icon_color: 'Custom'
+            icon_color: 'black'
+            pos_hint: {'center_x': 0.1, 'center_y': 0.96}
             on_release: root.login()
-
-            MDRelativeLayout:
-                MDLabel:
-                    text: "Tem uma conta?"
-                    theme_text_color: "Custom"
-                    pos_hint: {"center_y": 0.5, "center_x": 0.5}
-                    text_color: "black"
-                    font_style: "Title"
-                    bold: True
-                    halign: 'center'
-                    role: "medium"
-
-                MDLabel:
-                    pos_hint: {'center_x': 0.38, 'center_y': 0.5}
-                    text: 'Faça login'
-                    font_style: "Title"
-                    role: "medium"
-                    halign: 'right'
-                    bold: True
-                    theme_text_color: "Custom"
-                    text_color: "blue"
 
         MDCard:
             id: carregando
