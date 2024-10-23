@@ -1,6 +1,7 @@
 import queue
 import threading
 
+from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.screen import MDScreen
 import requests
@@ -101,3 +102,7 @@ class LoginScreen(MDScreen):
 
     def chamar_trocar(self, *args):
         self.manager.current = "Send"
+
+    def cadastroscreen(self):
+        self.manager.transition = SlideTransition(direction='left')
+        self.manager.current = 'cadastro'
