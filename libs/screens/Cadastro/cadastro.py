@@ -1,47 +1,19 @@
 from kivy.network.urlrequest import UrlRequest
-from queue import Queue
 import re
-
-from kivy.utils import get_color_from_hex
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
+from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.snackbar import MDSnackbarText, MDSnackbar, MDSnackbarCloseButton
 from kivymd.material_resources import dp
+
 
 class Cadastro(MDScreen):
     cadastrar = False
     email = False
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.result_queue = Queue()
-
     def login(self):
+        self.manager.transition = SlideTransition(direction='right')
         self.manager.current = 'Login'
-    def sneck(self):
-        snack = MDSnackbar(
-            MDSnackbarText(
-                text="Usuário cadastrado",
-                theme_text_color='Custom',
-                bold=True,
-                text_color='white'
-            ),
-            MDRelativeLayout(
-                MDSnackbarCloseButton(
-                    icon='check',
-                    theme_icon_color='Custom',
-                    icon_color='white',
-                    pos_hint={"center_x": 0.5}
-
-                ),
-            ),
-            y=dp(150),
-            orientation='vertical',
-            pos_hint={"center_x": 0.5, 'center_y': 0.1},
-            size_hint_x=0.8,
-        )
-        snack.background_color = get_color_from_hex('#00ff08')
-        snack.open()
 
     def verificar_formato(self, email: str) -> bool:
         regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
