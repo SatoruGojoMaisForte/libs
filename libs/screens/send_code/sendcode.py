@@ -1,7 +1,4 @@
 import re
-import requests
-import threading
-import queue
 from kivy.network.urlrequest import UrlRequest
 from kivy.properties import StringProperty
 from kivymd.uix.button import MDIconButton
@@ -10,8 +7,6 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
-from dotenv import set_key
-
 
 class SendCode(MDScreen):
     def on_enter(self, *args):
@@ -82,10 +77,6 @@ class SendCode(MDScreen):
         self.card.add_widget(
             relative
         )
-
-    def save_email_to_env(self, email):
-        env_file = ".env"
-        set_key(env_file, "EMAIL_USER", email)
 
     def set_email(self):
         self.verificar_email = self.ids.verificar_email.text
