@@ -1,5 +1,10 @@
 from kivy.network.urlrequest import UrlRequest
 import re
+
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDLabel
+from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
 from kivy.uix.screenmanager import SlideTransition
@@ -10,6 +15,74 @@ from kivymd.material_resources import dp
 class Cadastro(MDScreen):
     cadastrar = False
     email = False
+    def on_enter(self, *args):
+        # definindo o icone de erro para as telas
+        icone_erro = MDIconButton(
+            icon='alert-circle',
+            theme_font_size='Custom',
+            font_size='55sp',
+            theme_icon_color='Custom',
+            pos_hint={'center_x': .5, 'center_y': .6},
+            icon_color='red'  # Cor vermelha para representar o erro
+        )
+        self.ids['error'] = icone_erro
+        # definindo o icone de acerto para as telas
+        icone_acerto = MDIconButton(
+            icon='check',
+            theme_font_size='Custom',
+            font_size='50sp',
+            theme_icon_color='Custom',
+            pos_hint={'center_x': .5, 'center_y': .6},
+            icon_color='green'  # Cor vermelha para representar o erro
+        )
+        self.ids['acerto'] = icone_acerto
+        # definindo o md card onde vai fica todo o corpo do layout
+        self.card = MDCard(
+            id='carregando',
+            style='elevated',
+            size_hint=(1, 1),
+            pos_hint={"center_y": 0.5, "center_x": 0.5},
+            padding="16dp",
+            # Sets custom properties.
+            theme_bg_color="Custom",
+            md_bg_color=(1, 1, 1, 1),
+            md_bg_color_disabled="grey",
+            theme_shadow_offset="Custom",
+            shadow_offset=(1, -2),
+            theme_shadow_softness="Custom",
+            shadow_softness=1,
+            theme_elevation_level="Custom",
+            elevation_level=2
+        )
+        self.ids['card'] = self.card
+        # definindo o relative onde todo o corpo será posicionado
+        relative = MDRelativeLayout()
+        self.ids['relative'] = relative
+        # definindo o circular progress onde o usuario vai ter o carregamento visual
+        circle = MDCircularProgressIndicator(
+            size_hint=(None, None),
+            size=("60dp", "60dp"),
+            pos_hint={'center_x': .5, 'center_y': .6}
+        )
+        self.ids['progress'] = circle
+
+        # definindo o label com texto carregando onde o usuario vai ter o indicador visual
+        label = MDLabel(
+            text='Carregando...',
+            font_style='Title',
+            role='medium',
+            halign='center',
+            bold=True,
+            theme_text_color='Custom',
+            text_color='black',
+            pos_hint={'center_x': .5, 'center_y': .5}
+        )
+        self.ids['texto_carregando'] = label
+        relative.add_widget(circle)
+        relative.add_widget(label)
+        self.card.add_widget(
+            relative
+        )
 
     def login(self):
         self.manager.transition = SlideTransition(direction='right')
@@ -37,23 +110,21 @@ class Cadastro(MDScreen):
             self.ids.erro_nome.text = ''
             self.verificar_email(self.ids.email.text)
             self.email = True
-
         else:
+            self.remove_widget(self.card)
             self.ids.erro_nome.text = 'Usuário já cadastrado'
             self.ids.erro_nome.text_color = 'red'
             self.verificar_email(self.ids.email.text)
             self.email = False
-            self.ids.carregando.size_hint = (0.00001, 0.00001)
-            self.ids.carregando.pos_hint = {"center_y": 0.91, "center_x": 1.05}
+            self.remove_widget(self.card)
 
     def verificar_email(self, email):
         if not self.verificar_formato(email):
+            self.remove_widget(self.card)
             self.ids.erro_email.text = 'Formato de email inválido'
             self.ids.erro_email.text_color = 'red'
-            self.ids.carregando.size_hint = (0.00001, 0.00001)
-            self.ids.carregando.pos_hint = {"center_y": 0.91, "center_x": 1.05}
             return
-        url = f"https://api-email-2gyg.onrender.com/check-email?email={email}"
+        url = f"https://api-email-5a79.onrender.com/check-email?email={email}"
         UrlRequest(
             url,
             on_success=self.verificar_email_sucesso,
@@ -66,13 +137,11 @@ class Cadastro(MDScreen):
         data = result
         print(f"response email: {result}")
         if data['existir']:
+            self.remove_widget(self.card)
             self.ids.erro_email.text = 'Email já cadastrado'
             self.ids.erro_email.text_color = 'red'
-            self.ids.carregando.size_hint = (0.00001, 0.00001)
-            self.ids.carregando.pos_hint = {"center_y": 0.91, "center_x": 1.05}
         else:
             self.ids.erro_email.text = ''
-            print(f"pode adicionar usuario: {self.email}")
             if self.email:
                 self.adicionar_usuario()
             else:
@@ -86,15 +155,25 @@ class Cadastro(MDScreen):
         data = result
         print(f'response adicionar_usuario: {data}')
         if data['message'] == 'O usuario foi adicionado com sucesso':
-            self.sneck()
             self.ids.nome.text = ''
             self.ids.email.text = ''
             self.ids.senha.text = ''
+            progress = self.ids['progress']
+            icon_acerto = self.ids['acerto']
+            self.ids['relative'].remove_widget(progress)
+            self.ids['relative'].add_widget(icon_acerto)
+            self.ids.texto_carregando.text = 'Usuario cadastrado com sucesso'
+            self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
         else:
-            print('Falha ao adicionar o usuário')
+            icon_error = self.ids['error']
+            progress = self.ids['progress']
+            self.ids['relative'].remove_widget(progress)
+            self.ids['relative'].add_widget(icon_error)
+            self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
+            self.ids.texto_carregando.text = 'Falha ao cadastrar usuario'
 
     def api_erro(self, req, error):
-        pass
+            pass
 
     def logica(self):
         nome = self.ids.nome.text
@@ -114,6 +193,5 @@ class Cadastro(MDScreen):
 
         # Iniciar verificações de nome e email
         self.verificar_nome()
-        self.ids.carregando.size_hint = (1, 1)
-        self.ids.carregando.pos_hint = {"center_y": 0.5, "center_x": 0.5}
+        self.add_widget(self.card)
 
