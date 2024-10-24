@@ -205,44 +205,7 @@
             pos_hint: {'center_x': 0.1, 'center_y': 0.96}
             on_release: root.login()
 
-        MDCard:
-            id: carregando
-            style: 'elevated'
-            size_hint: 0.00001, 0.000001
-            pos_hint: {"center_y": 0.92, "center_x": 1.05}
-            padding: "16dp"
-            # Sets custom properties.
-            theme_bg_color: "Custom"
-            md_bg_color: 1, 1, 1, 1
-            md_bg_color_disabled: "grey"
-            theme_shadow_offset: "Custom"
-            shadow_offset: (1, -2)
-            theme_shadow_softness: "Custom"
-            shadow_softness: 1
-            theme_elevation_level: "Custom"
-            elevation_level: 2
 
-            MDRelativeLayout:
-                id: carregando2
-
-                MDCircularProgressIndicator:
-                    id: progresso
-                    size_hint: None, None
-                    size: "60dp", "60dp"
-                    max_value: 100
-                    value: 0
-                    pos_hint: {'center_x': .5, 'center_y': .6}
-
-                MDLabel:
-                    id: texto_carregando
-                    text: 'Carregando...'
-                    font_style: 'Title'
-                    role: 'medium'
-                    halign: 'center'
-                    bold: True
-                    theme_text_color: 'Custom'
-                    text_color: 'black'
-                    pos_hint: {'center_x': .5, 'center_y': .5}
 
 
 
