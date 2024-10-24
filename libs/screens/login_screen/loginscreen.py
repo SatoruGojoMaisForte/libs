@@ -1,17 +1,20 @@
 import queue
 import threading
 
+from kivy.properties import Clock
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.screen import MDScreen
 import requests
 from kivy.network.urlrequest import UrlRequest
-
+from kivy.core.window import Window
 click_button_user = 0
 click_button_password = 0
 
 
 class LoginScreen(MDScreen):
+
+
     def verificar_nome(self):
         nome = self.ids.usuario.text
         url = f"https://api-name.onrender.com/check-name?name={nome}"
