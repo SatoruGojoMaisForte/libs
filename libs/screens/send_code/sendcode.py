@@ -10,7 +10,12 @@ from kivymd.uix.screen import MDScreen
 
 class SendCode(MDScreen):
     def on_enter(self, *args):
-        # definindo o icone de erro para as telas
+        # Limpa todos os widgets e adiciona novamente
+        children = list(self.children)  # Salva os widgets atuais
+        self.clear_widgets()
+        for widget in children:
+            self.add_widget(widget)
+            
         icone_erro = MDIconButton(
             icon='alert-circle',
             theme_font_size='Custom',
