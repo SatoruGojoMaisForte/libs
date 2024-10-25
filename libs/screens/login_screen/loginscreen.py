@@ -14,7 +14,10 @@ click_button_password = 0
 
 class LoginScreen(MDScreen):
     def on_enter(self, *args):
-        self.ids.texto.text = 'Login'
+        Clock.schedule_once(self.force_update, 0)
+
+    def force_update(self, *args):
+        self.canvas.ask_update()
 
     def verificar_nome(self):
         nome = self.ids.usuario.text
