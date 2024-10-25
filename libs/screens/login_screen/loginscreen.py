@@ -13,7 +13,8 @@ click_button_password = 0
 
 
 class LoginScreen(MDScreen):
-
+    def on_enter(self, *args):
+        self.ids.texto.text = 'Login'
 
     def verificar_nome(self):
         nome = self.ids.usuario.text
