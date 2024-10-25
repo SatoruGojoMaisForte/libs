@@ -16,6 +16,12 @@ class Cadastro(MDScreen):
     cadastrar = False
     email = False
     def on_enter(self, *args):
+        # Limpa todos os widgets e adiciona novamente
+        children = list(self.children)  # Salva os widgets atuais
+        self.clear_widgets()
+        for widget in children:
+            self.add_widget(widget)
+            
         # definindo o icone de erro para as telas
         icone_erro = MDIconButton(
             icon='alert-circle',
