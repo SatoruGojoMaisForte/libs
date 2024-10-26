@@ -70,6 +70,7 @@ class LoginScreen(MDScreen):
         self.card.add_widget(relative)
 
     def verificar_nome(self):
+        # chamei a requisição com timeout de 4 segundos
         nome = self.ids.usuario.text
         url = f"https://api-name.onrender.com/check-name?name={nome}"
 
@@ -79,17 +80,25 @@ class LoginScreen(MDScreen):
                 url,
                 on_success=self.sucesso_nome,
                 on_error=self.error_request_name,
-                timeout=3,  # Timeout padrão de 5 segundos
+                timeout=4,
                 method='GET'
             )
         except Exception as e:
+            # se a requisição não retorna nada em 4 segundos eu chamo a função de erro
             self.error_request_name(None, e)
 
     def error_request_name(self, req, error):
+        # verificar quantas vezes eu tentei fazer a requisição
+        # verificar se o error foi de timeout ou não
+        # se for ele vai pedir uma nova requisição
+
         if self.contador_tentativas <= 3:
             if str(error) == 'The read operation timed out':
                 self.contador_tentativas += 1
                 self.verificar_nome()
+            else:
+                pass
+
         else:
             self.exibir_erro_usuario()
 
@@ -104,17 +113,15 @@ class LoginScreen(MDScreen):
         self.ids.texto_carregando.text = 'Falha ao verificar usuário. Verifique sua internet.'
 
     def sucesso_nome(self, req, result):
-        self.contador_tentativas = 0  # Reseta o contador ao sucesso
+        self.contador_tentativas = 0
         data = result
         if data['exists']:
             self.ids.encontrar.text = ''
             self.ids.usuario.error = False
-            print('usuário cadastrado')
             self.verificar_senha()
         else:
             self.ids.encontrar.text = 'Usuário não cadastrado'
             self.ids.usuario.error = True
-            print('usuário não cadastrado')
 
     def verificar_senha(self):
         senha = self.ids.senha.text
@@ -127,8 +134,30 @@ class LoginScreen(MDScreen):
             url,
             method='GET',
             on_success=self.sucesso_senha,
+            on_error=self.error_request_senha,
+            timeout=5,
             req_headers=headers
         )
+
+    def error_request_senha(self, req, error):
+        if self.contador_tentativas <= 3:
+            if str(error) == 'The read operation timed out':
+                self.contador_tentativas += 1
+                self.verificar_senha()
+            else:
+                pass
+        else:
+            self.exibir_erro_senha()
+
+    def exibir_erro_senha(self):
+        icon_error = self.ids['error']
+        progress = self.ids['progress']
+        # Remove o widget de progresso e adiciona o ícone de erro
+        self.ids['relative'].remove_widget(progress)
+        self.ids['relative'].add_widget(icon_error)
+
+        # Atualiza a mensagem de carregamento
+        self.ids.texto_carregando.text = 'Falha ao verificar senha. Verifique sua internet.'
 
     def sucesso_senha(self, req, result):
         data = result
