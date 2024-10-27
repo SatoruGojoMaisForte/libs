@@ -4,14 +4,12 @@ from kivymd.app import MDApp
 from kivy.core.window import Window
 
 from libs.screens.login_screen.loginscreen import LoginScreen
-from libs.screens.Cadastro.cadastro import Cadastro
-from libs.screens.send_code.sendcode import SendCode
+
 
 
 class PrincipalApp(MDApp):
 
     def build(self):
-        Window.size = (400, 800)
         self.load_all_kv_files()
         self.screenmanager = ScreenManager()
         self.screenmanager.add_widget(LoginScreen(name='Login'))
