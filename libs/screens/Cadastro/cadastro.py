@@ -66,8 +66,7 @@ class Cadastro(MDScreen):
         UrlRequest(url, on_success=self.on_ping_success, on_error=self.error_request_ping, timeout=2, method='GET')
 
     def on_ping_success(self, req, result):
-        # Função de sucesso do ping apenas para mostrar no console ou manipular o status se necessário
-        print("Ping bem-sucedido:", result)
+        pass
 
     def verificar_nome(self, tentativa=1):
         nome = self.ids.nome.text
@@ -123,7 +122,6 @@ class Cadastro(MDScreen):
 
     def verificar_nome_sucesso(self, req, result):
         data = result
-        print(f'response nome: {data}')
         if not data['exists']:
             self.ids.erro_nome.text = ''
             self.email = True
