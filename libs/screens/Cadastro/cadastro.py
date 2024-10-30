@@ -1,3 +1,7 @@
+import json
+from urllib.parse import urlencode
+
+import bcrypt
 from kivy.network.urlrequest import UrlRequest
 import re
 from kivymd.uix.button import MDIconButton
@@ -15,9 +19,6 @@ class Cadastro(MDScreen):
     email = False
 
     def on_enter(self, *args):
-        # Iniciar o "ping" das APIs para aquecer as conexões
-        self.ping_api_nome()
-        self.ping_api_email()
 
         # Configurações visuais
         icone_erro = MDIconButton(icon='alert-circle', theme_font_size='Custom', font_size='55sp',
@@ -70,14 +71,41 @@ class Cadastro(MDScreen):
 
     def verificar_nome(self, tentativa=1):
         nome = self.ids.nome.text
-        url = f"https://api-name.onrender.com/check-name?name={nome}"
+        url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios.json'
+        parametros = {
+            "rules": {
+                "Usuarios": {
+                    ".indexOn": ["name"],
+                    ".read": "auth != null",
+                    ".write": "auth != null"
+                }
+            }
+        }
+
+        # Converte os parâmetros para query string
+        query_string = urlencode(parametros)
+
+        # Realiza a requisição GET com UrlRequest
         UrlRequest(
-            url,
-            on_success=self.verificar_nome_sucesso,
-            on_error=lambda req, error: self.error_request_name(req, error, tentativa),
-            timeout=3,
-            method='GET'
+            f'{url}?{query_string}',
+            on_success=self.sucesso_nome,
+
+            method='GET',
         )
+
+    def sucesso_nome(self, req, result):
+        if result:
+            for usuario_id, usuario_data in result.items():
+                if usuario_data.get('name') == self.ids.nome.text:
+                    self.ids.erro_nome.text = 'Usuário já cadastrado'
+                    self.ids.erro_nome.text_color = 'red'
+                    self.email = False
+                    self.remove_widget(self.card)
+                    return
+
+        self.ids.erro_nome.text = ''
+        self.email = True
+        self.verificar_email()
 
     def verificar_email(self, tentativa=1):
         email = self.ids.email.text
@@ -86,102 +114,93 @@ class Cadastro(MDScreen):
             self.ids.erro_email.text = 'Formato de email inválido'
             self.ids.erro_email.text_color = 'red'
             return
-        url = f"https://api-email-5a79.onrender.com/check-email?email={email}"
+
+        nome = self.ids.email.text
+        url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios.json'
+        parametros = {
+            "rules": {
+                "Usuarios": {
+                    ".indexOn": ["email"],
+                    ".read": "auth != null",
+                    ".write": "auth != null"
+                }
+            }
+        }
+
+        # Converte os parâmetros para query string
+        query_string = urlencode(parametros)
+
+        # Realiza a requisição GET com UrlRequest
         UrlRequest(
-            url,
-            on_success=self.verificar_email_sucesso,
-            on_error=lambda req, error: self.error_request_email(req, error, tentativa),
-            timeout=3,
-            method='GET'
+            f'{url}?{query_string}',
+            on_success=self.sucesso_email,
+            method='GET',
         )
 
-    def error_request_name(self, req, error, tentativa):
-        if tentativa <= 3 and str(error) == 'The read operation timed out':
-            backoff = 1 * (2 ** tentativa)
-            Clock.schedule_once(lambda dt: self.verificar_nome(tentativa + 1), backoff)
-        else:
-            self.mostrar_error()
+    def sucesso_email(self, req, result):
+        if result:
+            for usuario_id, usuario_data in result.items():
+                if usuario_data.get('email') == self.ids.email.text:
+                    self.ids.erro_email.text = 'Email já cadastrado'
+                    self.ids.erro_email.text_color = 'red'
+                    self.remove_widget(self.card)
+                    return
 
-    def error_request_email(self, req, error, tentativa):
-        if tentativa <= 3 and str(error) == 'The read operation timed out':
-            backoff = 1 * (2 ** tentativa)
-            Clock.schedule_once(lambda dt: self.verificar_email(tentativa + 1), backoff)
-        else:
-            self.mostrar_error()
-
-    def error_request_ping(self, req, error):
-        self.mostrar_error()
-
-    def mostrar_error(self):
-        icon_error = self.ids['error']
-        progress = self.ids['progress']
-        self.ids['relative'].remove_widget(progress)
-        self.ids['relative'].add_widget(icon_error)
-        self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
-        self.ids.texto_carregando.text = 'Falha ao verificar usuario verifique sua internet'
-
-    def verificar_nome_sucesso(self, req, result):
-        data = result
-        if not data['exists']:
-            self.ids.erro_nome.text = ''
-            self.email = True
-            self.verificar_email()  # Verificação de email após sucesso no nome
-        else:
-            self.remove_widget(self.card)
-            self.ids.erro_nome.text = 'Usuário já cadastrado'
-            self.ids.erro_nome.text_color = 'red'
-            self.email = False
-            self.remove_widget(self.card)
-
-    def verificar_email_sucesso(self, req, result):
-        data = result
-        print(f"response email: {result}")
-        if data['existir']:
-            self.remove_widget(self.card)
-            self.ids.erro_email.text = 'Email já cadastrado'
-            self.ids.erro_email.text_color = 'red'
-        else:
-            self.ids.erro_email.text = ''
-            if self.email:
+        self.ids.erro_email.text = ''
+        if self.email:
+            if len(self.ids.senha.text) >= 6:
+                self.ids.erro_senha.text = ''
+                self.ids.senha.error = False
                 self.adicionar_usuario()
             else:
-                pass
+                self.ids.error_senha.text = 'A senha deve ter mais de 6 caracteres'
+                self.ids.senha.error = True
+        else:
+            pass
 
     def adicionar_usuario(self):
-        url = f'https://api-add-user.onrender.com/add-user?nome={self.ids.nome.text}&email={self.ids.email.text}&senha={self.ids.senha.text}'
-        UrlRequest(url, req_body=None, on_success=self.adicionar_usuario_sucesso, on_error=self.api_erro, method='POST')
+        url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios.json'
+        senha = self.ids.senha.text
+        hashed_password = senha.encode('utf-8')
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password=hashed_password, salt=salt).decode(
+            'utf-8')  # Decodifique para armazenar como string
 
-    def adicionar_usuario_sucesso(self, req, result):
-        data = result
-        print(f'response adicionar_usuario: {data}')
-        if data['message'] == 'O usuario foi adicionado com sucesso':
-            self.ids.nome.text = ''
-            self.ids.email.text = ''
-            self.ids.senha.text = ''
-            progress = self.ids['progress']
-            icon_acerto = self.ids['acerto']
-            self.ids['relative'].remove_widget(progress)
-            self.ids['relative'].add_widget(icon_acerto)
-            self.ids.texto_carregando.text = 'Usuario cadastrado com sucesso'
-            self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
+        dados = {
+            'name': self.ids.nome.text,
+            'email': self.ids.email.text,
+            'password': hashed_password,
+            'bio': 'Olá sou usuario do Chatto',
+            'perfil': 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
+        }
 
-    def api_erro(self, req, error):
-        self.mostrar_error()
+        # Realiza a requisição POST com UrlRequest para adicionar o usuário
+        UrlRequest(
+            url,
+            req_body=json.dumps(dados),
+            on_success=self.sucesso_adicionar_usuario,
+            method='POST',
+            req_headers={'Content-Type': 'application/json'}
+        )
+
+    def sucesso_adicionar_usuario(self, req, result):
+        self.ids.nome.text = ''
+        self.ids.email.text = ''
+        self.ids.senha.text = ''
+        progress = self.ids['progress']
+        icon_acerto = self.ids['acerto']
+        self.ids['relative'].remove_widget(progress)
+        self.ids['relative'].add_widget(icon_acerto)
+        self.ids.texto_carregando.text = 'Usuario cadastrado com sucesso'
+        self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
+
 
     def logica(self):
         nome = self.ids.nome.text
         email = self.ids.email.text
         senha = self.ids.senha.text
 
-        if nome == '':
-            self.ids.nome.focus = True
-            return
-        elif email == '' and nome != '':
-            self.ids.email.focus = True
-            return
-        elif senha == '' and nome != '' and email != '':
-            self.ids.senha.focus = True
-            return
+
 
         self.verificar_nome()  # Verifica o nome e inicia a lógica de cadastro
         self.add_widget(self.card)
