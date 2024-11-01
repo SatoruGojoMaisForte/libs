@@ -1,19 +1,37 @@
+import json
+import os
 import re
+import threading
+from urllib.parse import urlencode
+import string
+import random
+import pandas as pd
+import bcrypt
 from kivy.network.urlrequest import UrlRequest
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
+from flask_mail import Mail, Message
 from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
+from dotenv import load_dotenv
+from flask import Flask
+load_dotenv()
+
 
 
 class SendCode(MDScreen):
     cont_email = 0  # Contador para tentativas de verificação de e-mail
     cont_envio = 0  # Contador para tentativas de envio de código
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.code = None
+
     def on_enter(self, *args):
+        self.code = ''
         # Definindo o ícone de erro para as telas
         icone_erro = MDIconButton(
             icon='alert-circle',
@@ -92,76 +110,202 @@ class SendCode(MDScreen):
         return re.match(email_regex, text) is not None
 
     def email_existir(self, email):
-        url = f"https://api-email-5a79.onrender.com/check-email?email={email}"
+        if not self.is_email_valid(email):
+            self.remove_widget(self.card)
+            self.ids.erro_email.text = 'Formato de email inválido'
+            self.ids.erro_email.text_color = 'red'
+            return
+
+        nome = self.ids.verificar_email.text
+        url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios.json'
+        parametros = {
+            "rules": {
+                "Usuarios": {
+                    ".indexOn": ["email"],
+                    ".read": "auth != null",
+                    ".write": "auth != null"
+                }
+            }
+        }
+
+        # Converte os parâmetros para query string
+        query_string = urlencode(parametros)
+
+        # Realiza a requisição GET com UrlRequest
         UrlRequest(
-            url,
+            f'{url}?{query_string}',
             on_success=self.existir,
-            on_error=self.error_request_email,
-            timeout=3,
-            method='GET'
+            method='GET',
         )
 
-    def error_request_email(self, req, error):
-        if self.cont_email <= 3:
-            if str(error) == 'The read operation timed out':
-                self.cont_email += 1  # Incrementa o contador de tentativas
-                self.email_existir(self.ids.verificar_email.text)  # Tenta novamente
-        else:
-            self.mostrar_error()
-
-    def mostrar_error(self):
-        icon_error = self.ids['error']
-        progress = self.ids['progress']
-        self.ids['relative'].remove_widget(progress)
-        self.ids['relative'].add_widget(icon_error)
-        self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
-        self.ids.texto_carregando.text = 'Falha ao verificar o e-mail. Verifique sua internet.'
-
     def existir(self, req, result):
-        data = result
-        if data['existir']:
-            self.enviar(self.ids.verificar_email.text)
+        if result:
+            for usuario_id, usuario_data in result.items():
+                if usuario_data.get('email') == self.ids.verificar_email.text:
+                    self.ids.erros.text = ''
+                    self.ids.verificar_email.error = False
+                    self.patch(result)
+                    return
+
+        self.ids.erros.text = 'Email não cadastrado'
+        self.ids.erros.text_color = 'red'
+        self.ids.verificar_email.error = True
+        self.remove_widget(self.card)
+        print('email não cadastrado')
+
+    def criar(self):
+        # criando um codigo
+        caracteres = string.ascii_letters + string.digits
+        return ''.join(random.choices(caracteres, k=6))
+
+    def patch(self, result):
+        import pandas as pd
+
+        print('Adicionando o código criptografado')
+        codigo_aleatorio = self.criar()
+        self.code = codigo_aleatorio
+        usuarios = result
+        mail = self.ids.verificar_email.text
+        # Converte o dicionário em um DataFrame, onde as chaves do dicionário são o índice
+        url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios'
+
+        df = pd.DataFrame.from_dict(usuarios, orient='index')
+        indices = df.index[df['email'] == mail].tolist()
+        hashed_code = codigo_aleatorio.encode('utf-8')
+        salt = bcrypt.gensalt()
+        hashed_code = bcrypt.hashpw(password=hashed_code, salt=salt).decode(
+            'utf-8')
+        dados = {'verification_code': hashed_code}
+
+        if indices:
+            print('fazendo a requisição')
+            self.ids.erros.text = ''
+            self.ids.verificar_email.error = False
+            UrlRequest(
+                url=f'{url}/{indices[0]}.json',
+                req_body=json.dumps(dados),
+                on_success=self.codigo_alterado,
+                req_headers={'Content-Type': 'application/json'},
+                method='PATCH'
+            )
         else:
             self.remove_widget(self.card)
             self.ids.erros.text = 'Email não cadastrado'
+            self.ids.verificar_email.error = True
 
-    def enviar(self, email):
-        url = f"https://api-email-5a79.onrender.com/send_verification_code?email={email}"
-        UrlRequest(
-            url,
-            on_success=self.enviado,
-            on_error=self.error_enviar_codigo,
-            method='POST'
-        )
+    def codigo_alterado(self, req, result):
+        self.enviar_codigo_verification()
 
-    def error_enviar_codigo(self, req, error):
-        self.cont_envio += 1  # Incrementa o contador de tentativas
-        if self.cont_envio <= 3:
-            self.enviar(self.ids.verificar_email.text)  # Tenta novamente
-        else:
-            icon_error = self.ids['error']
-            progress = self.ids['progress']
-            self.ids['relative'].remove_widget(progress)
-            self.ids['relative'].add_widget(icon_error)
-            self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
-            self.ids.texto_carregando.text = 'Falha ao enviar verificação. Tente novamente mais tarde.'
+    def enviar_codigo_verification(self):
+        app = Flask(__name__)
+        app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+        app.config['MAIL_PORT'] = 587
+        app.config['MAIL_USE_TLS'] = True
+        app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+        app.config['MAIL_PASSWORD'] = os.getenv('PASSWORD_APP')
+        mail = Mail(app)
+        print('Enviando codigo')
+        html_content = f"""
+                <!DOCTYPE html>
+                <html lang="pt-br">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Código de Verificação</title>
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+                        body {{
+                            margin: 0;
+                            padding: 0;
+                            background: #fafafa;
+                            font-family: 'Montserrat', sans-serif;
+                        }}
+                        .container {{
+                            max-width: 500px;
+                            margin: 50px auto;
+                            background: #ffffff;
+                            padding: 20px;
+                            border-radius: 10px;
+                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                            text-align: center;
+                        }}
+                        .header {{
+                            font-size: 24px;
+                            font-weight: 700;
+                            margin-bottom: 20px;
+                            color: #262626;
+                        }}
+                        .content {{
+                            font-size: 16px;
+                            color: #595959;
+                            line-height: 1.6;
+                        }}
+                        .code {{
+                            display: inline-block;
+                            margin: 20px 0;
+                            padding: 10px 20px;
+                            background: #f8f9fa;
+                            border: 1px solid #e0e0e0;
+                            border-radius: 5px;
+                            font-weight: 700;
+                            font-size: 20px;
+                            color: #333;
+                        }}
+                        .footer {{
+                            margin-top: 30px;
+                            font-size: 12px;
+                            color: #999999;
+                        }}
+                        .important {{
+                            color: #d9534f;
+                            font-weight: 700;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">CHATTO</div>
+                        <div class="content">
+                            <p>Código de verificação:</p>
+                            <div class="code">{self.code}</div>
+                            <p>Olá, <strong>{self.code} é seu código de verificação</strong>.</p>
+                            <p>Insira o código acima na tela de verificação do seu aplicativo para entrar na sua conta. Este código irá expirar em 20 minutos.</p>
+                            <p class="important">IMPORTANTE: Não compartilhe seus códigos de segurança com ninguém. <strong>O Chatto</strong> nunca pedirá seus códigos. Isso inclui mensagens de texto, compartilhamento de tela, etc. Ao compartilhar seus códigos de segurança com outra pessoa, você está colocando sua conta e seu conteúdo em risco.</p>
+                            <p>Atenciosamente,<br>A equipe do <strong>Chatto</strong></p>
+                        </div>
+                        <div class="footer">© 2024 Chatto. Todos os direitos reservados.</div>
+                    </div>
+                </body>
+                </html>
+                """
 
-    def enviado(self, req, result):
-        data = result
-        if data['enviado']:
-            progress = self.ids['progress']
-            icon_acerto = self.ids['acerto']
-            self.ids['relative'].remove_widget(progress)
-            self.ids['relative'].add_widget(icon_acerto)
-            self.ids.texto_carregando.text = 'Verificação enviada'
-            self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
-        else:
-            icon_error = self.ids['error']
-            progress = self.ids['progress']
-            self.ids['relative'].remove_widget(progress)
-            self.ids['relative'].add_widget(icon_error)
-            self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
-            self.ids.texto_carregando.text = 'Verificação não enviada'
+        # Criar o contexto da aplicação Flask temporário
+        with app.app_context():
+            msg = Message(
+                "Password Reset Verification Code",
+                sender=os.getenv('MAIL_USERNAME'),
+                recipients=[self.ids.verificar_email.text]
+            )
+            msg.html = html_content
+            thread = threading.Thread(target=self.enviar_email, args=(mail, msg, app))
+            thread.start()
+            self.ultima_etapa()
+
+    def enviar_email(self, mail, msg, app):
+
+        with app.app_context():
+            mail.send(msg)
+
+    def error(self, req, error):
+        print(error)
+
+    def ultima_etapa(self):
+        progress = self.ids['progress']
+        icon_acerto = self.ids['acerto']
+        self.ids['relative'].remove_widget(progress)
+        self.ids['relative'].add_widget(icon_acerto)
+        self.ids.texto_carregando.text = 'Verificação enviada'
+        self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
 
     def enviar_codigo(self):
         texto = self.ids.verificar_email.text
