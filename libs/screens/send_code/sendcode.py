@@ -5,7 +5,6 @@ import threading
 from urllib.parse import urlencode
 import string
 import random
-import pandas as pd
 import bcrypt
 from kivy.network.urlrequest import UrlRequest
 from kivy.uix.screenmanager import SlideTransition
@@ -160,30 +159,27 @@ class SendCode(MDScreen):
         return ''.join(random.choices(caracteres, k=6))
 
     def patch(self, result):
-        import pandas as pd
-
-        print('Adicionando o código criptografado')
         codigo_aleatorio = self.criar()
         self.code = codigo_aleatorio
         usuarios = result
         mail = self.ids.verificar_email.text
-        # Converte o dicionário em um DataFrame, onde as chaves do dicionário são o índice
         url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios'
 
-        df = pd.DataFrame.from_dict(usuarios, orient='index')
-        indices = df.index[df['email'] == mail].tolist()
-        hashed_code = codigo_aleatorio.encode('utf-8')
-        salt = bcrypt.gensalt()
-        hashed_code = bcrypt.hashpw(password=hashed_code, salt=salt).decode(
-            'utf-8')
-        dados = {'verification_code': hashed_code}
+        # Encontra o primeiro índice onde o email do usuário corresponde ao email fornecido
+        indice_usuario = next((k for k, v in usuarios.items() if v.get('email') == mail), None)
 
-        if indices:
+        # Se o índice foi encontrado, continua o processo
+        if indice_usuario is not None:
+            hashed_code = codigo_aleatorio.encode('utf-8')
+            salt = bcrypt.gensalt()
+            hashed_code = bcrypt.hashpw(password=hashed_code, salt=salt).decode('utf-8')
+            dados = {'verification_code': hashed_code}
+
             print('fazendo a requisição')
             self.ids.erros.text = ''
             self.ids.verificar_email.error = False
             UrlRequest(
-                url=f'{url}/{indices[0]}.json',
+                url=f'{url}/{indice_usuario}.json',
                 req_body=json.dumps(dados),
                 on_success=self.codigo_alterado,
                 req_headers={'Content-Type': 'application/json'},
@@ -291,6 +287,10 @@ class SendCode(MDScreen):
             thread = threading.Thread(target=self.enviar_email, args=(mail, msg, app))
             thread.start()
             self.ultima_etapa()
+            UrlRequest(
+                self.enviar_email,
+                req_body=(mail, msg, app)
+            )
 
     def enviar_email(self, mail, msg, app):
 
