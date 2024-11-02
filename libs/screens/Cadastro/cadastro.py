@@ -1,6 +1,5 @@
 import json
 from urllib.parse import urlencode
-
 import bcrypt
 from kivy.network.urlrequest import UrlRequest
 import re
