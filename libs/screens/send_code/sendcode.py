@@ -18,6 +18,7 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
 from dotenv import load_dotenv
 from flask import Flask
+from time import sleep
 load_dotenv()
 
 
@@ -306,6 +307,14 @@ class SendCode(MDScreen):
         self.ids['relative'].add_widget(icon_acerto)
         self.ids.texto_carregando.text = 'Verificação enviada'
         self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
+        sleep(2)
+        self.remove_widget(self.card)
+        self.chamar_pagina()
+
+    def chamar_pagina(self):
+        check = self.manager.get_screen('Check')
+        check.email = self.ids.verificar_email.text
+        self.manager.current = 'Check'
 
     def enviar_codigo(self):
         texto = self.ids.verificar_email.text
