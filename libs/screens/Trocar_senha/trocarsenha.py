@@ -1,8 +1,4 @@
 import json
-import queue
-import threading
-from time import sleep
-
 import bcrypt
 import pandas as pd
 import requests
