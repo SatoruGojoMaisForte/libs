@@ -3,19 +3,12 @@
     md_bg_color: 1, 1, 1, 1
 
     FloatLayout:
-        # Nick da pessoa e botão de voltar para o login
-        MDLabel:
-            id: usuario
-            font_style: 'Headline'
-            role: 'small'
-            pos_hint: {'center_y': 0.95, 'center_x': 0.55}
-
         MDLabel:
             text: 'Alterar palavra-passe'
             font_style: 'Headline'
             role: 'medium'
             bold: True
-            pos_hint: {'center_y': 0.88, 'center_x': 0.55}
+            pos_hint: {'center_y': 0.92, 'center_x': 0.55}
 
 
         MDLabel:
@@ -24,7 +17,7 @@
             size: "380dp", "150dp"
             font_style: "Title"
             role: "small"
-            pos_hint: {"center_x": 0.53, "center_y": 0.8}
+            pos_hint: {"center_x": 0.53, "center_y": 0.83}
             halign: "left"
 
         MDCard:
@@ -66,7 +59,7 @@
 
         MDCard:
             adaptive_size: True
-            pos_hint: {"center_y": 0.57, "center_x": 0.5}
+            pos_hint: {"center_y": 0.58, "center_x": 0.5}
             size_hint: 0.87, 0.1
             theme_bg_color: 'Custom'
             md_bg_color: 1, 1, 1, 1
@@ -113,7 +106,7 @@
                     pos_hint: {"center_y": 0.1, 'center_x': 0.5}
 
         MDButton:
-            pos_hint: {"center_y": 0.47, "center_x": 0.78}
+            pos_hint: {"center_y": 0.47, "center_x": 0.8}
             theme_bg_color: 'Custom'
             md_bg_color: 0, 0, 0, 1
             on_release: root.visibilizar_senha1()
