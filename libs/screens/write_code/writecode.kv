@@ -12,9 +12,9 @@
             size_hint: None, None
             # Sets custom properties.
             theme_shadow_color: "Custom"
-            shadow_color: "black"
+            shadow_color: "white"
             theme_bg_color: "Custom"
-            md_bg_color: 1, 0, 1, 0
+            md_bg_color: 1, 1, 1, 1
             md_bg_color_disabled: "grey"
             theme_shadow_offset: "Custom"
             shadow_offset: (1, -2)
@@ -33,7 +33,7 @@
                     halign: 'center'
                     size: '50dp', '50dp'
                     theme_icon_color: 'Custom'
-                    icon_color: 'white'
+                    icon_color: 'black'
                     on_release: root.check()
 
         MDLabel:
@@ -49,47 +49,56 @@
             bold: True
             size_hint: None, None
             size: "200dp", "100dp"
-            font_style: "Title"
-            role: "large"
+            font_style: "Headline"
+            role: "small"
             pos_hint: {"center_x": 0.5, "center_y": 0.80}
             halign: "center"
 
         MDLabel:
             text: '"Enviamos um código de 6 dígitos para o seu e-mail. Insira-o abaixo para validar seu acesso. Caso não tenha recebido, verifique sua caixa de spam."'
             size_hint: None, None
-            size: "320dp", "150dp"
+            size: "340dp", "170dp"
             font_style: "Body"
-            role: "medium"
+            role: "large"
             pos_hint: {"center_x": 0.5, "center_y": 0.67}
             halign: "center"
 
 
-        MDLabel:
-            id: erros
-            text: ''
-            theme_text_color: "Custom"
-            text_color: 'red'
-            bold: True
-            pos_hint: {"center_y": 0.43, "center_x": 0.6}
-            font_style: "Label"
-            role: "large"
-
-        MDTextField:
-            id: codigo
+        MDCard:
+            adaptive_size: True
             pos_hint: {"center_y": 0.5, "center_x": 0.5}
-            size_hint: 0.8, None
-            icon_right: "account"
-            mode: "outlined"
-            theme_line_color: "Custom"
-            line_color_normal: "black"
-            on_text: root.check_text_length()
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
 
-            canvas.before:
-                #Color:
-                 #   rgba: 1, 0, 0, 1  # Red color
-                Line:
-                    rectangle: self.x, self.y, self.width, self.height
-                    width: 2
+            MDRelativeLayout:
+                MDTextField:
+                    id: codigo
+                    pos_hint: {"center_y": 0.6, "center_x": 0.5}
+                    size_hint: 1, None
+                    icon_right: "account"
+                    mode: "outlined"
+                    theme_line_color: "Custom"
+                    line_color_normal: "black"
+                    on_text: root.check_text_length()
+
+                    canvas.before:
+                        #Color:
+                         #   rgba: 1, 0, 0, 1  # Red color
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 2
+
+                MDLabel:
+                    id: erros
+                    text: 'ta errado essa porra'
+                    theme_text_color: "Custom"
+                    text_color: 'red'
+                    bold: True
+                    halign: 'right'
+                    pos_hint: {"center_y": 0.1, 'center_x': 0.5}
+                    font_style: "Label"
+                    role: "large"
 
         MDCard:
             style: 'elevated'
@@ -110,7 +119,7 @@
             shadow_softness: 1
             theme_elevation_level: "Custom"
             elevation_level: 2
-            on_release: root.check()
+            on_release: root.pegando_usuarios()
 
             radius: [15]
 
