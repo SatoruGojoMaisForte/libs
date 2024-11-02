@@ -82,36 +82,6 @@ class TrocarSenha(MDScreen):
         relative.add_widget(circle)
         relative.add_widget(label)
         self.card.add_widget(relative)
-        self.nome()
-
-    def nome(self):
-        url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios'
-        UrlRequest(
-            f'{url}.json',
-            method='GET',
-            on_success=self.etapa1
-        )
-
-    def etapa1(self, req, result):
-        url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios'
-        usuarios = result
-
-        # criando um dataframe com os usuarios
-        df = pd.DataFrame.from_dict(usuarios, orient='index')
-
-        # pegando codigo com index
-        indices = df.index[df['email'] == self.email].tolist()
-
-        #
-        UrlRequest(
-            url=f'{url}/{indices[0]}.json',
-            method='GET',
-            on_success=self.etapa2
-        )
-
-    def etapa2(self, req, result):
-        usuario = result
-        self.ids.usuario.text = f'{usuario['name']} - Chatto'
 
     def modificar(self, campo):
         if campo == 'confirmar':
