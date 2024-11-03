@@ -10,7 +10,6 @@ from libs.screens.send_code.sendcode import SendCode
 class PrincipalApp(MDApp):
 
     def build(self):
-        Window.size = (400, 800)
         self.load_all_kv_files()
         self.screenmanager = ScreenManager()
 
