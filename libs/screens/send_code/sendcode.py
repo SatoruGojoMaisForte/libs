@@ -18,8 +18,6 @@ from dotenv import load_dotenv
 from flask import Flask
 from time import sleep
 
-from sendgrid import SendGridAPIClient, Mail
-
 load_dotenv()
 
 
