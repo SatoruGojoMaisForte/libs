@@ -1,23 +1,25 @@
 import json
 import os
 import re
-import threading
 from urllib.parse import urlencode
 import string
 import random
 import bcrypt
+import yagmail
 from kivy.network.urlrequest import UrlRequest
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
-from flask_mail import Mail, Message
 from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
 from dotenv import load_dotenv
 from flask import Flask
 from time import sleep
+
+from sendgrid import SendGridAPIClient, Mail
+
 load_dotenv()
 
 
@@ -191,111 +193,88 @@ class SendCode(MDScreen):
             self.ids.verificar_email.error = True
 
     def codigo_alterado(self, req, result):
-        self.enviar_codigo_verification()
+        self.enviar_email()
 
-    def enviar_codigo_verification(self):
-        app = Flask(__name__)
-        app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-        app.config['MAIL_PORT'] = 587
-        app.config['MAIL_USE_TLS'] = True
-        app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-        app.config['MAIL_PASSWORD'] = os.getenv('PASSWORD_APP')
-        mail = Mail(app)
-        print('Enviando codigo')
+    def enviar_email(self):
         html_content = f"""
-                <!DOCTYPE html>
-                <html lang="pt-br">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Código de Verificação</title>
-                    <style>
-                        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-                        body {{
-                            margin: 0;
-                            padding: 0;
-                            background: #fafafa;
-                            font-family: 'Montserrat', sans-serif;
-                        }}
-                        .container {{
-                            max-width: 500px;
-                            margin: 50px auto;
-                            background: #ffffff;
-                            padding: 20px;
-                            border-radius: 10px;
-                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                            text-align: center;
-                        }}
-                        .header {{
-                            font-size: 24px;
-                            font-weight: 700;
-                            margin-bottom: 20px;
-                            color: #262626;
-                        }}
-                        .content {{
-                            font-size: 16px;
-                            color: #595959;
-                            line-height: 1.6;
-                        }}
-                        .code {{
-                            display: inline-block;
-                            margin: 20px 0;
-                            padding: 10px 20px;
-                            background: #f8f9fa;
-                            border: 1px solid #e0e0e0;
-                            border-radius: 5px;
-                            font-weight: 700;
-                            font-size: 20px;
-                            color: #333;
-                        }}
-                        .footer {{
-                            margin-top: 30px;
-                            font-size: 12px;
-                            color: #999999;
-                        }}
-                        .important {{
-                            color: #d9534f;
-                            font-weight: 700;
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="header">CHATTO</div>
-                        <div class="content">
-                            <p>Código de verificação:</p>
-                            <div class="code">{self.code}</div>
-                            <p>Olá, <strong>{self.code} é seu código de verificação</strong>.</p>
-                            <p>Insira o código acima na tela de verificação do seu aplicativo para entrar na sua conta. Este código irá expirar em 20 minutos.</p>
-                            <p class="important">IMPORTANTE: Não compartilhe seus códigos de segurança com ninguém. <strong>O Chatto</strong> nunca pedirá seus códigos. Isso inclui mensagens de texto, compartilhamento de tela, etc. Ao compartilhar seus códigos de segurança com outra pessoa, você está colocando sua conta e seu conteúdo em risco.</p>
-                            <p>Atenciosamente,<br>A equipe do <strong>Chatto</strong></p>
-                        </div>
-                        <div class="footer">© 2024 Chatto. Todos os direitos reservados.</div>
-                    </div>
-                </body>
-                </html>
-                """
+        <!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Código de Verificação</title>
+            <style>
+                body {{
+                    margin: 0;
+                    padding: 0;
+                    background: #fafafa;
+                    font-family: Arial, sans-serif; /* Fonte padrão do sistema */
+                }}
+                .container {{
+                    max-width: 500px;
+                    margin: 50px auto;
+                    background: #ffffff;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                    text-align: center;
+                }}
+                .header {{
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin-bottom: 20px;
+                    color: #262626;
+                }}
+                .content {{
+                    font-size: 16px;
+                    color: #595959;
+                    line-height: 1.6;
+                }}
+                .code {{
+                    display: inline-block;
+                    margin: 20px 0;
+                    padding: 10px 20px;
+                    background: #f8f9fa;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 5px;
+                    font-weight: bold;
+                    font-size: 20px;
+                    color: #333;
+                }}
+                .footer {{
+                    margin-top: 30px;
+                    font-size: 12px;
+                    color: #999999;
+                }}
+                .important {{
+                    color: #d9534f;
+                    font-weight: bold;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">CHATTO</div>
+                <div class="content">
+                    <p>Código de verificação:</p>
+                    <div class="code">{self.code}</div>
+                    <p>Olá, <strong>{self.code} é seu código de verificação</strong>.</p>
+                    <p>Insira o código acima na tela de verificação do seu aplicativo para entrar na sua conta. Este código irá expirar em 20 minutos.</p>
+                    <p class="important">IMPORTANTE: Não compartilhe seus códigos de segurança com ninguém. <strong>O Chatto</strong> nunca pedirá seus códigos. Isso inclui mensagens de texto, compartilhamento de tela, etc. Ao compartilhar seus códigos de segurança com outra pessoa, você está colocando sua conta e seu conteúdo em risco.</p>
+                    <p>Atenciosamente,<br>A equipe do <strong>Chatto</strong></p>
+                </div>
+                <div class="footer">© 2024 Chatto. Todos os direitos reservados.</div>
+            </div>
+        </body>
+        </html>
+        """
 
-        # Criar o contexto da aplicação Flask temporário
-        with app.app_context():
-            msg = Message(
-                "Password Reset Verification Code",
-                sender=os.getenv('MAIL_USERNAME'),
-                recipients=[self.ids.verificar_email.text]
-            )
-            msg.html = html_content
-            thread = threading.Thread(target=self.enviar_email, args=(mail, msg, app))
-            thread.start()
-            self.ultima_etapa()
-            UrlRequest(
-                self.enviar_email,
-                req_body=(mail, msg, app)
-            )
-
-    def enviar_email(self, mail, msg, app):
-
-        with app.app_context():
-            mail.send(msg)
+        yag = yagmail.SMTP(os.getenv('MAIL_USERNAME'), os.getenv('PASSWORD_APP'))
+        yag.send(
+            to=self.ids.verificar_email.text,
+            subject="Assunto do E-mail",
+            contents=html_content
+        )
 
     def error(self, req, error):
         print(error)
