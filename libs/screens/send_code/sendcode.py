@@ -20,8 +20,6 @@ from time import sleep
 
 load_dotenv()
 
-
-
 class SendCode(MDScreen):
     cont_email = 0  # Contador para tentativas de verificação de e-mail
     cont_envio = 0  # Contador para tentativas de envio de código
