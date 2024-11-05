@@ -34,7 +34,7 @@
                     size: '50dp', '50dp'
                     theme_icon_color: 'Custom'
                     icon_color: 'black'
-                    on_release: root.check()
+                    on_release: root.voltar()
 
         MDLabel:
             text: "Verificação de codigo"
@@ -91,7 +91,7 @@
 
                 MDLabel:
                     id: erros
-                    text: 'ta errado essa porra'
+                    text: ''
                     theme_text_color: "Custom"
                     text_color: 'red'
                     bold: True
@@ -102,11 +102,9 @@
 
         MDCard:
             style: 'elevated'
-            size_hint: None, None
-            size: "320", "55dp"
+            size_hint: 0.8, 0.07
             pos_hint: {"center_y": 0.2, "center_x": 0.5}
             padding: "16dp"
-            size_hint: None, None
             # Sets custom properties.
             theme_shadow_color: "Custom"
             shadow_color: "black"
