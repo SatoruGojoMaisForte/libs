@@ -9,7 +9,6 @@ from kivymd.uix.screen import MDScreen
 from time import sleep
 from kivy.properties import StringProperty
 # Carrega as variáveis de ambiente do arquivo .env
-import pandas as pd
 import bcrypt
 
 cont = 0
@@ -98,14 +97,13 @@ class WriteCode(MDScreen):
         usuarios = result
 
         # criando um dataframe com os usuarios
-        df = pd.DataFrame.from_dict(usuarios, orient='index')
 
         # pegando codigo com index
-        indices = df.index[df['email'] == self.email].tolist()
+        indice_usuario = next((k for k, v in usuarios.items() if v.get('email') == self.email), None)
 
         #
         UrlRequest(
-            url=f'{url}/{indices[0]}.json',
+            url=f'{url}/{indice_usuario}.json',
             method='GET',
             on_success=self.etapa2
         )
