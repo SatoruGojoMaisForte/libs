@@ -5,7 +5,6 @@ from kivymd.uix.screen import MDScreen
 
 class CheckCode(MDScreen):
     email = StringProperty()
-    print(email)
 
     def call_send_code(self, *args):
         self.manager.current = ("Send")
