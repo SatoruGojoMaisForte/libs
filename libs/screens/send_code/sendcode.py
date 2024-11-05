@@ -211,6 +211,7 @@ class SendCode(MDScreen):
         self.chamar_pagina()
 
     def chamar_pagina(self):
+        self.manager.transition = SlideTransition(direction='left')
         check = self.manager.get_screen('Check')
         check.email = self.ids.verificar_email.text
         self.manager.current = 'Check'
