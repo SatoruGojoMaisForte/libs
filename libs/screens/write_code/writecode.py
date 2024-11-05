@@ -1,5 +1,3 @@
-import os
-import requests
 from kivy.network.urlrequest import UrlRequest
 from kivy.uix.image import AsyncImage
 from kivymd.uix.button import MDIconButton
@@ -8,13 +6,11 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
-from dotenv import load_dotenv
 from time import sleep
 from kivy.properties import StringProperty
 # Carrega as variáveis de ambiente do arquivo .env
 import pandas as pd
 import bcrypt
-load_dotenv()
 
 cont = 0
 
@@ -135,9 +131,6 @@ class WriteCode(MDScreen):
             self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .55}
             sleep(2)
 
-            trocar = self.manager.get_screen('trocar')
-            trocar.email = self.email
-            self.manager.current = 'trocar'
         else:
             self.ids.erros.text = 'O codigo digitado e invalido'
             self.remove_widget(self.card)
