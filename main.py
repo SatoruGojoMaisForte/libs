@@ -4,21 +4,26 @@ from kivymd.app import MDApp
 from kivy.core.window import Window
 from libs.screens.check_code.checkcode import CheckCode
 from libs.screens.send_code.sendcode import SendCode
+from libs.screens.write_code.writecode import WriteCode
+
 
 class PrincipalApp(MDApp):
 
     def build(self):
+        Window.size = (400, 800)
         self.load_all_kv_files()
         self.screenmanager = ScreenManager()
 
         self.screenmanager.add_widget(SendCode(name='Send'))
         self.screenmanager.add_widget(CheckCode(name='Check'))
+        self.screenmanager.add_widget(WriteCode(name='Write'))
 
         return self.screenmanager
 
     def load_all_kv_files(self):
         Builder.load_file('libs/screens/send_code/sendcode.kv')
         Builder.load_file('libs/screens/check_code/checkcode.kv')
+        Builder.load_file('libs/screens/write_code/writecode.kv')
 
 
 PrincipalApp().run()
