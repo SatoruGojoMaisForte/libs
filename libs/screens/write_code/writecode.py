@@ -1,5 +1,6 @@
 from kivy.network.urlrequest import UrlRequest
 from kivy.uix.image import AsyncImage
+from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
@@ -100,7 +101,6 @@ class WriteCode(MDScreen):
 
         # pegando codigo com index
         indice_usuario = next((k for k, v in usuarios.items() if v.get('email') == self.email), None)
-
         #
         UrlRequest(
             url=f'{url}/{indice_usuario}.json',
@@ -157,6 +157,7 @@ class WriteCode(MDScreen):
             text_field.font_size = 40
 
     def voltar(self):
+        self.manager.transition = SlideTransition(direction='right')
         self.manager.current = 'Check'
 
 
