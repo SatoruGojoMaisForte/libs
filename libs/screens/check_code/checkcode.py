@@ -1,5 +1,6 @@
 from kivy.lang import Builder
 from kivy.properties import StringProperty
+from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.screen import MDScreen
 
 
@@ -7,9 +8,11 @@ class CheckCode(MDScreen):
     email = StringProperty()
 
     def call_send_code(self, *args):
+        self.manager.transition = SlideTransition(direction='right')
         self.manager.current = ("Send")
 
     def call_write_code(self, *args):
+        self.manager.transition = SlideTransition(direction='left')
         write = self.manager.get_screen('Write')
         write.email = self.email
         self.manager.current = 'Write'
