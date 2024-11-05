@@ -5,6 +5,7 @@ from kivy.core.window import Window
 from libs.screens.check_code.checkcode import CheckCode
 from libs.screens.send_code.sendcode import SendCode
 from libs.screens.write_code.writecode import WriteCode
+from libs.screens.Trocar_senha.trocarsenha import TrocarSenha
 
 
 class PrincipalApp(MDApp):
@@ -17,6 +18,7 @@ class PrincipalApp(MDApp):
         self.screenmanager.add_widget(SendCode(name='Send'))
         self.screenmanager.add_widget(CheckCode(name='Check'))
         self.screenmanager.add_widget(WriteCode(name='Write'))
+        self.screenmanager.add_widget(TrocarSenha(name='trocar'))
 
         return self.screenmanager
 
@@ -24,6 +26,7 @@ class PrincipalApp(MDApp):
         Builder.load_file('libs/screens/send_code/sendcode.kv')
         Builder.load_file('libs/screens/check_code/checkcode.kv')
         Builder.load_file('libs/screens/write_code/writecode.kv')
+        Builder.load_file('libs/screens/Trocar_senha/trocarsenha.kv')
 
 
 PrincipalApp().run()
