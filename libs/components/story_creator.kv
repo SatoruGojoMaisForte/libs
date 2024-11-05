@@ -1,0 +1,61 @@
+<StoryCreator>:
+    size_hint: None, None
+    size: 62, 100
+    elevation: 0
+    padding: 5
+    spacing: 5
+    theme_bg_color: 'Custom'
+    md_bg_color: 1, 1, 1, 1
+
+    MDRelativeLayout:
+        size_hint: None, None
+        size: 60, 100
+
+        Circle:
+            radius: [50,]
+            size: 60, 60
+            md_bg_color: 1, 1, 1, 1
+
+        Circle:
+            radius: [50,]
+            size: 60, 60
+            md_bg_color: 1, 1, 1, 1
+
+        FitImage:
+            source: root.avatar
+            size_hint: None, None
+            size: 65, 65
+            radius: 53
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Circle:
+            size_hint: None, None
+            size: 17, 17
+            md_bg_color: 1, 1, 1, 1
+            radius: [17,]
+            pos_hint: {'center_x': 0.9, 'center_y': 0.3}
+
+        FitImage:
+            size_hint: None, None
+            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1728660814/icon_plus_bx1gl9.jpg'
+            size: 15, 15
+            md_bg_color: 0, 0, 1, 1
+            radius: [15,]
+            pos_hint: {'center_x': 0.9, 'center_y': 0.3}
+
+        MDLabel:
+            text: 'Seu Story'
+            halign: 'center'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.0001}
+            theme_font_size: 'Custom'
+            font_size: 11
+            bold: True
+            theme_text_color: 'Custom'
+            text_color: 0, 0, 0, 1
+
+
+<Circle@MDCard>:
+    size_hint: None, None
+    elevation: 0
+    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
