@@ -1,0 +1,75 @@
+#: import StoryCreator libs.components.story_creator.StoryCreator
+#: import NavigationsButtons libs.components.navigation_buttons.NavigationsButtons
+#: import PostCards libs.components.post_cards.PostCards
+<HomePage>:
+    name: 'homepage'
+    md_bg_color: 1, 1, 1, 1
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            padding: '5dp'
+            spacing: 10
+            adaptive_height: True
+
+
+            MDLabel:
+                text: 'Chatto'
+                halign: 'left'
+                valign: 'center'
+                theme_font_size: 'Custom'
+                font_size: '40sp'
+
+            MDIconButton:
+                icon: 'heart-outline'
+                theme_font_size: 'Custom'
+                font_size: '35sp'
+                theme_icon_color: 'Custom'
+                icon_color: 'black'
+
+            MDIconButton:
+                icon: 'facebook-messenger'
+                theme_font_size: 'Custom'
+                font_size: '35sp'
+                theme_icon_color: 'Custom'
+                icon_color: 'black'
+
+        MDBoxLayout:
+            ScrollView:
+                bar_width: 0
+
+                MDBoxLayout:
+                    adaptive_height: 'True'
+
+                    MDBoxLayout:
+                        id: timeline
+                        orientation: 'vertical'
+                        adaptive_height: 'True'
+
+                        ScrollView:
+                            size_hint_y: None
+                            height: 110
+                            bar_height: 0
+
+                            MDBoxLayout:
+                                adaptive_width: True
+                                spacing: 20
+                                padding: 5
+
+                                StoryCreator:
+                                    id: story
+                                    avatar: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1728587443/4.png'
+
+                                MDBoxLayout:
+                                    id: stories
+                                    adaptive_width: True
+                                    spacing: 20
+                                    padding: 5
+
+
+
+        NavigationsButtons:
+            id: navigation
+            avatar: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1728587443/4.png'
+
