@@ -1,6 +1,3 @@
-import queue
-import os
-import requests
 import threading
 from kivy.clock import Clock
 from kivy.properties import StringProperty
@@ -13,11 +10,11 @@ from kivy.network.urlrequest import UrlRequest
 
 class HomePage(MDScreen):
     email = 'sukunamec@gmail.com'
-    perfis_loaded = False  # Variável de controle para perfis
-    posts_loaded = False  # Variável de controle para postagens
+    perfis_loaded = False
+    posts_loaded = False
 
     def on_enter(self):
-        # Carrega os perfis e postagens apenas na primeira vez
+
         self.avatar()
         if not self.perfis_loaded:
             url = 'https://aplicativo-chatto-default-rtdb.firebaseio.com/Usuarios.json'
@@ -25,11 +22,11 @@ class HomePage(MDScreen):
                 url=url,
                 on_success=self.usuarios
             )
-            self.perfis_loaded = True  # Marca que os perfis foram carregados
+            self.perfis_loaded = True
 
         if not self.posts_loaded:
-            threading.Thread(target=self.list_posts).start()  # Inicia thread para carregar postagens
-            self.posts_loaded = True  # Marca que as postagens foram carregadas
+            threading.Thread(target=self.list_posts).start()
+            self.posts_loaded = True
 
     def usuarios(self, req, result):
         nome='Carol'
@@ -88,10 +85,10 @@ class HomePage(MDScreen):
     def update_posts(self):
         # Atualiza as postagens na interface
         self.ids.timeline.add_widget(PostCards(
-            username='Miranha',
+            username='@Memes',
             avatar='https://res.cloudinary.com/dsmgwupky/image/upload/v1728587443/4.png',
             post='https://res.cloudinary.com/dsmgwupky/image/upload/v1728672252/meme_got8sw.jpg',
-            likes='234',
-            caption='memes.com'
+            likes='1.200',
+            caption='memes.com.br.pt.lula.faz o L'
         ))
 
