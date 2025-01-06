@@ -1,0 +1,110 @@
+<RegisterContractor>:
+    name: 'RegisterContractor'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        MDIconButton:
+            on_release: root.voltar()
+            icon: 'arrow-left'
+            theme_font_size: 'Custom'
+            font_size: '40dp'
+            theme_icon_color: 'Custom'
+            icon_color: "black"
+            pos_hint: {'center_y': 0.95, 'center_x': 0.1}
+
+        MDLabel:
+            text: 'Criar conta para'
+            font_style: 'Headline'
+            role: 'large'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.84}
+            halign: 'center'
+
+        MDLabel:
+            text: 'Contratante'
+            font_style: 'Headline'
+            role: 'large'
+            bold: True
+            theme_text_color: 'Custom'
+            text_color: [0.0, 1.0, 0.0, 1.0]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.77}
+            halign: 'center'
+
+        AsyncImage:
+            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1732739226/boss_pxcx4h.png'
+            size_hint: 0.5, 0.2
+            pos_hint: {"center_x": 0.5, 'center_y': 0.62}
+
+        MDCard:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.41}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: nome
+                    size_hint: 1, 0.9
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+                    radius: [15,]
+
+                    MDTextFieldHintText:
+                        text: 'Nome do contratante'
+
+                MDLabel:
+                    id: erro1
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+        MDCard:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: senha
+                    size_hint: 1, 0.9
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+                    radius: [15,]
+
+                    MDTextFieldHintText:
+                        text: 'senha'
+
+                MDLabel:
+                    id: erro2
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+        MDCard:
+            style: 'elevated'
+            size_hint: 0.8, 0.085
+            pos_hint: {'center_y': 0.18, 'center_x': 0.5}
+            theme_shadow_color: "Custom"
+            shadow_color: [0.0, 1.0, 0.0, 1.0]
+            theme_bg_color: "Custom"
+            md_bg_color: "black"
+            md_bg_color_disabled: "grey"
+            theme_shadow_offset: "Custom"
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            elevation_level: 2
+            on_release: root.etapa1()
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Cadastrar'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    bold: True

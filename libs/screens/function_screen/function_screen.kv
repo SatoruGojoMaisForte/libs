@@ -1,0 +1,217 @@
+<FunctionScreen>:
+    name: 'Function'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        MDLabel:
+            text: 'Função tecnica'
+            font_style: 'Headline'
+            role: 'medium'
+            bold: True
+            halign: 'left'
+            pos_hint: {'center_x': 0.55, 'center_y': 0.95}
+
+        MDDivider:
+            size_hint_x: 0.3
+            divider_width: '4dp'
+            color: 'blue'
+            pos_hint: {'center_x': 0.2, 'center_y': 0.93}
+
+        MDCard:
+            style: 'elevated'
+            size_hint: 0.28, 0.053
+            pos_hint: {'center_y': 0.95, 'center_x': 0.85}
+            theme_shadow_color: "Custom"
+            shadow_color: 'white'
+            theme_bg_color: "Custom"
+            md_bg_color: "blue"
+            md_bg_color_disabled: "grey"
+            theme_shadow_offset: "Custom"
+            radius: [5,]
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            elevation_level: 2
+
+            MDRelativeLayout:
+                MDLabel:
+
+                    text: 'Registrado'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    bold: True
+
+        MDCard:
+            id: card_state
+            style: 'elevated'
+            size_hint: 0.4, 0.22
+            theme_shadow_color: 'Custom'
+            shadow_color: 'black'
+            theme_line_color: 'Custom'
+            line_color: 'grey'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            pos_hint: {'center_x': 0.26, 'center_y': 0.73 }
+            on_release: root.menu.open()
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Estado'
+                    font_style: 'Headline'
+                    role: 'small'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+
+                AsyncImage:
+                    source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1735942826/estado-fotor-20250103191952_nbunkd.jpg'
+                    size_hint: 0.58, 0.58
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.43}
+
+                MDLabel:
+                    id: state
+                    text: 'Ausente'
+                    font_style: 'Label'
+                    role: 'large'
+                    bold: 'True'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.06}
+
+        MDCard:
+            id: card_city
+            style: 'elevated'
+            size_hint: 0.4, 0.22
+            theme_shadow_color: 'Custom'
+            shadow_color: 'black'
+            theme_line_color: 'Custom'
+            line_color: 'grey'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            pos_hint: {'center_x': 0.74, 'center_y': 0.73}
+            on_release: root.menu_city.open()
+
+            MDRelativeLayout:
+
+                MDLabel:
+                    text: 'Cidade'
+                    font_style: 'Headline'
+                    role: 'small'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+
+                AsyncImage:
+                    source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1735942044/image_m5awuj.png'
+                    size_hint: 0.58, 0.58
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.46}
+
+                MDLabel:
+                    id: city
+                    text: 'Ausente'
+                    font_style: 'Label'
+                    role: 'large'
+                    bold: 'True'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+
+        MDCard:
+            size_hint: 0.94, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            padding: [10, 5, 10, 5]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.52}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: encargo
+                    size_hint: 1, None
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+                    radius: [15,]
+
+                    MDTextFieldHintText:
+                        text: 'Designação'
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'blue'
+
+                MDLabel:
+                    id: erro3
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+        MDCard:
+            size_hint: 0.94, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            padding: [10, 5, 10, 5]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.41}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: remunaration
+                    size_hint: 1, None
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+                    radius: [15,]
+
+                    MDTextFieldHintText:
+                        text: 'Salario'
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'blue'
+
+                MDLabel:
+                    id: erro3
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+
+        MDButton:
+            id: options_payment
+            pos_hint: {'center_x': 0.67, 'center_y': 0.33}
+            theme_line_color: 'Custom'
+            line_color: 'grey'
+            on_release: root.menu_payment.open()
+
+            MDButtonText:
+                id: text_payment
+                text: 'Opções de pagamento'
+                theme_text_color: 'Custom'
+                text_color: 'green'
+
+        MDCard:
+            style: 'elevated'
+            size_hint: 0.88, 0.08
+            pos_hint: {'center_y': 0.15, 'center_x': 0.5}
+            theme_shadow_color: "Custom"
+            shadow_color: "white"
+            theme_bg_color: "Custom"
+            md_bg_color: '#006eff'
+            md_bg_color_disabled: "grey"
+            theme_shadow_offset: "Custom"
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            elevation_level: 2
+            on_release: root.etapa1()
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Concluir pedido'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    bold: True
+

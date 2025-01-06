@@ -1,0 +1,248 @@
+#: import NavigationsButtons libs.components.navigation_buttons.NavigationsButtons
+#: import Name libs.components_perfil.name.Name
+#: import Seguidores libs.components_perfil.seguidores.Seguidores
+#: import Seguindo libs.components_perfil.seguindo.Seguindo
+#: import Publicar libs.components_perfil.publicar.Publicar
+#: import Bio libs.components_perfil.bio.Bio
+
+<PerfilScreen>:
+    name: 'Perfil'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        id: home
+        MDCard:
+            id: s1
+            size_hint: 1, 0.13
+            elevation: 0
+            padding: 5
+            spacing: 5
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_y': 0.95, 'center_x': 0.5}
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: root.username
+                    font_style: 'Headline'
+                    role: 'medium'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+
+        MDCard:
+            id: s2
+            size_hint: 1, 0.13
+            elevation: 0
+            padding: 5
+            spacing: 5
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_y': 0.84, 'center_x': 0.5}
+
+            MDRelativeLayout:
+
+                Circle:
+                    radius: [100,]
+                    size: 100, 100
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 0.8
+                    pos_hint: {'center_x': 0.15, 'center_y': 0.5}
+
+                Circle:
+                    radius: [100,]
+                    size: 100, 100
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 0, 0, 0, 1
+                    pos_hint: {'center_x': 0.15, 'center_y': 0.5}
+
+                FitImage:
+                    source: root.avatar
+                    size_hint: None, None
+                    size: 95, 95
+                    halign: 'right'
+                    radius: 53
+                    pos_hint: {'center_x': 0.15, 'center_y': 0.5}
+
+
+                MDCard:
+                    id: s3
+                    size_hint: 0.37, 1
+                    elevation: 0
+                    padding: 5
+                    spacing: 5
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+                    halign: 'center'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.48}
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: '0'
+                            bold: True
+                            theme_font_size: 'Custom'
+                            font_size: '20dp'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+
+                        MDLabel:
+                            text: 'Funcionarios'
+                            theme_font_size: 'Custom'
+                            font_size: '20dp'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.00001}
+
+                MDCard:
+                    id: s4
+                    size_hint: 0.37, 1
+                    elevation: 0
+                    padding: 5
+                    spacing: 5
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+                    halign: 'center'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.84}
+                    on_release: root.functions()
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: root.contratando
+                            theme_font_size: 'Custom'
+                            font_size: '18dp'
+                            halign: 'center'
+                            bold: True
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+
+                        MDLabel:
+                            id: contratando
+                            text: 'Contratando'
+                            theme_font_size: 'Custom'
+                            font_size: '20dp'
+                            halign: 'center'
+                            theme_text_color: 'Custom'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.00001}
+
+
+        MDCard:
+            id: s5
+            size_hint: 1, 0.08
+            elevation: 0
+            padding: 12
+            spacing: 5
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            halign: 'center'
+            pos_hint: {'center_y': 0.72, 'center_x': 0.5}
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: root.regiao
+                    font_style: 'Headline'
+                    role: 'small'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+
+        MDCard:
+            id: s6
+            size_hint: 1, 0.14
+            elevation: 0
+            padding: 12
+            spacing: 5
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_y': 0.6, 'center_x': 0.5}
+
+            MDRelativeLayout:
+
+                MDCard:
+                    size_hint: 0.55, 1
+                    elevation: 0
+                    padding: 5
+                    spacing: 5
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+                    halign: 'left'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.26}
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Contato'
+                            theme_font_size: 'Custom'
+                            font_size: '20dp'
+                            halign: 'left'
+                            bold: True
+                            pos_hint: {'center_y': 0.9, 'center_x': 0.5}
+
+                        MDLabel:
+                            text: root.zap
+                            theme_font_size: 'Custom'
+                            font_size: '17dp'
+                            halign: 'left'
+                            pos_hint: {'center_y': 0.4, 'center_x': 0.5}
+
+                        MDLabel:
+                            text: root.email
+                            theme_font_size: 'Custom'
+                            font_size: '17dp'
+                            halign: 'left'
+                            pos_hint: {'center_y': 0.01, 'center_x': 0.5}
+
+                MDCard:
+                    id: s7
+                    size_hint: 0.55, 1
+                    elevation: 0
+                    padding: 5
+                    spacing: 5
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 1, 1, 1, 1
+                    halign: 'left'
+                    pos_hint: {'center_y': 0.5, 'center_x': 0.85}
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Empresa'
+                            theme_font_size: 'Custom'
+                            font_size: '20dp'
+                            halign: 'left'
+                            bold: True
+                            pos_hint: {'center_y': 0.9, 'center_x': 0.5}
+
+                        MDLabel:
+                            text: root.empresa
+                            theme_font_size: 'Custom'
+                            font_size: '16dp'
+                            halign: 'left'
+                            pos_hint: {'center_y': 0.4, 'center_x': 0.4}
+
+        ScrollView:
+            do_scroll_x: False
+            theme_bg_color: 'Custom'
+            size_hint: 1, 0.4
+            md_bg_color: 0.0, 1.0, 0.0, 1.0
+
+            MDBoxLayout:
+                id: main_scroll
+                orientation: "vertical"
+                adaptive_height: True
+
+                MDLabel:
+                    text: ''
+
+        MDButton:
+            pos_hint: {'center_y': 0.48, 'center_x': 0.25}
+            style: "tonal"
+            theme_width: "Custom"
+            size_hint_x: .4
+            on_release: root.edit_profile()
+
+            MDButtonText:
+                text: 'Editar Perfil'
+                halign: 'center'
+                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+
+    NavigationsButtons:
+        avatar: root.avatar
+
+
+<Circle@MDCard>:
+    size_hint: None, None
+    elevation: 0
+    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+

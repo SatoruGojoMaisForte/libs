@@ -1,0 +1,229 @@
+<EditProfile>:
+    name: 'EditProfile'
+    md_bg_color: 'white'
+
+    FloatLayout:
+
+        MDCard:
+            size_hint: 1, 0.1
+            theme_bg_color: 'Custom'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.95}
+            md_bg_color: 0, 0, 0, 0
+
+            MDRelativeLayout:
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '37dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    on_release: root.login()
+
+                MDLabel:
+                    text: 'Editar Perfil'
+                    font_style: 'Headline'
+                    role: 'medium'
+                    bold: True
+                    pos_hint: {'center_x': 0.72, 'center_y': 0.5}
+
+
+        AsyncImage:
+            size_hint: 0.5, 0.14
+            pos_hint: {"center_x": 0.5, 'center_y': 0.8}
+            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731367198/image_3_fad6af.png'
+
+        MDButton:
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            theme_line_color: 'Custom'
+            line_color: 1, 1, 1, 1
+            pos_hint: {"center_x": 0.5, 'center_y': 0.69}
+
+            MDButtonText:
+                text: 'Editar foto de perfil'
+                theme_text_color: 'Custom'
+                text_color: 'blue'
+                font_style: 'Title'
+                role: 'medium'
+
+        MDCard:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.58}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: telefone
+                    size_hint: 1, 0.9
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.7}
+                    theme_text_color: 'Custom'
+                    text_color_normal: 'black'
+                    radius: [15,]
+                    on_text: root.on_text_two(self, self.text)
+
+                    MDTextFieldHintText:
+                        text: 'Numero de Telefone'
+
+                MDIconButton:
+                    id: correct1
+                    icon: ''
+                    theme_font_size: 'Custom'
+                    font_size: '30dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 1.04, 'center_y': 0.65}
+                    on_release: root.page_functions()
+
+                MDLabel:
+                    id: erro1
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    font_style: 'Title'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.1}
+
+        MDCard:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.47}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: email
+                    size_hint: 1, 0.9
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.7}
+                    theme_text_color: 'Custom'
+                    text_color_normal: 'black'
+                    radius: [15,]
+                    on_text: root.on_text(self, self.text)
+                    MDTextFieldHintText:
+                        text: 'Email'
+
+                MDIconButton:
+                    id: correct2
+                    icon: ''
+                    theme_font_size: 'Custom'
+                    font_size: '30dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 1.04, 'center_y': 0.65}
+                    on_release: root.page_functions()
+
+                MDLabel:
+                    id: erro2
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    font_style: 'Title'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.1}
+
+        MDCard:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.36}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: company
+                    size_hint: 1, 0.9
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.7}
+                    theme_text_color: 'Custom'
+                    text_color_normal: 'black'
+                    radius: [15,]
+                    on_text: root.on_text_three(self, self.text)
+
+                    MDTextFieldHintText:
+                        text: 'Empresa'
+
+                MDIconButton:
+                    id: correct3
+                    icon: ''
+                    theme_font_size: 'Custom'
+                    font_size: '30dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 1.04, 'center_y': 0.65}
+                    on_release: root.page_functions()
+
+                MDLabel:
+                    id: erro3
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    font_style: 'Title'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.1}
+
+        MDCard:
+            size_hint: 0.8, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+
+            MDRelativeLayout:
+                MDTextField:
+                    id: name_user
+                    size_hint: 1, 0.9
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.7}
+                    theme_text_color: 'Custom'
+                    text_color_normal: 'black'
+                    radius: [15,]
+                    on_text: root.on_text_four(self, self.text)
+
+                    MDTextFieldHintText:
+                        text: 'Nome completo'
+
+                MDIconButton:
+                    id: correct4
+                    icon: ''
+                    theme_font_size: 'Custom'
+                    font_size: '30dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 1.04, 'center_y': 0.65}
+                    on_release: root.page_functions()
+
+                MDLabel:
+                    id: erro4
+                    text: ''
+                    halign: 'right'
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    font_style: 'Title'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.44, 'center_y': 0.1}
+
+        MDCard:
+            style: 'elevated'
+            size_hint: 0.85, 0.075
+            pos_hint: {'center_y': 0.15, 'center_x': 0.47}
+            theme_shadow_color: "Custom"
+            shadow_color: "blue"
+            theme_bg_color: "Custom"
+            md_bg_color: "black"
+            md_bg_color_disabled: "grey"
+            theme_shadow_offset: "Custom"
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            elevation_level: 2
+            on_release: root.step_one()
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Alterar'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    bold: True
