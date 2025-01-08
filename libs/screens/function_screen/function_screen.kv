@@ -137,12 +137,12 @@
                     radius: [15,]
 
                     MDTextFieldHintText:
-                        text: 'Designação'
+                        text: 'Profissão'
                         theme_text_color: 'Custom'
                         text_color_normal: 'blue'
 
                 MDLabel:
-                    id: erro3
+                    id: erro2
                     text: ''
                     halign: 'right'
                     theme_text_color: 'Custom'
@@ -174,11 +174,11 @@
                     halign: 'right'
                     theme_text_color: 'Custom'
                     text_color: 'red'
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.001}
 
         MDButton:
             id: options_payment
-            pos_hint: {'center_x': 0.67, 'center_y': 0.33}
+            pos_hint: {'center_x': 0.67, 'center_y': 0.31}
             theme_line_color: 'Custom'
             line_color: 'grey'
             on_release: root.menu_payment.open()
@@ -204,7 +204,7 @@
             shadow_softness: 1
             theme_elevation_level: "Custom"
             elevation_level: 2
-            on_release: root.etapa1()
+            on_release: root.step_one()
 
             MDRelativeLayout:
                 MDLabel:
