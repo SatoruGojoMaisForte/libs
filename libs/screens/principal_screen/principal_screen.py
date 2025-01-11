@@ -7,8 +7,8 @@ from libs.components.post_cards import PostCards
 
 
 class PerfilScreen(MDScreen):
-    username = 'Baba voss'
-    avatar = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731366938/image_i6fozn.png'
+    username = 'Senhor messias'
+    avatar = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731366650/image_yljvww.png'
     regiao = 'GO - Aparecida de Goiania'
     empresa = 'Porcelanato Liquido'
     zap = '(62) 99368-3473'
