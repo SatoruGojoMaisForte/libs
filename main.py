@@ -12,7 +12,6 @@ from libs.screens.register_contractor.register_contractor import RegisterContrac
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
         self.screenmanager.add_widget(InitScreen(name='Init'))
