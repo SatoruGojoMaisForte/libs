@@ -1,11 +1,11 @@
 from kivy.uix.screenmanager import SlideTransition
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.properties import StringProperty
+from kivymd.uix.navigationbar.navigationbar import MDNavigationBar
 
 from kivymd.app import MDApp
 
 
-class NavigationsButtons(MDBoxLayout):
+class NavigationsButtons(MDNavigationBar):
     avatar = StringProperty()
     nome = StringProperty()
 
@@ -38,3 +38,6 @@ class NavigationsButtons(MDBoxLayout):
         sign_up.avatar = self.avatar
         sign_up.nome = self.nome
         screen_manager.current = 'SignUp'
+
+    def passo(self):
+        print('passo')
