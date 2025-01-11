@@ -1,64 +1,39 @@
 <NavigationsButtons>:
-    adaptive_height: True
-    adaptive_width: True
-    padding: 10
-    spacing: 45
 
-    MDCard:
-        size_hint: None, None
-        size: 50, 50
-        elevation: 0
-        theme_bg_color: 'Custom'
-        text_color: 1, 1, 1, 1
-        md_bg_color: 1, 1, 1, 1
+
+    MDNavigationItem:
         on_release: root.bricklayer()
 
-        MDRelativeLayout:
-            FitImage:
-                source: "https://res.cloudinary.com/dsmgwupky/image/upload/v1731970845/image_3_uiwlog.png"
-                size_hint: None, None
-                pos_hint: {'center_x': 0.5, 'center_y': 0.4}
-                size: 40, 40
+        MDNavigationItemIcon:
+            icon: 'table'
 
-    MDCard:
-        size_hint: None, None
-        size: 50, 50
-        elevation: 0
-        theme_bg_color: 'Custom'
-        text_color: 1, 1, 1, 1
-        md_bg_color: 1, 1, 1, 1
+        MDNavigationItemLabel:
+            text: 'Tabela'
 
-        MDRelativeLayout:
-            FitImage:
-                source: "https://res.cloudinary.com/dsmgwupky/image/upload/v1731970773/image_2_x2eqy3.png"
-                size_hint: None, None
-                pos_hint: {'center_x': 0.5, 'center_y': 0.4}
-                size: 40, 40
-
-    MDCard:
-        size_hint: None, None
-        size: 50, 50
-        elevation: 0
-        theme_bg_color: 'Custom'
-        text_color: 1, 1, 1, 1
-        md_bg_color: 1, 1, 1, 1
+    MDNavigationItem:
         on_release: root.sign_up()
 
-        MDRelativeLayout:
-            FitImage:
-                source: "https://res.cloudinary.com/dsmgwupky/image/upload/v1731970944/image_4_tl7ohx.png"
-                size_hint: None, None
-                pos_hint: {'center_x': 0.5, 'center_y': 0.4}
-                size: 40, 40
+        MDNavigationItemIcon:
+            icon: 'table-plus'
 
-    MDCard:
-        radius: [25,]
-        theme_bg_color: 'Custom'
-        md_bg_color: 1, 1, 1, 0.8
-        on_release: root.perfil()
-        FitImage:
-            source: root.avatar
-            size_hint: None, None
-            size: 40, 40
-            radius: [25,]
-            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+        MDNavigationItemLabel:
+            text: 'Cadastrar'
+
+    MDNavigationItem:
+        on_release: root.passo()
+
+        MDNavigationItemIcon:
+            icon: 'magnify'
+
+        MDNavigationItemLabel:
+            text: 'Pesquisar'
+
+    MDNavigationItem:
+        on_release: root.passo()
+
+        MDNavigationItemIcon:
+            icon: 'account-outline'
+
+        MDNavigationItemLabel:
+            text: 'Perfil'
+
