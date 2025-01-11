@@ -3,31 +3,34 @@
     md_bg_color: 1, 1, 1, 1
 
     FloatLayout:
-        MDIconButton:
-            on_release: root.voltar()
-            icon: 'arrow-left'
-            theme_font_size: 'Custom'
-            font_size: '40dp'
-            theme_icon_color: 'Custom'
-            icon_color: "black"
-            pos_hint: {'center_y': 0.95, 'center_x': 0.1}
 
         MDLabel:
-            text: 'Criar uma conta para '
+            text: 'Criar uma conta'
             font_style: 'Headline'
             role: 'large'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.93}
+            halign: 'center'
+
+        MDLabel:
+            text: 'Escolha um dos dois para criar uma conta e acessar nossos serviçoes'
+            font_style: 'Title'
+            role: 'small'
+            theme_text_color: 'Custom'
+            text_color: 'grey'
             pos_hint: {'center_x': 0.5, 'center_y': 0.85}
             halign: 'center'
 
         MDCard:
             style: 'elevated'
-            size_hint: 0.46, 0.29
-            pos_hint: {'center_y': 0.65, 'center_x': 0.26}
+            size_hint: 0.46, 0.6
+            pos_hint: {'center_y': 0.46, 'center_x': 0.26}
             theme_shadow_color: "Custom"
-            shadow_color: 'black'
+            shadow_color: 'red'
             theme_bg_color: "Custom"
-            md_bg_color: [0.0, 1.0, 0.0, 1.0]
-            md_bg_color_disabled: "yellow"
+            md_bg_color_disabled: "white"
+            theme_line_color: 'Custom'
+            line_color: 'red'
             theme_shadow_offset: "Custom"
             shadow_offset: (1, -2)
             theme_shadow_softness: "Custom"
@@ -37,10 +40,90 @@
             on_release: root.contratante()
 
             MDRelativeLayout:
-                AsyncImage:
-                    source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1732830920/boss_white_outline_xbsvta.png'
-                    size_hint: 0.9, 0.85
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.58}
+
+                MDCard:
+                    style: 'elevated'
+                    size_hint: 0.65, 0.12
+                    theme_bg_color: "Custom"
+                    md_bg_color: 'red'
+                    pos_hint: {'center_x': 0.5, 'center_y': 1}
+
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Chefe'
+                            font_style: 'Title'
+                            role: 'small'
+                            theme_font_size: 'Custom'
+                            font_size: '15dp'
+                            bold: True
+                            theme_text_color: 'Custom'
+                            text_color: 'white'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                MDIconButton:
+                    icon: 'asterisk'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'red'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.84}
+
+                MDLabel:
+                    text: 'Facilidade em encontrar funcionarios'
+                    size_hint_x: None
+                    width: dp(140)
+                    text_size: self.width, None
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.67, 'center_y': 0.84}
+
+                MDIconButton:
+                    icon: 'asterisk'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'red'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.7}
+
+                MDLabel:
+                    text: 'Facilidade na gestão de funcionarios'
+                    size_hint_x: None
+                    width: dp(140)
+                    text_size: self.width, None
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.67, 'center_y': 0.7}
+
+                MDIconButton:
+                    icon: 'asterisk'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'red'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.56}
+
+                MDLabel:
+                    text: 'Facilidade em encontrar serviços'
+                    size_hint_x: None
+                    width: dp(140)
+                    text_size: self.width, None
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.67, 'center_y': 0.56}
+
+                MDIconButton:
+                    icon: 'asterisk'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'red'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.4}
+
+                MDLabel:
+                    text: 'Gestão de salarios facilitada'
+                    size_hint_x: None
+                    width: dp(140)
+                    text_size: self.width, None
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.67, 'center_y': 0.4}
 
                 MDLabel:
                     text: 'Contratante'
@@ -54,12 +137,14 @@
 
         MDCard:
             style: 'elevated'
-            size_hint: 0.48, 0.29
-            pos_hint: {'center_y': 0.65, 'center_x': 0.75}
+            size_hint: 0.48, 0.6
+            pos_hint: {'center_y': 0.46, 'center_x': 0.75}
             theme_shadow_color: "Custom"
-            shadow_color: "black"
+            shadow_color: "blue"
             theme_bg_color: "Custom"
-            md_bg_color: "blue"
+            theme_line_color: 'Custom'
+            line_color: 'blue'
+            md_bg_color: "white"
             md_bg_color_disabled: "grey"
             theme_shadow_offset: "Custom"
             shadow_offset: (1, -2)
@@ -70,20 +155,100 @@
             on_release: root.funcionario()
 
             MDRelativeLayout:
-                AsyncImage:
-                    source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1732830186/funcionario_white_outline_b8nrwk.png'
-                    size_hint: 0.9, 0.85
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.58}
+                MDCard:
+                    style: 'elevated'
+                    size_hint: 0.65, 0.12
+                    theme_bg_color: "Custom"
+                    md_bg_color: 'blue'
+                    pos_hint: {'center_x': 0.5, 'center_y': 1}
+
+                    MDRelativeLayout:
+
+                        MDLabel:
+                            text: 'Funcionario'
+                            font_style: 'Title'
+                            role: 'small'
+                            theme_font_size: 'Custom'
+                            font_size: '15dp'
+                            bold: True
+                            theme_text_color: 'Custom'
+                            text_color: 'white'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                MDIconButton:
+                    icon: 'asterisk'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'blue'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.84}
 
                 MDLabel:
-                    text: 'Funcionarios'
-                    font_style: 'Headline'
-                    role: 'medium'
-                    bold: True
-                    theme_text_color: 'Custom'
-                    text_color: 'white'
-                    halign: 'center'
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.07}
+                    text: 'Facilidade em ser contratado'
+                    size_hint_x: None
+                    width: dp(140)
+                    text_size: self.width, None
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.67, 'center_y': 0.84}
+
+                MDIconButton:
+                    icon: 'asterisk'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'blue'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.7}
+
+                MDLabel:
+                    text: 'Trabalhos disponiveis perto de sua casa'
+                    size_hint_x: None
+                    width: dp(140)
+                    text_size: self.width, None
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.67, 'center_y': 0.7}
+
+                MDIconButton:
+                    icon: 'asterisk'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'blue'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.56}
+
+                MDLabel:
+                    text: 'Pode negociar o valor de seu salario'
+                    size_hint_x: None
+                    width: dp(140)
+                    text_size: self.width, None
+                    halign: 'left'
+                    font_style: 'Label'
+                    role: 'small'
+                    pos_hint: {'center_x': 0.67, 'center_y': 0.56}
+
                     
+        MDCard:
+            style: 'elevated'
+            size_hint: 0.3, 0.06
+            pos_hint: {'center_y': 0.05, 'center_x': 0.5}
+            theme_shadow_color: "Custom"
+            shadow_color: "blue"
+            theme_bg_color: "Custom"
+            theme_line_color: 'Custom'
+            line_color: 'blue'
+            md_bg_color: "white"
+            md_bg_color_disabled: "grey"
+            theme_shadow_offset: "Custom"
+            shadow_offset: (1, -2)
+            theme_shadow_softness: "Custom"
+            shadow_softness: 1
+            theme_elevation_level: "Custom"
+            elevation_level: 2
+            on_release: root.voltar()
+
+            MDRelativeLayout:
+                MDLabel:
+                    text: 'Voltar'
+                    halign: 'center'
+                    bold: True
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
 
