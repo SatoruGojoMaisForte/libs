@@ -1,9 +1,6 @@
 from kivy.properties import Clock
 from kivy.uix.screenmanager import SlideTransition
-from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.card import MDCard
-from libs.components.post_cards import PostCards
 
 
 class PerfilScreen(MDScreen):
