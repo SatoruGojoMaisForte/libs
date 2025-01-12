@@ -25,13 +25,16 @@
                     font_style: 'Headline'
                     role: 'medium'
                     bold: True
-                    pos_hint: {'center_x': 0.72, 'center_y': 0.5}
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
 
-        AsyncImage:
-            size_hint: 0.5, 0.14
-            pos_hint: {"center_x": 0.5, 'center_y': 0.8}
-            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731367198/image_3_fad6af.png'
+        FitImage:
+            id: perfil
+            size_hint: 0.34, 0.17
+            radius: [60,]
+            pos_hint: {"center_x": 0.5, 'center_y': 0.82}
+            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1736695288/kcllakfju7d5sqmf9xeg.jpg'
 
         MDButton:
             theme_bg_color: 'Custom'
@@ -39,6 +42,7 @@
             theme_line_color: 'Custom'
             line_color: 1, 1, 1, 1
             pos_hint: {"center_x": 0.5, 'center_y': 0.69}
+            on_release: root.file_manager_open()
 
             MDButtonText:
                 text: 'Editar foto de perfil'
