@@ -7,7 +7,6 @@ from libs.screens.permission_screen.permission_screen import PermissionScreen
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
         self.screenmanager.add_widget(PermissionScreen(name='Permission'))
