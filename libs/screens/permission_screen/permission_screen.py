@@ -1,6 +1,5 @@
 from kivymd.uix.screen import MDScreen
-from android.permissions import request_permissions, Permission, check_permission
-
+from android.permissions import request_permissions, check_permission, Permission
 
 class PermissionScreen(MDScreen):
 
@@ -9,10 +8,38 @@ class PermissionScreen(MDScreen):
         Verifica e solicita permissões, se necessário.
         """
         if not check_permission(Permission.READ_EXTERNAL_STORAGE) or not check_permission(Permission.WRITE_EXTERNAL_STORAGE):
-            request_permissions([
-                Permission.READ_EXTERNAL_STORAGE,
-                Permission.WRITE_EXTERNAL_STORAGE
-            ])
+            request_permissions(
+                permissions=[
+                    Permission.READ_EXTERNAL_STORAGE,
+                    Permission.WRITE_EXTERNAL_STORAGE
+                ],
+                callback=self.permission_callback
+            )
             print("Solicitando permissões...")
         else:
             print("Permissões já concedidas.")
+            self.on_permissions_granted()
+
+    def permission_callback(self, permissions, results):
+        """
+        Callback chamado após o pedido de permissões.
+        """
+        if all(results):
+            print("Todas as permissões foram concedidas.")
+            self.on_permissions_granted()
+        else:
+            print("Algumas permissões foram negadas.")
+            self.on_permissions_denied()
+
+    def on_permissions_granted(self):
+        """
+        Ações a serem executadas se as permissões forem concedidas.
+        """
+        print("Permissões concedidas, execute a funcionalidade necessária.")
+
+    def on_permissions_denied(self):
+        """
+        Ações a serem executadas se as permissões forem negadas.
+        """
+        print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
+        self.manager.current = 'Denied'
