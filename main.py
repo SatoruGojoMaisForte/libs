@@ -3,6 +3,8 @@ from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivymd.uix.screenmanager import MDScreenManager
 from libs.screens.permission_screen.permission_screen import PermissionScreen
+from libs.screens.permission_denied.permission_denied import PermissionDenied
+
 
 class MainApp(MDApp):
 
@@ -10,11 +12,13 @@ class MainApp(MDApp):
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
         self.screenmanager.add_widget(PermissionScreen(name='Permission'))
+        self.screenmanager.add_widget(PermissionDenied(name='Denied'))
 
         return self.screenmanager
 
     def load_all_kv_files(self):
         Builder.load_file('libs/screens/permission_screen/permission_screen.kv')
+        Builder.load_file('libs/screens/permission_denied/permission_denied.kv')
 
 
 
