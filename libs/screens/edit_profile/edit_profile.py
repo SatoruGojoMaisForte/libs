@@ -1,5 +1,4 @@
 import json
-import os
 import re
 import cloudinary
 import cloudinary.uploader
@@ -7,7 +6,6 @@ import cloudinary.api
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.network.urlrequest import UrlRequest
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import AsyncImage
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.app import MDApp
@@ -17,8 +15,9 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.filemanager.filemanager import MDFileManager
+from android.permissions import request_permissions, check_permission, Permission
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+from plyer import filechooser
 
 
 class EditProfile(MDScreen):
@@ -36,11 +35,56 @@ class EditProfile(MDScreen):
             api_key="256987432736353",
             api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
         )
-        self.file_manager = MDFileManager(
-            exit_manager=self.exit_manager, select_path=self.select_path
-        )
         self.key = ''
         self.screen_finalize()
+
+    def on_enter(self, *args):
+        self.ids.name_user.text = self.name_user
+        self.ids.telefone.text = self.telefone
+        self.ids.email.text = self.email
+        self.ids.company.text = self.company
+        self.check_permissions()
+
+    def check_permissions(self):
+        if not check_permission(Permission.READ_EXTERNAL_STORAGE) or not check_permission(
+                Permission.WRITE_EXTERNAL_STORAGE):
+            request_permissions([
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE
+            ])
+            print("Solicitando permissões...")
+        else:
+            print("Permissões já concedidas.")
+            self.on_permissions_granted()  # Executa a função caso as permissões já tenham sido concedidas
+
+    def permission_callback(self, permissions, results):
+        """
+        Callback chamado após o pedido de permissões.
+        """
+        if Permission.READ_EXTERNAL_STORAGE in permissions:
+            index = permissions.index(Permission.READ_EXTERNAL_STORAGE)
+            if results[index]:
+                self.on_permissions_granted()
+            else:
+                print("Algumas permissões foram negadas.")
+                self.on_permissions_denied()
+
+    def on_permissions_granted(self):
+        """
+        Ações a serem executadas se as permissões forem concedidas.
+        """
+        print("Permissões concedidas, execute a funcionalidade necessária.")
+        self.ids.image_perfil.text = 'Editar foto de perfil'
+        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1736891104/Vein%20do%20grau.jpg'
+
+    def on_permissions_denied(self):
+        """
+        Ações a serem executadas se as permissões forem negadas.
+        """
+        print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
+        self.ids.image_perfil.text = 'Função bloqueada'
+        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
+        self.ids.botton_perfil.disable = True
 
     def screen_finalize(self):
         # Definindo o ícone de erro para as telas
@@ -141,33 +185,42 @@ class EditProfile(MDScreen):
         relative.add_widget(label_2)
         self.card.add_widget(relative)
 
-    def file_manager_open(self):
-        self.file_manager.show(
-            os.path.expanduser("~"))  # output manager to the screen
-        self.manager_open = True
+    def open_gallery(self):
+        '''Abre a galeria para selecionar uma imagem.'''
+        try:
+            filechooser.open_file(
+                filters=["*.jpg", "*.png", "*.jpeg"],  # Filtra por tipos de arquivo de imagem
+                on_selection=self.select_path  # Chama a função de callback ao selecionar o arquivo
+            )
+        except Exception as e:
+            print("Erro ao abrir a galeria:", e)
 
-    def select_path(self, path: str):
+    def select_path(self, selection):
         '''
-        It will be called when you click on the file name
-        or the catalog selection button.
+        Callback chamada quando um arquivo é selecionado.
 
-        :param path: path to the selected directory or file;
+        :param selection: lista contendo o caminho do arquivo selecionado.
         '''
-        self.upload_image(path)
-        self.exit_manager()
-        MDSnackbar(
-            MDSnackbarText(
-                text=path,
-            ),
-            y=dp(24),
-            pos_hint={"center_x": 0.5},
-            size_hint_x=0.8,
-        ).open()
+        if selection:
+            path = selection[0]  # Obtém o caminho do arquivo
+            self.upload_image(path)
+            MDSnackbar(
+                MDSnackbarText(
+                    text=f"Arquivo selecionado: {path}",
+                ),
+                y=dp(24),
+                pos_hint={"center_x": 0.5},
+                size_hint_x=0.8,
+            ).open()
 
     def upload_image(self, image_path):
         try:
             # Upload da imagem
-            response = cloudinary.uploader.upload(image_path)
+            response = cloudinary.uploader.upload(
+                image_path,
+                public_id=self.name_user,  # Nome personalizado
+                overwrite=True
+            )
             # URL da imagem hospedada
             print("URL da imagem:", response['secure_url'])
             self.ids.perfil.source = response['secure_url']
@@ -176,26 +229,6 @@ class EditProfile(MDScreen):
         except Exception as e:
             print("Erro ao fazer upload:", e)
             return None
-
-    def exit_manager(self, *args):
-        '''Called when the user reaches the root of the directory tree.'''
-
-        self.manager_open = False
-        self.file_manager.close()
-
-    def events(self, instance, keyboard, keycode, text, modifiers):
-        '''Called when buttons are pressed on the mobile device.'''
-
-        if keyboard in (1001, 27):
-            if self.manager_open:
-                self.file_manager.back()
-        return True
-
-    def on_enter(self, *args):
-        self.ids.name_user.text = self.name_user
-        self.ids.telefone.text = self.telefone
-        self.ids.email.text = self.email
-        self.ids.company.text = self.company
 
     def is_email_valid(self, text: str) -> bool:
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
