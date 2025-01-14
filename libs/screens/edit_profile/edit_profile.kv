@@ -42,9 +42,11 @@
             theme_line_color: 'Custom'
             line_color: 1, 1, 1, 1
             pos_hint: {"center_x": 0.5, 'center_y': 0.69}
-            on_release: root.file_manager_open()
+            on_release: root.open_gallery()
+            id: botton_perfil
 
             MDButtonText:
+                id: image_perfil
                 text: 'Editar foto de perfil'
                 theme_text_color: 'Custom'
                 text_color: 'blue'
