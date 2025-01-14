@@ -69,7 +69,24 @@
         MDButton:
             style: 'outlined'
             pos_hint: {'center_x': 0.5, 'center_y': 0.22}
+            on_release: root.denied_pass()
+
             MDButtonText:
                 text: 'Entendo, mas quero prosseguir'
                 theme_text_color: 'Custom'
                 text_color: 'red'
+
+        MDLabel:
+            text: 'Ou'
+            halign: 'center'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.14}
+
+        MDButton:
+            style: 'outlined'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.08}
+
+            MDButtonText:
+                text: 'Ativar permissões'
+                theme_text_color: 'Custom'
+                text_color: 'green'
