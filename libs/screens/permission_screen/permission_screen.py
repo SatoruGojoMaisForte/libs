@@ -1,6 +1,7 @@
 from kivymd.uix.screen import MDScreen
 from android.permissions import request_permissions, check_permission, Permission
 
+
 class PermissionScreen(MDScreen):
 
     def request_permission(self):
@@ -36,6 +37,7 @@ class PermissionScreen(MDScreen):
         Ações a serem executadas se as permissões forem concedidas.
         """
         print("Permissões concedidas, execute a funcionalidade necessária.")
+        self.manager.current = 'EditProfile'
 
     def on_permissions_denied(self):
         """
