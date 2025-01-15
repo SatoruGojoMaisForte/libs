@@ -1,0 +1,16 @@
+<ConfirmPermissions>:
+    name: 'Confirm'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        MDButton:
+            theme_bg_color: 'Custom'
+            md_bg_color: 'yellow'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: root.open_settings()
+
+            MDButtonText:
+                text: 'Clique aqui'
+                theme_text_color: 'Custom'
+                bold: True
+                text_color: 'black'
