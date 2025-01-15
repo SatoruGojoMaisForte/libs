@@ -1,17 +1,10 @@
 from kivymd.uix.screen import MDScreen
-from jnius import autoclass
+from plyer import call
 
 
 class ConfirmPermissions(MDScreen):
     def open_permissions(self, *args):
         try:
-            from jnius import autoclass
-            Intent = autoclass('android.content.Intent')
-            Settings = autoclass('android.provider.Settings')
-            PythonActivity = autoclass('org.kivy.android.PythonActivity')
-
-            intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.setData('package:' + PythonActivity.mActivity.getPackageName())
-            PythonActivity.mActivity.startActivity(intent)
-        except Exception as e:
-            print(f"Erro ao abrir configurações: {e}")
+            call('settings', action='android.intent.action.MAIN')
+        except NotImplementedError:
+            print("Funcionalidade não suportada neste dispositivo.")
