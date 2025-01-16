@@ -1,5 +1,5 @@
 from kivymd.uix.screen import MDScreen
-from android.permissions import request_permissions, check_permission, Permission
+from plyer import call
 
 
 class PermissionScreen(MDScreen):
