@@ -1,11 +1,9 @@
+from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.screen import MDScreen
-from plyer import call
 
 
 class ConfirmPermissions(MDScreen):
-    def open_settings(self):
-        try:
-            call('settings', action='android.intent.action.MAIN')
 
-        except NotImplementedError:
-            print("Funcionalidade não suportada neste dispositivo.")
+    def next_page(self):
+        self.manager.transition = SlideTransition(direction='right')
+        self.manager.current = 'EditProfile'
