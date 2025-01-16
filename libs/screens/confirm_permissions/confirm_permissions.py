@@ -3,7 +3,7 @@ from plyer import call
 
 
 class ConfirmPermissions(MDScreen):
-    def open_permissions(self, *args):
+    def open_permissions(self):
         try:
             call('settings', action='android.intent.action.MAIN')
         except NotImplementedError:
