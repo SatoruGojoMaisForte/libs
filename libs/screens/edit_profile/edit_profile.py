@@ -48,14 +48,10 @@ class EditProfile(MDScreen):
     def check_permissions(self):
         if not check_permission(Permission.READ_EXTERNAL_STORAGE) or not check_permission(
                 Permission.WRITE_EXTERNAL_STORAGE):
-            request_permissions([
-                Permission.READ_EXTERNAL_STORAGE,
-                Permission.WRITE_EXTERNAL_STORAGE
-            ])
-            print("Solicitando permissões...")
+            print("Permissões não concedidas.")
         else:
             print("Permissões já concedidas.")
-            self.on_permissions_granted()  # Executa a função caso as permissões já tenham sido concedidas
+            self.on_permissions_granted()
 
     def permission_callback(self, permissions, results):
         """
@@ -84,7 +80,7 @@ class EditProfile(MDScreen):
         print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
         self.ids.image_perfil.text = 'Função bloqueada'
         self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
-        self.ids.botton_perfil.disable = True
+        self.ids.botton_perfil.disabled = True
 
     def screen_finalize(self):
         # Definindo o ícone de erro para as telas
