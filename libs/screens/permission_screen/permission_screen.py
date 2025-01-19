@@ -37,7 +37,7 @@ class PermissionScreen(MDScreen):
         Ações a serem executadas se as permissões forem concedidas.
         """
         print("Permissões concedidas, execute a funcionalidade necessária.")
-        self.manager.current = 'EditProfile'
+        
 
     def on_permissions_denied(self):
         """
