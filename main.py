@@ -20,7 +20,7 @@ class MainApp(MDApp):
 
     def load_all_kv_files(self):
         Builder.load_file('libs/screens/permission_denied/permission_denied.kv')
-        Builder.load_file('libs/screens/permission_screen/permission_screen.py')
+        Builder.load_file('libs/screens/permission_screen/permission_screen.kv')
         Builder.load_file('libs/screens/confirm_permissions/confirm_permissions.kv')
         Builder.load_file('libs/screens/edit_profile/edit_profile.kv')
 
