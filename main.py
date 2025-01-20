@@ -10,7 +10,6 @@ from libs.screens.edit_profile.edit_profile import EditProfile
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
         self.screenmanager.add_widget(PermissionScreen(name='Permission'))
