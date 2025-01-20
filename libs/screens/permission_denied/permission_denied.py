@@ -9,4 +9,5 @@ class PermissionDenied(MDScreen):
         self.manager.current = 'EditProfile'
 
     def confirm_permissions(self):
-        pass
+        self.manager.trasition = SlideTransition(direction='right')
+        self.manager.current = 'Confirm'
