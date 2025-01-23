@@ -25,6 +25,7 @@ class EditProfile(MDScreen):
     email = 'viitiinmec@gmail.com'
     company = 'rjporcelanatoliquido'
     name_user = 'Vein do grau'
+    dont = 'Não'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -49,21 +50,10 @@ class EditProfile(MDScreen):
         if not check_permission(Permission.READ_EXTERNAL_STORAGE) or not check_permission(
                 Permission.WRITE_EXTERNAL_STORAGE):
             print("Permissões não concedidas.")
+            self.on_permissions_denied()
         else:
             print("Permissões já concedidas.")
             self.on_permissions_granted()
-
-    def permission_callback(self, permissions, results):
-        """
-        Callback chamado após o pedido de permissões.
-        """
-        if Permission.READ_EXTERNAL_STORAGE in permissions:
-            index = permissions.index(Permission.READ_EXTERNAL_STORAGE)
-            if results[index]:
-                self.on_permissions_granted()
-            else:
-                print("Algumas permissões foram negadas.")
-                self.on_permissions_denied()
 
     def on_permissions_granted(self):
         """
@@ -71,7 +61,7 @@ class EditProfile(MDScreen):
         """
         print("Permissões concedidas, execute a funcionalidade necessária.")
         self.ids.image_perfil.text = 'Editar foto de perfil'
-        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1736891104/Vein%20do%20grau.jpg'
+        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/c_crop,g_face,w_300,h_300/r_max/v1736891104/Vein%20do%20grau.jpg'
 
     def on_permissions_denied(self):
         """
@@ -182,14 +172,17 @@ class EditProfile(MDScreen):
         self.card.add_widget(relative)
 
     def open_gallery(self):
-        '''Abre a galeria para selecionar uma imagem.'''
-        try:
-            filechooser.open_file(
-                filters=["*.jpg", "*.png", "*.jpeg"],  # Filtra por tipos de arquivo de imagem
-                on_selection=self.select_path  # Chama a função de callback ao selecionar o arquivo
-            )
-        except Exception as e:
-            print("Erro ao abrir a galeria:", e)
+        if self.dont == 'Não':
+            print('Galeria não atualizada')
+        else:
+            '''Abre a galeria para selecionar uma imagem.'''
+            try:
+                filechooser.open_file(
+                    filters=["*.jpg", "*.png", "*.jpeg"],  # Filtra por tipos de arquivo de imagem
+                    on_selection=self.select_path  # Chama a função de callback ao selecionar o arquivo
+                )
+            except Exception as e:
+                print("Erro ao abrir a galeria:", e)
 
     def select_path(self, selection):
         '''
@@ -365,7 +358,6 @@ class EditProfile(MDScreen):
         perfil.zap = result['telefone']
         perfil.email = result['email']
         perfil.contratando = result['hiring']
-
 
     def login(self):
         self.manager.transition = SlideTransition(direction='right')
