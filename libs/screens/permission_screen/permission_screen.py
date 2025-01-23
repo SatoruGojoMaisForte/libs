@@ -1,3 +1,4 @@
+from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.screen import MDScreen
 from android.permissions import request_permissions, check_permission, Permission
 
@@ -37,11 +38,13 @@ class PermissionScreen(MDScreen):
         Ações a serem executadas se as permissões forem concedidas.
         """
         print("Permissões concedidas, execute a funcionalidade necessária.")
-        
+        self.manager.transition = SlideTransition(direction='right')
+        self.manager.current = 'EditProfile'
 
     def on_permissions_denied(self):
         """
         Ações a serem executadas se as permissões forem negadas.
         """
         print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
+        self.manager.transition = SlideTransition(direction='right')
         self.manager.current = 'Denied'
