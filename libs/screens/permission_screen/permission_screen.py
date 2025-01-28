@@ -9,29 +9,31 @@ class PermissionScreen(MDScreen):
         """
         Verifica e solicita permissões, se necessário.
         """
-        if not check_permission(Permission.READ_EXTERNAL_STORAGE) or not check_permission(Permission.WRITE_EXTERNAL_STORAGE):
-            request_permissions(
-                permissions=[
-                    Permission.READ_EXTERNAL_STORAGE,
-                    Permission.WRITE_EXTERNAL_STORAGE
-                ],
-                callback=self.permission_callback
-            )
-            print("Solicitando permissões...")
-        else:
-            print("Permissões já concedidas.")
-            self.on_permissions_granted()
+        request_permissions(
+            permissions=[
+                Permission.CAMERA,
+                Permission.RECORD_AUDIO,
+                Permission.ACCESS_FINE_LOCATION,
+                Permission.ACCESS_COARSE_LOCATION,
+                Permission.INTERNET
+            ],
+            callback=self.permission_callback
+        )
+        print("Solicitando permissões...")
 
     def permission_callback(self, permissions, results):
         """
-        Callback chamado após o pedido de permissões.
+        Callback chamado após o usuário permitir ou negar permissões.
+        :param permissions: Lista de permissões solicitadas.
+        :param results: Lista de resultados (True para permitido, False para negado).
         """
-        if all(results):
-            print("Todas as permissões foram concedidas.")
-            self.on_permissions_granted()
-        else:
-            print("Algumas permissões foram negadas.")
-            self.on_permissions_denied()
+        for permission, result in zip(permissions, results):
+            if result:
+                print(f"Permissão concedida: {permission}")
+                self.on_permissions_granted()
+            else:
+                print(f"Permissão negada: {permission}")
+                self.on_permissions_denied()
 
     def on_permissions_granted(self):
         """
