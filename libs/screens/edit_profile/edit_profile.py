@@ -47,13 +47,18 @@ class EditProfile(MDScreen):
         self.check_permissions()
 
     def check_permissions(self):
-        if not check_permission(Permission.READ_EXTERNAL_STORAGE) or not check_permission(
-                Permission.WRITE_EXTERNAL_STORAGE):
-            print("Permissões não concedidas.")
-            self.on_permissions_denied()
+        read_granted = check_permission(Permission.READ_EXTERNAL_STORAGE)
+        write_granted = check_permission(Permission.WRITE_EXTERNAL_STORAGE)
+    
+        if not read_granted or not write_granted:
+            # Solicitar permissões se não forem concedidas
+            print("Permissões não concedidas. Solicitando permissões...")
+            self.request_permission()
         else:
+            # Ambas as permissões foram concedidas
             print("Permissões já concedidas.")
             self.on_permissions_granted()
+
 
     def on_permissions_granted(self):
         """
