@@ -1,7 +1,7 @@
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.uix.screen import MDScreen
 from android.permissions import request_permissions, check_permission, Permission
-
+from kivy.clock import Clock
 
 class PermissionScreen(MDScreen):
 
