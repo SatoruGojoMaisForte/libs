@@ -4,13 +4,7 @@ from android.permissions import request_permissions, check_permission, Permissio
 
 class PermissionScreen(MDScreen):
 
-    def on_enter(self):
-        """
-        Quando a tela é carregada, verifica as permissões.
-        """
-        self.check_and_request_permissions()
-
-    def check_and_request_permissions(self):
+    def request_permissions(self):
         """
         Verifica e solicita permissões, se necessário.
         """
