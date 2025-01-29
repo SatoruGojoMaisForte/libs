@@ -33,13 +33,17 @@ class PermissionScreen(MDScreen):
                 self.on_permissions_denied()
 
     def on_permissions_granted(self):
+        """
+        Ações a serem executadas se as permissões forem concedidas.
+        """
         print("Permissões concedidas, execute a funcionalidade necessária.")
         self.manager.transition = SlideTransition(direction='right')
-        
+        self.manager.current = 'EditProfile'
+
     def on_permissions_denied(self):
         """
         Ações a serem executadas se as permissões forem negadas.
         """
         print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
         self.manager.transition = SlideTransition(direction='right')
-        
+
