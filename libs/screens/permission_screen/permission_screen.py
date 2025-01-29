@@ -37,6 +37,14 @@ class PermissionScreen(MDScreen):
         Ações a serem executadas se as permissões forem concedidas.
         """
         print("Permissões concedidas, execute a funcionalidade necessária.")
+        
+        # Pequeno atraso para garantir que a mensagem seja exibida antes da troca de tela
+        Clock.schedule_once(lambda dt: self.change_screen(), 1)
+
+    def change_screen(self):
+        """
+        Realiza a transição de tela após a permissão ser concedida.
+        """
         self.manager.transition = SlideTransition(direction='right')
         self.manager.current = 'EditProfile'
 
