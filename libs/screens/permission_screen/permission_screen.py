@@ -4,7 +4,7 @@ from android.permissions import request_permissions, check_permission, Permissio
 
 class PermissionScreen(MDScreen):
 
-    def request_permissions(self):
+    def request_permission(self):
         """
         Verifica e solicita permissões, se necessário.
         """
