@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import cloudinary
 import cloudinary.uploader
@@ -18,6 +19,7 @@ from kivymd.uix.screen import MDScreen
 from android.permissions import request_permissions, check_permission, Permission
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from plyer import filechooser
+from PIL import Image, ImageDraw
 
 
 class EditProfile(MDScreen):
@@ -25,7 +27,7 @@ class EditProfile(MDScreen):
     email = 'viitiinmec@gmail.com'
     company = 'rjporcelanatoliquido'
     name_user = 'Vein do grau'
-    dont = 'Não'
+    dont = 'Sim'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -59,17 +61,33 @@ class EditProfile(MDScreen):
                 self.on_permissions_denied()
                 print('Etapa 2 - Permissões negadas')
                 self.dont = 'Não
-    
+
         # Debugando a verificação de permissões
         granted = [check_permission(p) for p in permissions]
         print(f"Status das permissões antes do request: {granted}")
-    
+
         if not all(granted):
             print('Etapa 3 - Solicitando permissões')
             request_permissions(permissions, callback)
         else:
             print('Etapa 4 - Permissões já concedidas')
             self.on_permissions_granted()
+
+    def recortar_imagem_circular(self, imagem_path):
+        try:
+            # Upload da imagem com corte circular
+            response = cloudinary.uploader.upload(
+                imagem_path,
+                public_id=self.name_user,
+                overwrite=True,
+                transformation=[
+                    {'width': 400, 'height': 400, 'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
+                ]
+            )
+            self.ids.perfil.source = response['secure_url']  # Retorna o URL da imagem cortada
+        except Exception as e:
+            print(f"Erro ao cortar a imagem: {e}")
+            return None
 
     def on_permissions_granted(self):
         """
@@ -78,7 +96,6 @@ class EditProfile(MDScreen):
         print("Permissões concedidas, execute a funcionalidade necessária.")
         self.ids.image_perfil.text = 'Editar foto de perfil'
         self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/c_crop,g_face,w_300,h_300/r_max/v1736891104/Vein%20do%20grau.jpg'
-        self.dont = 'Sim'
 
     def on_permissions_denied(self):
         """
@@ -88,7 +105,6 @@ class EditProfile(MDScreen):
         self.ids.image_perfil.text = 'Função bloqueada'
         self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
         self.ids.botton_perfil.disabled = True
-        self.dont = 'Não'
 
     def screen_finalize(self):
         # Definindo o ícone de erro para as telas
@@ -210,7 +226,7 @@ class EditProfile(MDScreen):
         '''
         if selection:
             path = selection[0]  # Obtém o caminho do arquivo
-            self.upload_image(path)
+            self.recortar_imagem_circular(path)
             MDSnackbar(
                 MDSnackbarText(
                     text=f"Arquivo selecionado: {path}",
@@ -219,23 +235,6 @@ class EditProfile(MDScreen):
                 pos_hint={"center_x": 0.5},
                 size_hint_x=0.8,
             ).open()
-
-    def upload_image(self, image_path):
-        try:
-            # Upload da imagem
-            response = cloudinary.uploader.upload(
-                image_path,
-                public_id=self.name_user,  # Nome personalizado
-                overwrite=True
-            )
-            # URL da imagem hospedada
-            print("URL da imagem:", response['secure_url'])
-            self.ids.perfil.source = response['secure_url']
-            return response
-
-        except Exception as e:
-            print("Erro ao fazer upload:", e)
-            return None
 
     def is_email_valid(self, text: str) -> bool:
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
