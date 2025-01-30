@@ -69,9 +69,6 @@ class EditProfile(MDScreen):
             print('Etapa 4 - Permissões já concedidas')
             self.on_permissions_granted()
 
-
-
-
     def on_permissions_granted(self):
         """
         Ações a serem executadas se as permissões forem concedidas.
