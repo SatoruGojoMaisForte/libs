@@ -47,26 +47,28 @@ class EditProfile(MDScreen):
         self.check_permissions()
 
     def check_permissions(self):
-        permissions = [Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE]
+    permissions = [Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE]
 
         def callback(permissions, results):
+            print(f"Callback chamado! Permissões: {permissions}, Resultados: {results}")
             if all(results):
                 self.on_permissions_granted()
-                print('Etapa 1 ')
-                return
+                print('Etapa 1 - Permissões concedidas')
             else:
                 self.on_permissions_denied()
-                print('Etapa 2')
-                return
+                print('Etapa 2 - Permissões negadas')
     
-        if not all(check_permission(p) for p in permissions):
+        # Debugando a verificação de permissões
+        granted = [check_permission(p) for p in permissions]
+        print(f"Status das permissões antes do request: {granted}")
+    
+        if not all(granted):
+            print('Etapa 3 - Solicitando permissões')
             request_permissions(permissions, callback)
-            print('Etapa 3 ')
-            return
         else:
+            print('Etapa 4 - Permissões já concedidas')
             self.on_permissions_granted()
-            print('etapa 4')
-            return
+
 
 
 
