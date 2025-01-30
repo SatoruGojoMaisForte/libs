@@ -49,9 +49,14 @@ class PermissionScreen(MDScreen):
         self.manager.current = 'EditProfile'
 
     def on_permissions_denied(self):
+        print('Permissões não concedidas')
+        Clock.schedule_once(lambda dt: self.change_screen2(), 1)
+
+    def change_screen2(self):
         """
         Ações a serem executadas se as permissões forem negadas.
         """
         print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
         self.manager.transition = SlideTransition(direction='right')
+        self.manager.current = 'Denied'
 
