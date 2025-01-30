@@ -47,7 +47,7 @@ class EditProfile(MDScreen):
         self.check_permissions()
 
     def check_permissions(self):
-    permissions = [Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE]
+        permissions = [Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE]
 
         def callback(permissions, results):
             print(f"Callback chamado! Permissões: {permissions}, Resultados: {results}")
