@@ -52,13 +52,21 @@ class EditProfile(MDScreen):
         def callback(permissions, results):
             if all(results):
                 self.on_permissions_granted()
+                print('Etapa 1 ')
+                return
             else:
                 self.on_permissions_denied()
+                print('Etapa 2')
+                return
     
         if not all(check_permission(p) for p in permissions):
             request_permissions(permissions, callback)
+            print('Etapa 3 ')
+            return
         else:
             self.on_permissions_granted()
+            print('etapa 4')
+            return
 
 
 
