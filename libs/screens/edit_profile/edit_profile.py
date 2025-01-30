@@ -47,16 +47,18 @@ class EditProfile(MDScreen):
         self.check_permissions()
 
     def check_permissions(self):
-        permissions = [Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE]
+        permissions = [Permission.READ_EXTERNAL_STORAGE]
 
         def callback(permissions, results):
             print(f"Callback chamado! Permissões: {permissions}, Resultados: {results}")
             if all(results):
                 self.on_permissions_granted()
                 print('Etapa 1 - Permissões concedidas')
+                self.dont = 'Sim'
             else:
                 self.on_permissions_denied()
                 print('Etapa 2 - Permissões negadas')
+                self.dont = 'Não
     
         # Debugando a verificação de permissões
         granted = [check_permission(p) for p in permissions]
@@ -76,6 +78,7 @@ class EditProfile(MDScreen):
         print("Permissões concedidas, execute a funcionalidade necessária.")
         self.ids.image_perfil.text = 'Editar foto de perfil'
         self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/c_crop,g_face,w_300,h_300/r_max/v1736891104/Vein%20do%20grau.jpg'
+        self.dont = 'Sim'
 
     def on_permissions_denied(self):
         """
@@ -85,6 +88,7 @@ class EditProfile(MDScreen):
         self.ids.image_perfil.text = 'Função bloqueada'
         self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
         self.ids.botton_perfil.disabled = True
+        self.dont = 'Não'
 
     def screen_finalize(self):
         # Definindo o ícone de erro para as telas
