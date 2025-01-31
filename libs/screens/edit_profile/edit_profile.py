@@ -20,6 +20,7 @@ from android.permissions import request_permissions, check_permission, Permissio
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from plyer import filechooser
 from PIL import Image, ImageDraw
+from kivy.core.window import Window
 
 
 class EditProfile(MDScreen):
@@ -39,6 +40,7 @@ class EditProfile(MDScreen):
             api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
         )
         self.key = ''
+        Window.keyboard_mode = 'pan'
         self.screen_finalize()
 
     def on_enter(self, *args):
@@ -60,7 +62,7 @@ class EditProfile(MDScreen):
             else:
                 self.on_permissions_denied()
                 print('Etapa 2 - Permissões negadas')
-                self.dont = 'Não
+                self.dont = 'Não'
 
         # Debugando a verificação de permissões
         granted = [check_permission(p) for p in permissions]
@@ -81,7 +83,7 @@ class EditProfile(MDScreen):
                 public_id=self.name_user,
                 overwrite=True,
                 transformation=[
-                    {'width': 400, 'height': 400, 'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
+                    {'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
                 ]
             )
             self.ids.perfil.source = response['secure_url']  # Retorna o URL da imagem cortada
