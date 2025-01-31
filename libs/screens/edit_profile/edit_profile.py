@@ -27,8 +27,9 @@ class EditProfile(MDScreen):
     telefone = '62993683473'
     email = 'viitiinmec@gmail.com'
     company = 'rjporcelanatoliquido'
-    name_user = 'Vein do grau'
+    name_user = 'Hades'
     dont = 'Sim'
+    avatar = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731366361/image_o6cbgf.png'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -40,14 +41,14 @@ class EditProfile(MDScreen):
             api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
         )
         self.key = ''
-        Window.keyboard_mode = 'system'
         self.screen_finalize()
+
+    def events(self, window, key, scancode, codepoint, modifier):
+        return True
 
     def on_enter(self, *args):
         self.ids.name_user.text = self.name_user
-        self.ids.telefone.text = self.telefone
         self.ids.email.text = self.email
-        self.ids.company.text = self.company
         self.check_permissions()
 
     def check_permissions(self):
@@ -245,14 +246,10 @@ class EditProfile(MDScreen):
     def on_text(self, instance, text):
         email_valid = self.is_email_valid(text)
         if email_valid:
-            self.ids.erro2.text = ''
-            self.ids.correct2.icon_color = 'green'
-            self.ids.correct2.icon = 'check'
+            pass
 
         else:
-            self.ids.erro2.text = 'Formato invalido!!'
-            self.ids.correct2.icon_color = 'red'
-            self.ids.correct2.icon = 'alert'
+            pass
 
     def on_text_two(self, instance, numero):
         # Remove tudo que não for número
@@ -275,21 +272,11 @@ class EditProfile(MDScreen):
             self.ids.correct3.icon = 'check'
 
     def on_text_four(self, instance, name):
-        if name != '':
-            self.ids.erro4.text = ''
-            self.ids.correct4.icon_color = 'green'
-            self.ids.correct4.icon = 'check'
-        else:
-            self.ids.erro4.text = 'Campo obrigatorio'
-            self.ids.correct4.icon_color = 'red'
-            self.ids.correct4.icon = 'alert'
+        print(name)
 
     def step_one(self):
         """Verificar se algum dos campos não estão corretos"""
         print('test')
-        if self.ids.telefone.text in '':
-            self.ids.telefone.focus = True
-            return
 
         if self.ids.email.text in '':
             self.ids.email.focus = True
@@ -299,11 +286,7 @@ class EditProfile(MDScreen):
             self.ids.name_user.focus = True
             return
 
-        if self.ids.erro1.text != '':
-            self.ids.telefone.focus = True
-            return
-
-        if self.ids.erro2.text != '':
+        if self.ids.erro2.text != '' and self.ids.erro2.text != 'Formato de email invalido':
             self.ids.email.focus = True
             return
 
@@ -311,11 +294,19 @@ class EditProfile(MDScreen):
             self.ids.name_user.focus = True
             return
 
-        self.update_database()
+        print('sei la')
+        email = self.ids.email.text
+        valid = self.is_email_valid(email)
+        print(valid)
+        if valid:
+            self.ids.erro2.text = ''
+            self.update_database()
+        else:
+            self.ids.erro2.text = 'Formato de email invalido'
 
     def update_database(self):
         ''' Agora vamos puxar os dados do firebase'''
-
+        print('1')
         url = 'https://obra-7ebd9-default-rtdb.firebaseio.com/Users'
         UrlRequest(
             url=f'{url}/.json',
@@ -332,12 +323,9 @@ class EditProfile(MDScreen):
 
     def update_database_3(self, key):
         url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{key}'
-        if self.ids.company.text in '':
-            self.ids.company.text = 'Autonomo'
+
         data = {'name': self.ids.name_user.text,
-                'telefone': self.ids.telefone.text,
                 'email': self.ids.email.text,
-                'company': self.ids.company.text,
                 'perfil': self.ids.perfil.source
                 }
 
@@ -366,17 +354,7 @@ class EditProfile(MDScreen):
         )
 
     def get_data(self, req, result):
-        # Passando as informações para a outra tela
-        app = MDApp.get_running_app()
-        screen_manager = app.root
-        perfil = screen_manager.get_screen('Perfil')
-        perfil.username = result['name']
-        perfil.avatar = result['perfil']
-        perfil.regiao = f'{result["state"]}: {result["city"]}'
-        perfil.empresa = result['company']
-        perfil.zap = result['telefone']
-        perfil.email = result['email']
-        perfil.contratando = result['hiring']
+        pass
 
     def login(self):
         self.manager.transition = SlideTransition(direction='right')
