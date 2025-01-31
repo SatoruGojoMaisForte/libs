@@ -40,7 +40,7 @@ class EditProfile(MDScreen):
             api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
         )
         self.key = ''
-        Window.keyboard_mode = 'pan'
+        Window.keyboard_mode = 'system'
         self.screen_finalize()
 
     def on_enter(self, *args):
@@ -83,7 +83,7 @@ class EditProfile(MDScreen):
                 public_id=self.name_user,
                 overwrite=True,
                 transformation=[
-                    {'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
+                    {'width': 1000, 'height': 1000, 'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
                 ]
             )
             self.ids.perfil.source = response['secure_url']  # Retorna o URL da imagem cortada
