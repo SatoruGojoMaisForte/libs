@@ -35,7 +35,10 @@ class EditProfile(MDScreen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        Window.softinput_mode = 'below_target'  # Garante que a interface se ajuste ao teclado
         Window.bind(on_keyboard=self.events)
+        Window.bind(on_keyboard_height=self.on_keyboard_height)  # Monitora a altura do teclado
+        self.keyboard_height = 0  # Inicializa a altura do teclado
         self.manager_open = False
         cloudinary.config(
             cloud_name="dsmgwupky",
@@ -43,11 +46,39 @@ class EditProfile(MDScreen):
             api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
         )
         self.key = ''
-        self.softinput_mode = 'pan'
         self.screen_finalize()
 
+    def on_keyboard_height(self, window, height):
+        """
+        Método chamado quando a altura do teclado muda.
+        """
+        self.keyboard_height = height
+        if height == 0:  # Teclado fechado
+            self.pos = (0, 0)  # Volta a interface para a posição original
+        else:  # Teclado aberto
+            # Aumenta a posição vertical dos elementos, deslocando-os para cima
+            self.pos = (0, height * 0.1)
+
+    def on_touch_down(self, touch):
+        """
+        Fecha o teclado quando o usuário toca fora do campo de texto.
+        """
+        if self.keyboard_height > 0:  # Teclado está aberto
+            # Verifica se o toque foi fora do campo de texto
+            if not self.ids.email.collide_point(*touch.pos) and not self.ids.name_user.collide_point(*touch.pos):
+                self.ids.email.focus = False
+                self.ids.name_user.focus = False
+                self.pos = (0, 0)  # Volta a interface para a posição original
+        return super().on_touch_down(touch)
+
     def events(self, window, key, scancode, codepoint, modifier):
-        return True
+        """
+        Método chamado quando uma tecla é pressionada.
+        """
+        if key == 27:  # Tecla ES C (fechar teclado)
+            self.pos = (0, 0)  # Volta a interface para a posição original
+            return True
+        return False
 
     def on_enter(self, *args):
         pass
