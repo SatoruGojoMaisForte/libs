@@ -48,9 +48,7 @@ class EditProfile(MDScreen):
         return True
 
     def on_enter(self, *args):
-        self.ids.name_user.text = self.name_user
-        self.ids.email.text = self.email
-        self.check_permissions()
+        pass
 
     def check_permissions(self):
         permissions = [Permission.READ_EXTERNAL_STORAGE]
