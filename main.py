@@ -11,6 +11,7 @@ class MainApp(MDApp):
 
     def build(self):
         self.load_all_kv_files()
+        Window.keyboard_mode = 'pan'
         self.screenmanager = MDScreenManager()
         self.screenmanager.add_widget(PermissionScreen(name='Permission'))
         self.screenmanager.add_widget(PermissionDenied(name='Denied'))
