@@ -41,6 +41,7 @@ class EditProfile(MDScreen):
             api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
         )
         self.key = ''
+        self.softinput_mode = 'pan'
         self.screen_finalize()
 
     def events(self, window, key, scancode, codepoint, modifier):
