@@ -4,11 +4,13 @@ import re
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.network.urlrequest import UrlRequest
 from kivy.uix.image import AsyncImage
 from kivy.uix.screenmanager import SlideTransition
+from kivy.uix.scrollview import ScrollView
 from kivymd.app import MDApp
 from kivymd.uix.button import MDIconButton, MDButton, MDButtonText
 from kivymd.uix.card import MDCard
@@ -16,7 +18,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
-from android.permissions import request_permissions, check_permission, Permission
+
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from plyer import filechooser
 from PIL import Image, ImageDraw
@@ -50,30 +52,21 @@ class EditProfile(MDScreen):
     def on_enter(self, *args):
         pass
 
-    def check_permissions(self):
-        permissions = [Permission.READ_EXTERNAL_STORAGE]
+    def scroll_to_widget(self, widget):
+        """Rola a tela para mostrar o widget ao focar nele."""
 
-        def callback(permissions, results):
-            print(f"Callback chamado! Permissões: {permissions}, Resultados: {results}")
-            if all(results):
-                self.on_permissions_granted()
-                print('Etapa 1 - Permissões concedidas')
-                self.dont = 'Sim'
-            else:
-                self.on_permissions_denied()
-                print('Etapa 2 - Permissões negadas')
-                self.dont = 'Não'
+        def _scroll(*args):
+            scrollview = self.ids.get("scroll")
+            if scrollview:
+                # Calcula a altura do teclado
+                keyboard_height = Window.keyboard_height * Window.height
+                widget_y = widget.to_window(*widget.pos)[1]  # Posição do widget na tela
 
-        # Debugando a verificação de permissões
-        granted = [check_permission(p) for p in permissions]
-        print(f"Status das permissões antes do request: {granted}")
+                # Se o widget estiver abaixo do teclado, rola para cima
+                if widget_y < keyboard_height + dp(50):
+                    scrollview.scroll_y = max(0, 1 - (keyboard_height / Window.height))
 
-        if not all(granted):
-            print('Etapa 3 - Solicitando permissões')
-            request_permissions(permissions, callback)
-        else:
-            print('Etapa 4 - Permissões já concedidas')
-            self.on_permissions_granted()
+        Clock.schedule_once(_scroll, 0.1)
 
     def recortar_imagem_circular(self, imagem_path):
         try:
