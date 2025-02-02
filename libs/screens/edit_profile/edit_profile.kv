@@ -213,3 +213,11 @@
                         text_color: 'white'
                         halign: 'center'
                         bold: True
+            MDButton:
+                pos_hint: {'center_x': 0.8}
+                on_release: root.next_page()
+                MDButtonText:
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    bold: True
+                    text: 'Proxima pagina'
