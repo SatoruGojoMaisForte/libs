@@ -18,7 +18,6 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
-
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from plyer import filechooser
 from PIL import Image, ImageDraw
@@ -33,12 +32,13 @@ class EditProfile(MDScreen):
     dont = 'Sim'
     avatar = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731366361/image_o6cbgf.png'
 
+    # Funções de inicialização -----------------------------------------------------------------------------------------
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Window.softinput_mode = 'below_target'  # Garante que a interface se ajuste ao teclado
+        Window.softinput_mode = 'below_target'
         Window.bind(on_keyboard=self.events)
-        Window.bind(on_keyboard_height=self.on_keyboard_height)  # Monitora a altura do teclado
-        self.keyboard_height = 0  # Inicializa a altura do teclado
+        Window.bind(on_keyboard_height=self.on_keyboard_height)
+        self.keyboard_height = 0
         self.manager_open = False
         cloudinary.config(
             cloud_name="dsmgwupky",
@@ -48,90 +48,10 @@ class EditProfile(MDScreen):
         self.key = ''
         self.screen_finalize()
 
-    def on_keyboard_height(self, window, height):
-        """
-        Método chamado quando a altura do teclado muda.
-        """
-        self.keyboard_height = height
-        if height == 0:  # Teclado fechado
-            self.pos = (0, 0)  # Volta a interface para a posição original
-        else:  # Teclado aberto
-            # Aumenta a posição vertical dos elementos, deslocando-os para cima
-            self.pos = (0, height * 0.1)
+    def on_enter(self):
+        self.on_text_two(self, self.telefone)
 
-    def on_touch_down(self, touch):
-        """
-        Fecha o teclado quando o usuário toca fora do campo de texto.
-        """
-        if self.keyboard_height > 0:  # Teclado está aberto
-            # Verifica se o toque foi fora do campo de texto
-            if not self.ids.email.collide_point(*touch.pos) and not self.ids.name_user.collide_point(*touch.pos):
-                self.ids.email.focus = False
-                self.ids.name_user.focus = False
-                self.pos = (0, 0)  # Volta a interface para a posição original
-        return super().on_touch_down(touch)
-
-    def events(self, window, key, scancode, codepoint, modifier):
-        """
-        Método chamado quando uma tecla é pressionada.
-        """
-        if key == 27:  # Tecla ES C (fechar teclado)
-            self.pos = (0, 0)  # Volta a interface para a posição original
-            return True
-        return False
-
-    def on_enter(self, *args):
-        pass
-
-    def scroll_to_widget(self, widget):
-        """Rola a tela para mostrar o widget ao focar nele."""
-
-        def _scroll(*args):
-            scrollview = self.ids.get("scroll")
-            if scrollview:
-                # Calcula a altura do teclado
-                keyboard_height = Window.keyboard_height * Window.height
-                widget_y = widget.to_window(*widget.pos)[1]  # Posição do widget na tela
-
-                # Se o widget estiver abaixo do teclado, rola para cima
-                if widget_y < keyboard_height + dp(50):
-                    scrollview.scroll_y = max(0, 1 - (keyboard_height / Window.height))
-
-        Clock.schedule_once(_scroll, 0.1)
-
-    def recortar_imagem_circular(self, imagem_path):
-        try:
-            # Upload da imagem com corte circular
-            response = cloudinary.uploader.upload(
-                imagem_path,
-                public_id=self.name_user,
-                overwrite=True,
-                transformation=[
-                    {'width': 1000, 'height': 1000, 'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
-                ]
-            )
-            self.ids.perfil.source = response['secure_url']  # Retorna o URL da imagem cortada
-        except Exception as e:
-            print(f"Erro ao cortar a imagem: {e}")
-            return None
-
-    def on_permissions_granted(self):
-        """
-        Ações a serem executadas se as permissões forem concedidas.
-        """
-        print("Permissões concedidas, execute a funcionalidade necessária.")
-        self.ids.image_perfil.text = 'Editar foto de perfil'
-        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/c_crop,g_face,w_300,h_300/r_max/v1736891104/Vein%20do%20grau.jpg'
-
-    def on_permissions_denied(self):
-        """
-        Ações a serem executadas se as permissões forem negadas.
-        """
-        print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
-        self.ids.image_perfil.text = 'Função bloqueada'
-        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
-        self.ids.botton_perfil.disabled = True
-
+    # Inicializando tela de finalização de atualização dos dados -------------------------------------------------------
     def screen_finalize(self):
         # Definindo o ícone de erro para as telas
         icone_erro = MDIconButton(
@@ -231,6 +151,74 @@ class EditProfile(MDScreen):
         relative.add_widget(label_2)
         self.card.add_widget(relative)
 
+    # Funções de teclado -----------------------------------------------------------------------------------------------
+
+    def on_keyboard_height(self, window, height):
+        """
+        Método chamado quando a altura do teclado muda.
+        """
+        self.keyboard_height = height
+        if height == 0:  # Teclado fechado
+            self.pos = (0, 0)  # Volta a interface para a posição original
+        else:  # Teclado aberto
+            # Aumenta a posição vertical dos elementos, deslocando-os para cima
+            self.pos = (0, height * 0.1)
+
+    def on_touch_down(self, touch):
+        """
+        Fecha o teclado quando o usuário toca fora do campo de texto.
+        """
+        if self.keyboard_height > 0:  # Teclado está aberto
+            # Verifica se o toque foi fora do campo de texto
+            if not self.ids.email.collide_point(*touch.pos) and not self.ids.name_user.collide_point(*touch.pos):
+                self.ids.email.focus = False
+                self.ids.name_user.focus = False
+                self.pos = (0, 0)  # Volta a interface para a posição original
+        return super().on_touch_down(touch)
+
+    def events(self, window, key, scancode, codepoint, modifier):
+        """
+        Método chamado quando uma tecla é pressionada.
+        """
+        if key == 27:  # Tecla ES C (fechar teclado)
+            self.pos = (0, 0)  # Volta a interface para a posição original
+            return True
+        return False
+
+    def scroll_to_widget(self, widget):
+        """Rola a tela para mostrar o widget ao focar nele."""
+
+        def _scroll(*args):
+            scrollview = self.ids.get("scroll")
+            if scrollview:
+                # Calcula a altura do teclado
+                keyboard_height = Window.keyboard_height * Window.height
+                widget_y = widget.to_window(*widget.pos)[1]  # Posição do widget na tela
+
+                # Se o widget estiver abaixo do teclado, rola para cima
+                if widget_y < keyboard_height + dp(50):
+                    scrollview.scroll_y = max(0, 1 - (keyboard_height / Window.height))
+
+        Clock.schedule_once(_scroll, 0.1)
+
+    # Funções de imagem ------------------------------------------------------------------------------------------------
+
+    def recortar_imagem_circular(self, imagem_path):
+        try:
+            # Upload da imagem com corte circular
+            response = cloudinary.uploader.upload(
+                imagem_path,
+                public_id=self.name_user,
+                overwrite=True,
+                transformation=[
+                    {'width': 1000, 'height': 1000, 'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
+                ]
+            )
+            self.ids.perfil.source = response['secure_url']  # Retorna o URL da imagem cortada
+        except Exception as e:
+            print(f"Erro ao cortar a imagem: {e}")
+            return None
+
     def open_gallery(self):
         if self.dont == 'Não':
             print('Galeria não atualizada')
@@ -262,17 +250,29 @@ class EditProfile(MDScreen):
                 size_hint_x=0.8,
             ).open()
 
+    # Funções de permissão ---------------------------------------------------------------------------------------------
+    def on_permissions_granted(self):
+        """
+        Ações a serem executadas se as permissões forem concedidas.
+        """
+        print("Permissões concedidas, execute a funcionalidade necessária.")
+        self.ids.image_perfil.text = 'Editar foto de perfil'
+        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/c_crop,g_face,w_300,h_300/r_max/v1736891104/Vein%20do%20grau.jpg'
+
+    def on_permissions_denied(self):
+        """
+        Ações a serem executadas se as permissões forem negadas.
+        """
+        print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
+        self.ids.image_perfil.text = 'Função bloqueada'
+        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
+        self.ids.botton_perfil.disabled = True
+
+    # Funções de formatação --------------------------------------------------------------------------------------------
     def is_email_valid(self, text: str) -> bool:
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         return re.match(email_regex, text) is not None
 
-    def on_text(self, instance, text):
-        email_valid = self.is_email_valid(text)
-        if email_valid:
-            pass
-
-        else:
-            pass
 
     def on_text_two(self, instance, numero):
         # Remove tudo que não for número
@@ -282,23 +282,16 @@ class EditProfile(MDScreen):
             self.ids.telefone.text = f"({numero[0:2]}) {numero[2:7]}-{numero[7:]}"
             self.ids.erro1.text = ""
             self.ids.erro1.text = ""
-            self.ids.correct1.icon_color = 'green'
-            self.ids.correct1.icon = 'check'
+            self.ids.telefone.focus = False
         else:
             self.ids.erro1.text = "Número inválido"
-            self.ids.correct1.icon_color = 'red'
-            self.ids.correct1.icon = 'alert'
-
-    def on_text_three(self, instance, company):
-        if company != '':
-            self.ids.correct3.icon_color = 'green'
-            self.ids.correct3.icon = 'check'
-
-    def on_text_four(self, instance, name):
-        pass
 
     def step_one(self):
         """Verificar se algum dos campos não estão corretos"""
+
+        if self.ids.telefone.text in '' or self.ids.erro1.text != '':
+            self.ids.telefone.focus = True
+            return
 
         if self.ids.email.text in '':
             self.ids.email.focus = True
@@ -326,6 +319,7 @@ class EditProfile(MDScreen):
         else:
             self.ids.erro2.text = 'Formato de email invalido'
 
+    # Manipulando banco de dados ---------------------------------------------------------------------------------------
     def update_database(self):
         ''' Agora vamos puxar os dados do firebase'''
         url = 'https://obra-7ebd9-default-rtdb.firebaseio.com/Users'
@@ -375,12 +369,12 @@ class EditProfile(MDScreen):
         UrlRequest(
             url=f'{url}/.json',
             on_success=self.get_data,
-
         )
 
     def get_data(self, req, result):
         print('Ola')
 
+    # Retornando a tela a de Login -------------------------------------------------------------------------------------
     def login(self):
         self.manager.transition = SlideTransition(direction='right')
         self.remove_widget(self.card)
