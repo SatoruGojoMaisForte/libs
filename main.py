@@ -8,7 +8,6 @@ from libs.screens.edit_profile.edit_profile import EditProfile
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         Window.keyboard_mode = 'pan'
         self.screenmanager = MDScreenManager()
