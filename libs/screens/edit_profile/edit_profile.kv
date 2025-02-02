@@ -11,8 +11,8 @@
             orientation: 'vertical'  # Organiza os widgets em uma coluna
             size_hint_y: None
             height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
-            padding: "10dp"
-            spacing: "15dp"
+            padding: [10, 10, 0, 0]
+            spacing: "30dp"
 
             MDCard:
                 size_hint: 1, None
@@ -90,7 +90,8 @@
                 size_hint: 1, None
                 height: "60dp"  # Altura fixa
                 theme_bg_color: 'Custom'
-                md_bg_color: 1, 1, 1, 1
+                md_bg_color: 1, 1, 1,
+                padding: [0, 20, 0, 0]
 
                 MDRelativeLayout:
                     MDTextField:
@@ -101,8 +102,7 @@
                         pos_hint: {'center_x': 0.5, 'center_y': 0.62}
                         theme_text_color: 'Custom'
                         text_color_normal: 'black'
-                        radius: [15,]
-                        on_text: root.on_text_four(self, self.text)
+                        radius: [20,]
                         on_focus: root.scroll_to_widget(self)  # Rola para o campo ao focar
                         MDTextFieldHintText:
                             text: 'Nome completo'
@@ -115,6 +115,7 @@
                         text_color: 'red'
                         font_style: 'Title'
                         role: 'small'
+                        padding: [0, 40, 0, 0]
                         pos_hint: {'center_x': 0.44, 'center_y': 0.01}
 
             # Campo de E-mail
@@ -123,6 +124,7 @@
                 height: "60dp"  # Altura fixa
                 theme_bg_color: 'Custom'
                 md_bg_color: 1, 1, 1, 1
+                padding: [0, 10, 0, 0]
 
                 MDRelativeLayout:
                     MDTextField:
@@ -132,8 +134,7 @@
                         pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                         theme_text_color: 'Custom'
                         text_color_normal: 'black'
-                        radius: [15,]
-                        on_text: root.on_text(self, self.text)
+                        radius: [20,]
                         on_focus: root.scroll_to_widget(self)  # Rola para o campo ao focar
                         MDTextFieldHintText:
                             text: 'Email'
@@ -144,6 +145,7 @@
                         halign: 'right'
                         theme_text_color: 'Custom'
                         text_color: 'red'
+                        padding: [0, 20, 0, 0]
                         font_style: 'Title'
                         role: 'small'
 
@@ -154,6 +156,7 @@
                 size_hint: 1, None
                 theme_bg_color: 'Custom'
                 md_bg_color: 1, 1, 1, 1
+                padding: [0, 0, 0, 0]
                 height: "60dp"  # Altura fixa
 
                 MDRelativeLayout:
@@ -164,15 +167,16 @@
                         pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                         theme_text_color: 'Custom'
                         text_color_normal: 'black'
-                        radius: [15,]
+                        radius: [20,]
                         on_text: root.on_text_two(self, self.text)
+                        on_focus: root.scroll_to_widget(self)
 
                         MDTextFieldHintText:
                             text: 'Numero de Telefone'
 
                     MDLabel:
                         id: erro1
-                        text: 'errado'
+                        text: ''
                         halign: 'right'
                         theme_text_color: 'Custom'
                         text_color: 'red'
@@ -197,15 +201,15 @@
                 shadow_softness: 1
                 theme_elevation_level: "Custom"
                 elevation_level: 2
-                pos_hint: {'center_x': 0.5}
+                pos_hint: {'center_x': 0.5, 'center_y': 0.8}
                 halign: 'center'
                 on_release: root.step_one()
 
                 MDRelativeLayout:
                     MDLabel:
                         text: 'Alterar'
-                        halign: 'center'
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                         theme_text_color: 'Custom'
                         text_color: 'white'
+                        halign: 'center'
                         bold: True
