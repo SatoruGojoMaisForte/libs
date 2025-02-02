@@ -1,18 +1,25 @@
 from kivy.properties import Clock, StringProperty
 from kivy.uix.screenmanager import SlideTransition
+from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 
 
 class PerfilScreen(MDScreen):
-    username = StringProperty()
-    avatar = StringProperty()
-    regiao = StringProperty()
-    empresa = StringProperty()
-    zap = StringProperty()
-    email = StringProperty()
-    contratando = StringProperty()
+    username = 'HadesKing'
+    avatar = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731366361/image_o6cbgf.png'
+    city = 'Sena Madureira'
+    state = 'Acre'
+    company = 'Amazon'
+    telefone = '(62) 99356-0986'
+    email = 'viitiinmec@gmail.com'
+    contratando = 'Não'
 
     def on_enter(self, *args):
+        self.ids.name.text = self.username
+        self.ids.company.text = self.company
+        self.ids.email.text = self.email
+        self.ids.telefone.text = self.telefone
+        self.ids.locate.text = f'{self.state}  -  {self.city}'
         if self.contratando == 'não':
             self.ids.contratando.text_color = 'red'
         else:
@@ -36,5 +43,11 @@ class PerfilScreen(MDScreen):
 
     def edit_profile(self):
         self.manager.transition = SlideTransition(direction='left')
+        app = MDApp.get_running_app()
+        screen_manager = app.root
+        edit = screen_manager.get_screen('EditProfile')
+        edit.name_user = self.username
+        edit.email = self.email
+        edit.telefone = self.telefone
         self.manager.current = 'EditProfile'
 
