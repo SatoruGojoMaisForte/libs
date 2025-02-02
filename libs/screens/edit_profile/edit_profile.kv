@@ -38,13 +38,16 @@
                         halign: 'center'
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-            AsyncImage:
-                id: perfil
-                size_hint: 0.5, None
-                height: "200dp"  # Altura fixa
-                halign: 'center'
-                pos_hint: {"center_x": 0.5, 'center_y': 0.5}
-                source: root.avatar
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+
+                AsyncImage:
+                    id: perfil
+                    size_hint: 0.9, None
+                    height: '350dp'
+                    pos_hint: {"center_x": 0.5, 'center_y': 0.5}
+                    source: root.avatar
 
             MDButton:
                 theme_bg_color: 'Custom'
@@ -70,11 +73,12 @@
                 size_hint: 1, None
                 height: "60dp"  # Altura fixa
                 theme_bg_color: 'Custom'
-                md_bg_color: 1, 0.4, 0.4, 0.1
+                md_bg_color: 1, 1, 1, 1
 
                 MDRelativeLayout:
                     MDTextField:
                         id: email
+                        text: root.email
                         size_hint: 0.9, None
                         pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                         theme_text_color: 'Custom'
@@ -87,7 +91,7 @@
 
                     MDLabel:
                         id: erro2
-                        text: 'erro'
+                        text: ''
                         halign: 'right'
                         theme_text_color: 'Custom'
                         text_color: 'red'
@@ -106,6 +110,7 @@
                 MDRelativeLayout:
                     MDTextField:
                         id: name_user
+                        text: root.name_user
                         size_hint: 0.9, None
                         height: "40dp"  # Altura fixa
                         pos_hint: {'center_x': 0.5, 'center_y': 0.62}
@@ -119,7 +124,7 @@
 
                     MDLabel:
                         id: erro4
-                        text: 'erro'
+                        text: ''
                         halign: 'right'
                         theme_text_color: 'Custom'
                         text_color: 'red'
