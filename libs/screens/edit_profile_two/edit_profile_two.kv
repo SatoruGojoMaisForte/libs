@@ -41,6 +41,7 @@
                 size_hint: 1, None
                 height: "170dp"  # Altura fixa
                 theme_bg_color: 'Custom'
+                md_bg_color_disabled: "white"
                 padding: [0, -20, 0, 0]
                 spacing: 10
                 md_bg_color: 1, 1, 1, 1
@@ -57,6 +58,7 @@
                         line_color: 'grey'
                         theme_bg_color: 'Custom'
                         md_bg_color: 'white'
+                        md_bg_color_disabled: "white"
                         pos_hint: {'center_y': 0.5}
                         on_release: root.menu.open()
 
@@ -95,6 +97,7 @@
                         line_color: 'grey'
                         theme_bg_color: 'Custom'
                         md_bg_color: 'white'
+                        md_bg_color_disabled: "white"
                         pos_hint: {'center_x': 0.74, 'center_y': 0.5}
                         on_release: root.menu_city.open()
 
@@ -128,6 +131,7 @@
                 size_hint: 0.95, 0.1
                 theme_bg_color: 'Custom'
                 md_bg_color: 1, 1, 1, 1
+                md_bg_color_disabled: "white"
                 height: '60dp'
 
                 pos_hint: {'center_x': 0.5, 'center_y': 0.36}
@@ -155,13 +159,11 @@
                         pos_hint: {'center_x': 0.44, 'center_y': 0.1}
 
 
-
             MDCard:
                 style: 'elevated'
                 size_hint: 0.95, None
                 height: "60dp"  # Altura fixa
                 theme_bg_color: 'Custom'
-
                 pos_hint: {'center_x': 0.5}
                 md_bg_color: 'black'
                 theme_shadow_color: 'Custom'
