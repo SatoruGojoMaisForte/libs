@@ -344,7 +344,8 @@ class EditProfile(MDScreen):
 
         data = {'name': self.ids.name_user.text,
                 'email': self.ids.email.text,
-                'perfil': self.ids.perfil.source
+                'perfil': self.ids.perfil.source,
+                'telefone': self.ids.telefone.text
                 }
 
         UrlRequest(
