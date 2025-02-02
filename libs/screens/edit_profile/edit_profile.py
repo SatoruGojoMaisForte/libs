@@ -29,7 +29,7 @@ class EditProfile(MDScreen):
     telefone = '62993683473'
     email = 'viitiinmec@gmail.com'
     company = 'rjporcelanatoliquido'
-    name_user = 'Hades'
+    name_user = 'KingHades'
     dont = 'Sim'
     avatar = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731366361/image_o6cbgf.png'
 
@@ -295,11 +295,10 @@ class EditProfile(MDScreen):
             self.ids.correct3.icon = 'check'
 
     def on_text_four(self, instance, name):
-        print(name)
+        pass
 
     def step_one(self):
         """Verificar se algum dos campos não estão corretos"""
-        print('test')
 
         if self.ids.email.text in '':
             self.ids.email.focus = True
@@ -317,34 +316,36 @@ class EditProfile(MDScreen):
             self.ids.name_user.focus = True
             return
 
-        print('sei la')
         email = self.ids.email.text
         valid = self.is_email_valid(email)
         print(valid)
         if valid:
             self.ids.erro2.text = ''
+            print('Chamando Função')
             self.update_database()
         else:
             self.ids.erro2.text = 'Formato de email invalido'
 
     def update_database(self):
         ''' Agora vamos puxar os dados do firebase'''
-        print('1')
         url = 'https://obra-7ebd9-default-rtdb.firebaseio.com/Users'
         UrlRequest(
             url=f'{url}/.json',
             on_success=self.update_database_2,
-
         )
 
     def update_database_2(self, req, users):
+        print('Verificando os dados')
         for key, value in users.items():
 
             if value['name'] == self.name_user:
                 self.key = key
                 self.update_database_3(key)
+            else:
+                print('Usuario encontrado')
 
     def update_database_3(self, key):
+        print('update')
         url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{key}'
 
         data = {'name': self.ids.name_user.text,
@@ -361,6 +362,7 @@ class EditProfile(MDScreen):
 
     def database_sucess(self, req, result):
         print(result)
+        print('data')
         progress = self.ids['progress']
         self.ids['relative'].remove_widget(progress)
         self.ids.texto_carregando.text = 'Tudo certo!'
@@ -377,7 +379,7 @@ class EditProfile(MDScreen):
         )
 
     def get_data(self, req, result):
-        pass
+        print('Ola')
 
     def login(self):
         self.manager.transition = SlideTransition(direction='right')
