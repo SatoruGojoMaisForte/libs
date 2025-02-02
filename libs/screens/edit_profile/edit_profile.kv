@@ -85,6 +85,38 @@
                     font_style: 'Title'
                     role: 'medium'
 
+            # Campo de nome
+            MDCard:
+                size_hint: 1, None
+                height: "60dp"  # Altura fixa
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+
+                MDRelativeLayout:
+                    MDTextField:
+                        id: name_user
+                        text: root.name_user
+                        size_hint: 0.9, None
+                        height: "40dp"  # Altura fixa
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.62}
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'black'
+                        radius: [15,]
+                        on_text: root.on_text_four(self, self.text)
+                        on_focus: root.scroll_to_widget(self)  # Rola para o campo ao focar
+                        MDTextFieldHintText:
+                            text: 'Nome completo'
+
+                    MDLabel:
+                        id: erro4
+                        text: ''
+                        halign: 'right'
+                        theme_text_color: 'Custom'
+                        text_color: 'red'
+                        font_style: 'Title'
+                        role: 'small'
+                        pos_hint: {'center_x': 0.44, 'center_y': 0.01}
+
             # Campo de E-mail
             MDCard:
                 size_hint: 1, None
@@ -117,37 +149,37 @@
 
                         pos_hint: {'center_x': 0.44, 'center_y': 0.01}
 
-            # Campo de Nome Completo
+            # Campo de telefone
             MDCard:
                 size_hint: 1, None
-                height: "60dp"  # Altura fixa
                 theme_bg_color: 'Custom'
                 md_bg_color: 1, 1, 1, 1
+                height: "60dp"  # Altura fixa
 
                 MDRelativeLayout:
                     MDTextField:
-                        id: name_user
-                        text: root.name_user
+                        id: telefone
+                        text: root.telefone
                         size_hint: 0.9, None
-                        height: "40dp"  # Altura fixa
-                        pos_hint: {'center_x': 0.5, 'center_y': 0.62}
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                         theme_text_color: 'Custom'
                         text_color_normal: 'black'
                         radius: [15,]
-                        on_text: root.on_text_four(self, self.text)
-                        on_focus: root.scroll_to_widget(self)  # Rola para o campo ao focar
+                        on_text: root.on_text_two(self, self.text)
+
                         MDTextFieldHintText:
-                            text: 'Nome completo'
+                            text: 'Numero de Telefone'
 
                     MDLabel:
-                        id: erro4
-                        text: ''
+                        id: erro1
+                        text: 'errado'
                         halign: 'right'
                         theme_text_color: 'Custom'
                         text_color: 'red'
                         font_style: 'Title'
                         role: 'small'
                         pos_hint: {'center_x': 0.44, 'center_y': 0.01}
+
 
             # Botão de Salvar
             MDCard:
