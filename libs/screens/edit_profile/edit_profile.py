@@ -8,6 +8,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.network.urlrequest import UrlRequest
+from kivy.properties import StringProperty
 from kivy.uix.image import AsyncImage
 from kivy.uix.screenmanager import SlideTransition
 from kivy.uix.scrollview import ScrollView
@@ -25,10 +26,12 @@ from kivy.core.window import Window
 
 
 class EditProfile(MDScreen):
-    telefone = '62993683473'
-    email = 'viitiinmec@gmail.com'
+    telefone = StringProperty()
+    city = 'Sena Madureira'
+    state = 'Acre'
+    email = StringProperty()
     company = 'rjporcelanatoliquido'
-    name_user = 'KingHades'
+    name_user = StringProperty()
     dont = 'Sim'
     avatar = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1731366361/image_o6cbgf.png'
 
@@ -46,6 +49,7 @@ class EditProfile(MDScreen):
             api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
         )
         self.key = ''
+        print(self.name_user)
         self.screen_finalize()
 
     def on_enter(self):
@@ -142,7 +146,7 @@ class EditProfile(MDScreen):
 
         )
         self.ids['ok'] = botton
-        self.ids.ok.on_release = self.login
+        self.ids.ok.on_release = self.login_variables
         relative.add_widget(botton)
         relative.add_widget(icone_acerto)
         self.ids['texto_carregando'] = label
@@ -273,7 +277,6 @@ class EditProfile(MDScreen):
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         return re.match(email_regex, text) is not None
 
-
     def on_text_two(self, instance, numero):
         # Remove tudo que não for número
         numero = re.sub(r'\D', '', numero)
@@ -288,7 +291,7 @@ class EditProfile(MDScreen):
 
     def step_one(self):
         """Verificar se algum dos campos não estão corretos"""
-
+        print(self.name_user)
         if self.ids.telefone.text in '' or self.ids.erro1.text != '':
             self.ids.telefone.focus = True
             return
@@ -330,19 +333,22 @@ class EditProfile(MDScreen):
 
     def update_database_2(self, req, users):
         print('Verificando os dados')
+        name = str(self.name_user).replace(' ', '')
+        self.name_user = name
         for key, value in users.items():
 
-            if value['name'] == self.name_user:
+            if value['name'] == name:
+                print(value['name'])
                 self.key = key
                 self.update_database_3(key)
             else:
-                print('Usuario encontrado')
+                print(value['name'])
 
     def update_database_3(self, key):
         print('update')
         url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{key}'
 
-        data = {'name': self.ids.name_user.text,
+        data = {'name': str(self.ids.name_user.text).replace(' ', ''),
                 'email': self.ids.email.text,
                 'perfil': self.ids.perfil.source,
                 'telefone': self.ids.telefone.text
@@ -375,8 +381,33 @@ class EditProfile(MDScreen):
     def get_data(self, req, result):
         print('Ola')
 
-    # Retornando a tela a de Login -------------------------------------------------------------------------------------
+    # Transição de telas -----------------------------------------------------------------------------------------------
+
+    def next_page(self):
+        app = MDApp.get_running_app()
+        screen_manager = app.root
+        edit_two = screen_manager.get_screen('EditProfileTwo')
+        edit_two.name_user = self.name_user
+        edit_two.company = self.company
+        edit_two.state = self.state
+        edit_two.city = self.city
+
+        self.manager.transition = SlideTransition(direction='left')
+        self.manager.current = 'EditProfileTwo'
+
     def login(self):
         self.manager.transition = SlideTransition(direction='right')
+        self.manager.current = 'Perfil'
+
+    def login_variables(self):
+        app = MDApp.get_running_app()
+        screen_manager = app.root
+        perfil = screen_manager.get_screen('Perfil')
+        perfil.telefone = self.ids.telefone.text
+        perfil.username = self.ids.name_user.text
+        perfil.email = self.ids.email.text
+        perfil.company = self.company
+        perfil.state = self.company
         self.remove_widget(self.card)
         self.manager.current = 'Perfil'
+
