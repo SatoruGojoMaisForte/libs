@@ -36,18 +36,36 @@
                         role: 'medium'
                         bold: True
                         halign: 'center'
-                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-            MDBoxLayout:
-                orientation: 'vertical'
-                adaptive_height: True
 
-                AsyncImage:
-                    id: perfil
-                    size_hint: 0.9, None
-                    height: '350dp'
-                    pos_hint: {"center_x": 0.5, 'center_y': 0.5}
-                    source: root.avatar
+            MDCard:
+                style: 'elevated'
+                size_hint: 0.9, None
+                height: "150dp"  # Altura fixa
+                theme_shadow_color: "Custom"
+                shadow_color: "white"
+                theme_bg_color: "Custom"
+                md_bg_color: "white"
+                md_bg_color_disabled: "grey"
+                theme_shadow_offset: "Custom"
+                shadow_offset: (1, -2)
+                theme_shadow_softness: "Custom"
+                shadow_softness: 1
+                theme_elevation_level: "Custom"
+                elevation_level: 2
+                spacing: '15dp'
+                pos_hint: {'center_x': 0.5}
+                halign: 'center'
+
+                MDRelativeLayout:
+                    AsyncImage:
+                        id: perfil
+                        size_hint: 0.5, None
+                        height: '450dp'
+                        pos_hint: {"center_x": 0.5, 'center_y': 0.5}
+                        source: root.avatar
+                        keep_ratio: True  # Mantém a proporção da imagem
+                        allow_stretch: True
 
             MDButton:
                 theme_bg_color: 'Custom'
@@ -55,7 +73,7 @@
                 theme_line_color: 'Custom'
                 line_color: 1, 1, 1, 1
                 size_hint: 1, None
-                height: "50dp"  # Altura fixa
+                height: "80dp"  # Altura fixa
                 pos_hint: {"center_x": 0.5, 'center_y': 0.5}
                 on_release: root.open_gallery()
                 id: botton_perfil
