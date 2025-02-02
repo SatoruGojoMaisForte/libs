@@ -13,7 +13,7 @@ from kivymd.uix.progressindicator import MDCircularProgressIndicator
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.screen import MDScreen
 
-from libs.screens.function_screen.citys import *
+from libs
 
 
 class EditProfileTwo(MDScreen):
