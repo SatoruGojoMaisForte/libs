@@ -35,38 +35,33 @@
             MDRelativeLayout:
 
                 MDCard:
-                    id: s4
-                    size_hint: 0.3, 0.9
-                    elevation: 0
-                    padding: 5
-                    spacing: 5
+                    size_hint: 0.35, 1.15
+                    elevation: 10
                     theme_bg_color: 'Custom'
-                    md_bg_color: 1, 1, 1, 1
-                    halign: 'center'
-                    pos_hint: {'center_y': 0.5, 'center_x': 0.1}
+                    md_bg_color: 'white'
+                    pos_hint: {"center_x": 0.17, "center_y": 0.5}
 
                     MDRelativeLayout:
-
                         Circle:
                             radius: [100,]
-                            size_hint: 0.85, 1.4
+                            size_hint: 0.9, 1.18
                             theme_bg_color: 'Custom'
                             md_bg_color: 'cyan'
-                            pos_hint: {'center_x': 0.72, 'center_y': 0.5}
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
                         Circle:
                             radius: [100,]
-                            size_hint: 0.9, 1.45
+                            size_hint: 0.9, 1.18
                             theme_bg_color: 'Custom'
                             md_bg_color: [0.0, 1.0, 0.0, 1.0]
-                            pos_hint: {'center_x': 0.72, 'center_y': 0.5}
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
                         FitImage:
                             source: root.avatar
-                            size_hint: 0.8, 1.35
+                            size_hint: 0.85, 1.1
                             halign: 'center'
-                            radius: 53
-                            pos_hint: {'center_x': 0.72, 'center_y': 0.5}
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
 
                 MDCard:
                     id: s3
@@ -240,6 +235,8 @@
             theme_width: "Custom"
             size_hint_x: .4
             on_release: root.edit_profile()
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
 
             MDButtonText:
                 text: 'Editar Perfil'
