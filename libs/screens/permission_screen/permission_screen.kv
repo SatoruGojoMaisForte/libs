@@ -35,37 +35,21 @@
             MDRelativeLayout:
 
                 MDCard:
-                    id: s4
-                    size_hint: 0.35, 0.95
-                    elevation: 0
-                    padding: 5
-                    spacing: 5
+                    size_hint: 0.31, 1.1
+                    elevation: 10
                     theme_bg_color: 'Custom'
-                    md_bg_color: 1, 1, 1, 1
-                    halign: 'center'
-                    pos_hint: {'center_y': 0.5, 'center_x': 0.18}
+                    md_bg_color: 'white'
+                    pos_hint: {"center_x": 0.18, "center_y": 0.5}
 
                     MDRelativeLayout:
 
-                        Circle:
-                            radius: [100,]
-                            size_hint: 0.85, 1.4
-                            theme_bg_color: 'Custom'
-                            md_bg_color: 'cyan'
-                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-
-                        Circle:
-                            radius: [100,]
-                            size_hint: 0.9, 1.45
-                            theme_bg_color: 'Custom'
-                            md_bg_color: [0.0, 1.0, 0.0, 1.0]
-                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-
                         FitImage:
                             source: root.avatar
-                            size_hint: 0.85, 1.35
+                            allow_stretch: True
+                            keep_ratio: False
+                            size_hint: None, None
+                            size: self.parent.size
                             halign: 'center'
-
                             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
                 MDCard:
