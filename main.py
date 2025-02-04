@@ -13,9 +13,9 @@ class MainApp(MDApp):
     def build(self):
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
-        self.screenmanager.add_widget(EditProfileTwo(name='EditProfileTwo'))
         self.screenmanager.add_widget(PerfilScreen(name='Perfil'))
         self.screenmanager.add_widget(EditProfile(name='EditProfile'))
+        self.screenmanager.add_widget(EditProfileTwo(name='EditProfileTwo'))
         return self.screenmanager
 
     def load_all_kv_files(self):
