@@ -156,7 +156,9 @@ class EditProfileTwo(MDScreen):
         self.menu = MDDropdownMenu(
             caller=self.ids.card_state,
             items=menu_itens,
-            position='bottom'
+            position='bottom',
+            width_mult=5,
+            max_height='400dp'
         )
 
     def menu_citys(self):
@@ -169,7 +171,9 @@ class EditProfileTwo(MDScreen):
         self.menu_city = MDDropdownMenu(
             caller=self.ids.card_city,
             items=menu_itens,
-            position='bottom'
+            position='bottom',
+            width_mult=5,
+            max_height='400dp'
         )
 
     def create_menu(self, state):
