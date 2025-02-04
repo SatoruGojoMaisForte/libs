@@ -19,6 +19,7 @@ class PerfilScreen(MDScreen):
         self.ids.company.text = self.company
         self.ids.email.text = self.email
         self.ids.telefone.text = self.telefone
+        self.ids.perfil.source = self.avatar
         self.ids.locate.text = f'{self.state}  -  {self.city}'
         if self.contratando == 'não':
             self.ids.contratando.text_color = 'red'
