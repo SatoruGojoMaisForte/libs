@@ -54,10 +54,20 @@
                         style: 'elevated'
                         size_hint: 0.47, 1
                         theme_bg_color: 'Custom'
-                        md_bg_color: 'white'  # Cor padrão
-                        md_bg_color_disabled: "white"  # Cor quando desabilitado
-                        md_bg_color_pressed: "white"  # Cor quando pressionado
+                        md_bg_color: 'white'
+                        md_bg_color_disabled: "white"
+                        md_bg_color_pressed: "white"
+                        on_press: self.md_bg_color = 'white'  # Mantém a cor branca ao pressionar
+                        on_release: self.md_bg_color = 'white'
+                        elevation: 0  # Tente ajustar a elevação
                         on_release: root.menu.open()
+
+                        canvas.before:
+                            Color:
+                                rgba: 1, 1, 1, 1  # Cor branca
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
 
                         MDRelativeLayout:
                             MDLabel:
@@ -89,11 +99,21 @@
                         style: 'elevated'
                         size_hint: 0.47, 1
                         theme_bg_color: 'Custom'
-                        md_bg_color: 'white'  # Cor padrão
-                        md_bg_color_disabled: "white"  # Cor quando desabilitado
-                        md_bg_color_pressed: "white"  # Cor quando pressionado
+                        md_bg_color: 'white'
+                        md_bg_color_disabled: "white"
+                        md_bg_color_pressed: "white"
+                        on_press: self.md_bg_color = 'white'  # Mantém a cor branca ao pressionar
+                        on_release: self.md_bg_color = 'white'
+                        elevation: 0  # Tente ajustar a elevação
                         pos_hint: {'center_x': 0.74, 'center_y': 0.5}
                         on_release: root.menu_city.open()
+
+                        canvas.before:
+                            Color:
+                                rgba: 1, 1, 1, 1  # Cor branca
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
 
                         MDRelativeLayout:
                             MDLabel:
@@ -177,5 +197,3 @@
                         theme_text_color: 'Custom'
                         text_color: 'white'
                         bold: True
-
-
