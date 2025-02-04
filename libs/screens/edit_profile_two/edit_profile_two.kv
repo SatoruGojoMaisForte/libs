@@ -37,108 +37,88 @@
                         bold: True
                         halign: 'center'
 
-            MDCard:
+
+            BoxLayout:
                 size_hint: 1, None
-                height: "170dp"  # Altura fixa
-                theme_bg_color: 'Custom'
-                md_bg_color: 'white'  # Cor padrão
-                md_bg_color_disabled: "white"  # Cor quando desabilitado
-                md_bg_color_pressed: "white"  # Cor quando pressionado
-                padding: [0, -20, 0, 0]
+                height: "170dp"
                 spacing: 10
-                md_bg_color: 1, 1, 1, 1
+                padding: [0, -20, 5, 0]
 
-                MDRelativeLayout:
-                    MDCard:
-                        id: card_state
-                        style: 'elevated'
-                        size_hint: 0.47, 1
-                        theme_bg_color: 'Custom'
-                        md_bg_color: 'white'
-                        md_bg_color_disabled: "white"
-                        md_bg_color_pressed: "white"
-                        on_press: self.md_bg_color = 'white'  # Mantém a cor branca ao pressionar
-                        on_release: self.md_bg_color = 'white'
-                        elevation: 0  # Tente ajustar a elevação
-                        on_release: root.menu.open()
+                MDCard:
+                    id: card_state
+                    style: 'elevated'
+                    theme_line_color: 'Custom'
+                    line_color: 'black'
+                    size_hint: 0.45, 1
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 'white'  # Cor padrão
+                    md_bg_color_disabled: "white"  # Cor quando desabilitado
+                    md_bg_color_pressed: "white"  # Cor quando pressionado
+                    on_release: root.menu.open()
 
-                        canvas.before:
-                            Color:
-                                rgba: 1, 1, 1, 1  # Cor branca
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Estado'
+                            font_style: 'Headline'
+                            role: 'small'
+                            bold: True
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.85}
 
-                        MDRelativeLayout:
-                            MDLabel:
-                                text: 'Estado'
-                                font_style: 'Headline'
-                                role: 'small'
-                                bold: True
-                                halign: 'center'
-                                pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+                        AsyncImage:
+                            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1735942826/estado-fotor-20250103191952_nbunkd.jpg'
+                            size_hint: 0.58, 0.58
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.43}
 
-                            AsyncImage:
-                                source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1735942826/estado-fotor-20250103191952_nbunkd.jpg'
-                                size_hint: 0.58, 0.58
-                                pos_hint: {'center_x': 0.5, 'center_y': 0.43}
+                        MDLabel:
+                            id: state
+                            text: 'Ausente'
+                            font_style: 'Label'
+                            role: 'large'
+                            bold: 'True'
+                            theme_text_color: 'Custom'
+                            text_color: 'red'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
 
-                            MDLabel:
-                                id: state
-                                text: 'Ausente'
-                                font_style: 'Label'
-                                role: 'large'
-                                bold: 'True'
-                                theme_text_color: 'Custom'
-                                text_color: 'red'
-                                halign: 'center'
-                                pos_hint: {'center_x': 0.5, 'center_y': 0.06}
+                MDCard:
+                    id: card_city
+                    style: 'elevated'
+                    theme_line_color: 'Custom'
+                    line_color: 'black'
+                    size_hint: 0.45, 1
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 'white'  # Cor padrão
+                    md_bg_color_disabled: "white"  # Cor quando desabilitado
+                    md_bg_color_pressed: "white"  # Cor quando pressionado
+                    pos_hint: {'center_x': 0.73, 'center_y': 0.5}
+                    on_release: root.menu_city.open()
 
-                    MDCard:
-                        id: card_city
-                        style: 'elevated'
-                        size_hint: 0.47, 1
-                        theme_bg_color: 'Custom'
-                        md_bg_color: 'white'
-                        md_bg_color_disabled: "white"
-                        md_bg_color_pressed: "white"
-                        on_press: self.md_bg_color = 'white'  # Mantém a cor branca ao pressionar
-                        on_release: self.md_bg_color = 'white'
-                        elevation: 0  # Tente ajustar a elevação
-                        pos_hint: {'center_x': 0.74, 'center_y': 0.5}
-                        on_release: root.menu_city.open()
+                    MDRelativeLayout:
+                        MDLabel:
+                            text: 'Cidade'
+                            font_style: 'Headline'
+                            role: 'small'
+                            bold: True
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.85}
 
-                        canvas.before:
-                            Color:
-                                rgba: 1, 1, 1, 1  # Cor branca
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
+                        AsyncImage:
+                            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1735942044/image_m5awuj.png'
+                            size_hint: 0.58, 0.58
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.46}
 
-                        MDRelativeLayout:
-                            MDLabel:
-                                text: 'Cidade'
-                                font_style: 'Headline'
-                                role: 'small'
-                                bold: True
-                                halign: 'center'
-                                pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+                        MDLabel:
+                            id: city
+                            text: 'Ausente'
+                            font_style: 'Label'
+                            role: 'large'
+                            bold: 'True'
+                            theme_text_color: 'Custom'
+                            text_color: 'red'
+                            halign: 'center'
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
 
-                            AsyncImage:
-                                source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1735942044/image_m5awuj.png'
-                                size_hint: 0.58, 0.58
-                                pos_hint: {'center_x': 0.5, 'center_y': 0.46}
-
-                            MDLabel:
-                                id: city
-                                text: 'Ausente'
-                                font_style: 'Label'
-                                role: 'large'
-                                bold: 'True'
-                                theme_text_color: 'Custom'
-                                text_color: 'red'
-                                halign: 'center'
-                                pos_hint: {'center_x': 0.5, 'center_y': 0.1}
 
             MDCard:
                 size_hint: 0.95, 0.1
@@ -197,3 +177,4 @@
                         theme_text_color: 'Custom'
                         text_color: 'white'
                         bold: True
+
