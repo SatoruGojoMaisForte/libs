@@ -397,6 +397,10 @@ class EditProfile(MDScreen):
 
     def login(self):
         self.manager.transition = SlideTransition(direction='right')
+        app = MDApp.get_running_app()
+        screen_manager = app.root
+        perfil = screen_manager.get_screen('Perfil')
+        perfil.avatar = self.ids.perfil.source
         self.manager.current = 'Perfil'
 
     def login_variables(self):
