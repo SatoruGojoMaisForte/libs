@@ -14,42 +14,41 @@
             padding: [10, 10, 0, 0]
             spacing: "50dp"
 
-            MDCard:
+            BoxLayout:
                 size_hint: 1, None
-                height: "60dp"  # Altura fixa
-                theme_bg_color: 'Custom'
-                md_bg_color: 0, 0, 0, 0
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '37dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    on_release: root.previous()
 
-                MDRelativeLayout:
-                    MDIconButton:
-                        icon: 'arrow-left'
-                        theme_font_size: 'Custom'
-                        font_size: '37dp'
-                        theme_icon_color: 'Custom'
-                        icon_color: 'black'
-                        pos_hint: {'center_x': 0.1, 'center_y': 0.6}
-                        on_release: root.previous()
+                MDLabel:
+                    text: 'Editar Perfil'
+                    font_style: 'Headline'
+                    role: 'medium'
+                    bold: True
+                    pos_hint: {'center_x': 0.2}
+                    halign: 'center'
 
-                    MDLabel:
-                        text: 'Editar Perfil'
-                        font_style: 'Headline'
-                        role: 'medium'
-                        bold: True
-                        halign: 'center'
 
 
             BoxLayout:
                 size_hint: 1, None
                 height: "170dp"
                 spacing: 10
-                padding: [0, -20, 5, 0]
+                padding: [5, -20, 15, 0]
 
                 MDCard:
                     id: card_state
                     style: 'elevated'
                     theme_line_color: 'Custom'
                     line_color: 'black'
-                    size_hint: 0.45, 1
+                    size_hint: 0.45, 1.05
                     theme_bg_color: 'Custom'
                     md_bg_color: 'white'  # Cor padrão
                     md_bg_color_disabled: "white"  # Cor quando desabilitado
@@ -86,12 +85,12 @@
                     style: 'elevated'
                     theme_line_color: 'Custom'
                     line_color: 'black'
-                    size_hint: 0.45, 1
+                    size_hint: 0.45, 1.05
                     theme_bg_color: 'Custom'
                     md_bg_color: 'white'  # Cor padrão
                     md_bg_color_disabled: "white"  # Cor quando desabilitado
                     md_bg_color_pressed: "white"  # Cor quando pressionado
-                    pos_hint: {'center_x': 0.73, 'center_y': 0.5}
+
                     on_release: root.menu_city.open()
 
                     MDRelativeLayout:
