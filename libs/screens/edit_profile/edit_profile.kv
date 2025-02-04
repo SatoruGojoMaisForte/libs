@@ -14,28 +14,26 @@
             padding: [10, 10, 0, 0]
             spacing: "30dp"
 
-            MDCard:
+            BoxLayout:
                 size_hint: 1, None
-                height: "60dp"  # Altura fixa
-                theme_bg_color: 'Custom'
-                md_bg_color: 0, 0, 0, 0
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '37dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    on_release: root.login()
 
-                MDRelativeLayout:
-                    MDIconButton:
-                        icon: 'arrow-left'
-                        theme_font_size: 'Custom'
-                        font_size: '37dp'
-                        theme_icon_color: 'Custom'
-                        icon_color: 'black'
-                        pos_hint: {'center_x': 0.1, 'center_y': 0.6}
-                        on_release: root.login()
-
-                    MDLabel:
-                        text: 'Editar Perfil'
-                        font_style: 'Headline'
-                        role: 'medium'
-                        bold: True
-                        halign: 'center'
+                MDLabel:
+                    text: 'Editar Perfil'
+                    font_style: 'Headline'
+                    role: 'medium'
+                    bold: True
+                    pos_hint: {'center_x': 0.2}
+                    halign: 'center'
 
             MDCard:
                 style: 'elevated'
