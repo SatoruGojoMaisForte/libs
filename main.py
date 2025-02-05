@@ -5,6 +5,7 @@ from kivymd.uix.screenmanager import MDScreenManager
 from libs.screens.edit_profile.edit_profile import EditProfile
 from libs.screens.edit_profile_two.edit_profile_two import EditProfileTwo
 from libs.screens.principal_screen.principal_screen import PerfilScreen
+from libs.screens.table_screen.table_screen import TableScreen
 from kivy.core.window import Window
 
 
@@ -14,8 +15,9 @@ class MainApp(MDApp):
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
         self.screenmanager.add_widget(PerfilScreen(name='Perfil'))
-        self.screenmanager.add_widget(EditProfile(name='EditProfile'))
         self.screenmanager.add_widget(EditProfileTwo(name='EditProfileTwo'))
+        self.screenmanager.add_widget(TableScreen(name='Table'))
+        self.screenmanager.add_widget(EditProfile(name='EditProfile'))
         return self.screenmanager
 
     def load_all_kv_files(self):
@@ -23,6 +25,7 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens/principal_screen/principal_screen.kv')
         Builder.load_file('libs/screens/edit_profile_two/edit_profile_two.kv')
         Builder.load_file('libs/components/navigations_buttons.kv')
+        Builder.load_file('libs/screens/table_screen/table_screen.kv')
 
 
 MainApp().run()
