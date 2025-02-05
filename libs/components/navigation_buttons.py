@@ -1,7 +1,7 @@
 from kivy.uix.screenmanager import SlideTransition
 from kivy.properties import StringProperty
 from kivymd.uix.navigationbar.navigationbar import MDNavigationBar
-
+from libs.screens.principal_screen.principal_screen import PerfilScreen
 from kivymd.app import MDApp
 
 
@@ -22,13 +22,12 @@ class NavigationsButtons(MDNavigationBar):
         screen_manager.current = 'homepage'
 
     def bricklayer(self):
-        print(self.nome)
+
         app = MDApp.get_running_app()
         screen_manager = app.root
-        bricklayer = screen_manager.get_screen('Bricklayer')
-        bricklayer.avatar = self.avatar
-        bricklayer.nome = self.nome
-        screen_manager.current = 'Bricklayer'
+        bricklayer = screen_manager.get_screen('Table')
+        bricklayer.username = self.nome
+        screen_manager.current = 'Table'
 
     def sign_up(self):
         app = MDApp.get_running_app()
@@ -40,4 +39,7 @@ class NavigationsButtons(MDNavigationBar):
         screen_manager.current = 'SignUp'
 
     def passo(self):
-        print('passo')
+        app = MDApp.get_running_app()
+        screen_manager = app.root
+        bricklayer = screen_manager.get_screen('Table')
+        screen_manager.current = 'Perfil'
