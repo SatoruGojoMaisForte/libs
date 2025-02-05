@@ -58,6 +58,7 @@ class EditProfile(MDScreen):
     # Inicializando tela de finalização de atualização dos dados -------------------------------------------------------
     def screen_finalize(self):
         # Definindo o ícone de erro para as telas
+
         icone_erro = MDIconButton(
             icon='alert-circle',
             theme_font_size='Custom',
@@ -323,6 +324,8 @@ class EditProfile(MDScreen):
             self.ids.erro2.text = 'Formato de email invalido'
 
     # Manipulando banco de dados ---------------------------------------------------------------------------------------
+
+    # Alterar todos os dados ------
     def update_database(self):
         ''' Agora vamos puxar os dados do firebase'''
         url = 'https://obra-7ebd9-default-rtdb.firebaseio.com/Users'
@@ -342,10 +345,9 @@ class EditProfile(MDScreen):
                 self.key = key
                 self.update_database_3(key)
             else:
-                print(value['name'])
+                pass
 
     def update_database_3(self, key):
-        print('update')
         url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{key}'
 
         data = {'name': str(self.ids.name_user.text).replace(' ', ''),
@@ -362,24 +364,42 @@ class EditProfile(MDScreen):
         )
 
     def database_sucess(self, req, result):
-        print(result)
-        print('data')
+        print('3')
+        url = 'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios'
+        UrlRequest(
+            url=f'{url}/.json',
+            on_success=self.get_employees
+        )
+
+    def get_employees(self, req, result):
+        for employees, info in result.items():
+            if info['contractor'] == self.name_user:
+                print(employees)
+                print('chamando patch')
+                self.change_employe(employees)
+
+    def change_employe(self, url):
+        url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/{url}/.json'
+        data = {
+            'contractor': self.ids.name_user.text
+        }
+        UrlRequest(
+            url,
+            req_body=json.dumps(data),
+            method='PATCH',
+            on_success=self.change_employees
+        )
+
+    def change_employees(self, req, result):
+        # Remova o card anterior, se já existir
+        if 'card' in self.ids and self.card.parent:
+            self.card.parent.remove_widget(self.card)
+
         progress = self.ids['progress']
         self.ids['relative'].remove_widget(progress)
         self.ids.texto_carregando.text = 'Tudo certo!'
         self.ids.texto_carregando.pos_hint = {'center_x': .5, 'center_y': .6}
         self.add_widget(self.card)
-        self.data()
-
-    def data(self):
-        url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{self.key}'
-        UrlRequest(
-            url=f'{url}/.json',
-            on_success=self.get_data,
-        )
-
-    def get_data(self, req, result):
-        print('Ola')
 
     # Transição de telas -----------------------------------------------------------------------------------------------
 
@@ -411,7 +431,7 @@ class EditProfile(MDScreen):
         perfil.username = self.ids.name_user.text
         perfil.email = self.ids.email.text
         perfil.company = self.company
-        perfil.state = self.company
+        perfil.state = self.state
         self.remove_widget(self.card)
         self.manager.current = 'Perfil'
 
