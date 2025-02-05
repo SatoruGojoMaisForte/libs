@@ -8,7 +8,9 @@ class TableScreen(MDScreen):
     cont = 0
     username = StringProperty()
     adicionado = 0
+
     def on_enter(self):
+        print(self.username)
         url = 'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios'
         self.adicionado += 1
         if self.adicionado == 1:
