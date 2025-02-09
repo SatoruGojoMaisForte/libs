@@ -1,0 +1,226 @@
+<EditProfile>:
+    name: 'EditProfile'
+    md_bg_color: 'white'
+
+    ScrollView:
+        id: scroll  # ID para o ScrollView
+        do_scroll_x: False
+        do_scroll_y: True
+
+        BoxLayout:
+            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            size_hint_y: None
+            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            padding: [10, 10, 0, 0]
+            spacing: "30dp"
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '37dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    on_release: root.login()
+
+                MDLabel:
+                    text: 'Editar Perfil'
+                    font_style: 'Headline'
+                    role: 'medium'
+                    bold: True
+                    pos_hint: {'center_x': 0.2}
+                    halign: 'center'
+
+            MDCard:
+                style: 'elevated'
+                size_hint: 0.9, None
+                height: "150dp"  # Altura fixa
+                theme_shadow_color: "Custom"
+                shadow_color: "white"
+                theme_bg_color: "Custom"
+                md_bg_color: "white"
+                md_bg_color_disabled: "grey"
+                theme_shadow_offset: "Custom"
+                shadow_offset: (1, -2)
+                theme_shadow_softness: "Custom"
+                shadow_softness: 1
+                theme_elevation_level: "Custom"
+                elevation_level: 2
+                spacing: '15dp'
+                pos_hint: {'center_x': 0.5}
+                halign: 'center'
+
+                MDRelativeLayout:
+                    AsyncImage:
+                        id: perfil
+                        size_hint: 0.5, None
+                        height: '450dp'
+                        pos_hint: {"center_x": 0.5, 'center_y': 0.5}
+                        source: root.avatar
+                        keep_ratio: True  # Mantém a proporção da imagem
+                        allow_stretch: True
+
+            MDButton:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                theme_line_color: 'Custom'
+                line_color: 'white'
+                size_hint: 1, None
+                height: "35dp"  # Altura fixa
+                pos_hint: {"center_x": 0.5, 'center_y': 0.5}
+                on_release: root.open_gallery()
+                id: botton_perfil
+
+                MDButtonText:
+                    id: image_perfil
+                    text: 'Editar foto de perfil'
+                    theme_text_color: 'Custom'
+                    text_color: 'blue'
+                    font_style: 'Title'
+                    role: 'medium'
+
+            # Campo de nome
+            MDCard:
+                size_hint: 1, None
+                height: "60dp"  # Altura fixa
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1,
+                padding: [0, 20, 0, 0]
+
+                MDRelativeLayout:
+                    MDTextField:
+                        id: name_user
+                        text: root.name_user
+                        size_hint: 0.9, None
+                        height: "40dp"  # Altura fixa
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.62}
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'black'
+                        radius: [20,]
+                        on_focus: root.scroll_to_widget(self)  # Rola para o campo ao focar
+                        MDTextFieldHintText:
+                            text: 'Nome completo'
+
+                    MDLabel:
+                        id: erro4
+                        text: ''
+                        halign: 'right'
+                        theme_text_color: 'Custom'
+                        text_color: 'red'
+                        font_style: 'Title'
+                        role: 'small'
+                        padding: [0, 40, 0, 0]
+                        pos_hint: {'center_x': 0.44, 'center_y': 0.01}
+
+            # Campo de E-mail
+            MDCard:
+                size_hint: 1, None
+                height: "60dp"  # Altura fixa
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [0, 10, 0, 0]
+
+                MDRelativeLayout:
+                    MDTextField:
+                        id: email
+                        text: root.email
+                        size_hint: 0.9, None
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'black'
+                        radius: [20,]
+                        on_focus: root.scroll_to_widget(self)  # Rola para o campo ao focar
+                        MDTextFieldHintText:
+                            text: 'Email'
+
+                    MDLabel:
+                        id: erro2
+                        text: ''
+                        halign: 'right'
+                        theme_text_color: 'Custom'
+                        text_color: 'red'
+                        padding: [0, 20, 0, 0]
+                        font_style: 'Title'
+                        role: 'small'
+
+                        pos_hint: {'center_x': 0.44, 'center_y': 0.01}
+
+            # Campo de telefone
+            MDCard:
+                size_hint: 1, None
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                padding: [0, 0, 0, 0]
+                height: "60dp"  # Altura fixa
+
+                MDRelativeLayout:
+                    MDTextField:
+                        id: telefone
+                        text: root.telefone
+                        size_hint: 0.9, None
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                        theme_text_color: 'Custom'
+                        text_color_normal: 'black'
+                        radius: [20,]
+                        on_text: root.on_text_two(self, self.text)
+                        on_focus: root.scroll_to_widget(self)
+
+                        MDTextFieldHintText:
+                            text: 'Numero de Telefone'
+
+                    MDLabel:
+                        id: erro1
+                        text: ''
+                        halign: 'right'
+                        theme_text_color: 'Custom'
+                        text_color: 'red'
+                        font_style: 'Title'
+                        role: 'small'
+                        pos_hint: {'center_x': 0.44, 'center_y': 0.01}
+
+
+            # Botão de Salvar
+            MDCard:
+                style: 'elevated'
+                size_hint: 0.9, None
+                height: "60dp"  # Altura fixa
+                theme_shadow_color: "Custom"
+                shadow_color: "yellow"
+                theme_bg_color: "Custom"
+                md_bg_color: "black"
+                md_bg_color_disabled: "grey"
+                theme_shadow_offset: "Custom"
+                shadow_offset: (1, -2)
+                theme_shadow_softness: "Custom"
+                shadow_softness: 1
+                theme_elevation_level: "Custom"
+                elevation_level: 2
+                pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                halign: 'center'
+                on_release: root.step_one()
+
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Alterar'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        halign: 'center'
+                        bold: True
+
+            MDButton:
+                pos_hint: {'center_x': 0.75}
+                on_release: root.next_page()
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                theme_line_color: 'Custom'
+                line_color: 'white'
+                MDButtonText:
+                    theme_text_color: 'Custom'
+                    text_color: 'red'
+                    bold: True
+                    text: 'Proxima pagina'
