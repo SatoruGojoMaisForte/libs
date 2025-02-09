@@ -1,0 +1,21 @@
+<Seguidores>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '55dp'
+    elevation: 0
+    theme_bg_color: 'Custom'
+    text_color: 1, 1, 1, 1
+    md_bg_color: 1, 1, 1, 1
+
+    MDRelativeLayout:
+        MDLabel:
+            text: root.seguidores
+            halign: 'center'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+
+        MDLabel:
+            text: 'Seguidores'
+            halign: 'center'
+            theme_font_size: 'Custom'
+            font_size: 16
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}

@@ -1,0 +1,33 @@
+<CirclePerfis>:
+    size_hint: None, None
+    size: 62, 100
+    elevation: 0
+    theme_bg_color: 'Custom'
+    md_bg_color: 1, 1, 1, 1
+    on_release: root.perfil()
+
+    MDRelativeLayout:
+        size_hint: None, None
+        size: 60, 100
+
+        AsyncImage:
+            source: root.avatar
+            radius: 53
+            size_hint: None, None
+            size: 70, 70
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MDLabel:
+            text: root.name
+            halign: 'center'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.0001}
+            theme_font_size: 'Custom'
+            font_size: 13
+            bold: True
+            theme_text_color: 'Custom'
+            text_color: 0, 0, 0, 1
+
+<Circle@MDCard>:
+    size_hint: None, None
+    elevation: 0
+    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
