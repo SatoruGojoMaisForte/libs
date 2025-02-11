@@ -28,7 +28,7 @@ class PerfilScreen(MDScreen):
         self.ids.locate.text = f'{self.state}  -  {self.city}'
         self.ids.navigation.nome = self.username
         self.counter_employees()
-        if self.contratando == 'não':
+        if self.contratando == 'Não':
             self.ids.contratando.text_color = 'red'
         else:
             self.ids.contratando.text_color = 'green'
