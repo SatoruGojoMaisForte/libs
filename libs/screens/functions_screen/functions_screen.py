@@ -34,7 +34,7 @@ class FunctionsScreen(MDScreen):
                             MDListItemLeadingIcon(icon="account-tie"),
                             MDListItemHeadlineText(text=f"{y['occupation']}"),
                             MDListItemSupportingText(text=f"{y['Option Payment']}"),
-                            MDListItemTertiaryText(text=f'{y['State']}-{y['City']}')
+                            MDListItemTertiaryText(text=f"{y['State']}-{y['City']}")
                         )
                         self.ids.main_scroll.add_widget(list_item)
                     else:
@@ -42,7 +42,7 @@ class FunctionsScreen(MDScreen):
                             MDListItemLeadingIcon(icon="account-tie"),
                             MDListItemHeadlineText(text=f"{y['occupation']}"),
                             MDListItemSupportingText(text=f"{y['Option Payment']}: R${y['Salary']}"),
-                            MDListItemTertiaryText(text=f'{y['State']}-{y['City']}')
+                            MDListItemTertiaryText(text=f"{y['State']}-{y['City']}")
                         )
                         self.ids.main_scroll.add_widget(list_item)
 
