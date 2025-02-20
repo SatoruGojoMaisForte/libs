@@ -17,7 +17,6 @@ from kivy.core.window import Window
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
         self.screenmanager.add_widget(PerfilScreen(name='Perfil'))
