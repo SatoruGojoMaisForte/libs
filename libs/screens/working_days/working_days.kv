@@ -1,0 +1,141 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<WorkingDays>:
+    name: 'WorkingDays'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+
+        MDBoxLayout:
+            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            size_hint_y: None
+            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.95}
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '34dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    on_release: root.back_evaluation()
+
+                MDLabel:
+                    text: 'Trabalho semanal'
+                    font_style: 'Title'
+                    role: 'large'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.5}
+
+
+                MDIconButton:
+                    icon: 'check-all'
+                    theme_font_size: 'Custom'
+                    font_size: '34dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'black'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+
+        AsyncImage:
+            id: graphic
+            souce: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1739310220/lira.jpg'
+            size_hint: .6, 0.4
+            pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.1
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+            padding: [40, 0, 40, 0]
+
+            MDBoxLayout:
+                size_hint: 0.2, 1
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+                spacing: 5
+                padding: [20, 0, 0, 0]
+
+                Circle:
+                    size: [20,20]
+                    radius: [100,]
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 'red'
+
+                MDLabel:
+                    text: 'Faltas'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+
+
+            MDBoxLayout:
+                size_hint: 0.2, 1
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+                spacing: 5
+                padding: [20, 0, 0, 0]
+
+                Circle:
+                    size: [20,20]
+                    radius: [100,]
+                    theme_bg_color: 'Custom'
+                    md_bg_color: [0.0, 1.0, 0.0, 1.0]
+
+                MDLabel:
+                    text: 'Presença'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'black'
+            size_hint: 0.85, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y': .47}
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+                spacing: 5
+                padding: [20, 0, 0, 0]
+
+                MDLabel:
+                    text: 'Dias da semana'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+                spacing: 5
+                padding: [40, 0, 0, 0]
+
+                MDLabel:
+                    text: 'Trabalhou?'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+
+        MDScrollView:
+            do_scroll_x: False
+            pos_hint: {'center_x': 0.5, 'center_y': 0.23}
+            size_hint: 0.98, 0.4
+
+            MDBoxLayout:
+                id: main_scroll
+                orientation: "vertical"
+
+
