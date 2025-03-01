@@ -6,7 +6,9 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from PIL import Image
+import io
 
 
 class WorkingDays(MDScreen):
@@ -46,34 +48,33 @@ class WorkingDays(MDScreen):
         dias_trabalhados = self.days_work
         faltas = self.faults
 
-        # Criar o gráfico de pizza
-        plt.figure(figsize=(6, 6))
-        sizes = [dias_trabalhados, faltas]
-        colors = [[0.0, 1.0, 0.0, 1.0], 'red']
-        explode = (0.1, 0)
+        # Criar o gráfico de pizza com Plotly
+        fig = go.Figure(data=[go.Pie(
+            labels=['Dias Trabalhados', 'Faltas'],
+            values=[dias_trabalhados, faltas],
+            marker_colors=[[1.0, 0.0, 1.0, 0.0], 'red'],
 
-        plt.pie(
-            sizes,
-            explode=explode,
-            colors=colors,
-            autopct='%1.1f%%',
-            startangle=90,
-            textprops={
-                'color': 'black',
-                'fontsize': 16,
-                'weight': 'bold'
-            }
+        )])
+
+        fig.update_traces(
+            textinfo='percent',
+            textfont_size=30,
+            textfont_color='black',
+            hoverinfo='label+percent'
         )
-        plt.axis('equal')
-        plt.axis('off')
+
+        fig.update_layout(
+            showlegend=False,
+            margin=dict(l=0, r=0, t=0, b=0)
+        )
 
         # Salvar a imagem localmente
         local_image_path = 'chart.png'
-        plt.savefig(local_image_path, transparent=True, bbox_inches='tight', pad_inches=0)
-        plt.close()
+        img_bytes = fig.to_image(format="png", width=600, height=600)
+        img = Image.open(io.BytesIO(img_bytes))
+        img.save(local_image_path, "PNG")
 
         # Executar o upload em uma thread separada
-
         threading.Thread(target=self.perform_upload, args=(local_image_path,)).start()
 
     def perform_upload(self, local_image_path):
@@ -106,6 +107,8 @@ class WorkingDays(MDScreen):
         Esta função é chamada no thread principal do Kivy.
         """
         self.ids.graphic.source = image_url
+
+    # O restante do código permanece o mesmo...
 
     def upload_days(self):
         dias = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sabado']
