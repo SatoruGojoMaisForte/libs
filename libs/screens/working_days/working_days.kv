@@ -5,24 +5,24 @@
     FloatLayout:
 
         MDBoxLayout:
-            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            orientation: 'vertical'
             size_hint_y: None
-            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            height: self.minimum_height
             padding: [10, 10, 0, 0]
-            spacing: "50dp"
+            spacing: dp(50)
             theme_bg_color: 'Custom'
             md_bg_color: 1, 1, 1, 1
             pos_hint: {'center_x': 0.5, 'center_y': 0.95}
 
             BoxLayout:
                 size_hint: 1, None
-                height: '60dp'
-                padding: [0, 0, 15, 0]
+                height: dp(60)
+                padding: [0, 0, dp(15), 0]
 
                 MDIconButton:
                     icon: 'arrow-left'
                     theme_font_size: 'Custom'
-                    font_size: '34dp'
+                    font_size: dp(34)
                     theme_icon_color: 'Custom'
                     icon_color: 'black'
                     pos_hint: {'center_x': 0.1, 'center_y': 0.6}
@@ -36,14 +36,13 @@
                     halign: 'center'
                     pos_hint: {'center_x': 0.5}
 
-
                 MDIconButton:
                     icon: 'check-all'
                     theme_font_size: 'Custom'
-                    font_size: '34dp'
+                    font_size: dp(34)
                     theme_icon_color: 'Custom'
                     icon_color: 'black'
-                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    pos_hint: {'center_x': 0.9, 'center_y': 0.6}
 
         MDDivider:
             orientation: 'horizontal'
@@ -51,49 +50,53 @@
             color: 'black'
             pos_hint: {'center_x': 0.5, 'center_y': 0.87}
 
-        MDBoxLayout:
-            orientation: 'horizontal'
-            theme_bg_color: 'Custom'
-            md_bg_color: 'white'
-            size_hint: 0.85, 0.05
-            pos_hint: {'center_x': 0.5, 'center_y': .82}
 
-            MDBoxLayout:
-                theme_bg_color: 'Custom'
-                md_bg_color: 'white'
-                spacing: 5
-                padding: [20, 0, 0, 0]
-
-                MDLabel:
-                    text: 'Dias da semana'
-                    theme_text_color: 'Custom'
-                    text_color: 'black'
-                    bold: True
-
-            MDBoxLayout:
-                theme_bg_color: 'Custom'
-                md_bg_color: 'white'
-                spacing: 5
-                padding: [40, 0, 0, 0]
-
-                MDLabel:
-                    text: 'Trabalhou?'
-                    theme_text_color: 'Custom'
-                    text_color: 'black'
-                    font_style: 'Title'
-                    role: 'medium'
-                    bold: True
 
         MDScrollView:
             do_scroll_x: False
-            pos_hint: {'center_x': 0.5, 'center_y': 0.58}
-            size_hint: 0.98, 0.4
+            pos_hint: {'center_x': 0.5, 'center_y': 0.62}
+            size_hint: 0.98, 0.45
 
             MDBoxLayout:
                 id: main_scroll
                 orientation: "vertical"
                 theme_bg_color: 'Custom'
                 md_bg_color: 1, 1, 1, 1
+
+
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    theme_bg_color: 'Custom'
+                    md_bg_color: 'white'
+                    size_hint: 0.85, 0.03
+                    pos_hint: {'center_x': 0.5, 'center_y': 1}
+
+                    MDBoxLayout:
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'white'
+                        spacing: dp(5)
+                        padding: [dp(20), 0, 0, 0]
+
+                        MDLabel:
+                            text: 'Dias da semana'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            bold: True
+
+                    MDBoxLayout:
+                        theme_bg_color: 'Custom'
+                        md_bg_color: 'white'
+                        spacing: dp(5)
+                        padding: [dp(40), 0, 0, 0]
+
+                        MDLabel:
+                            text: 'Trabalhou?'
+                            theme_text_color: 'Custom'
+                            text_color: 'black'
+                            font_style: 'Title'
+                            halign: 'right'
+                            role: 'medium'
+                            bold: True
 
         MDDivider:
             orientation: 'horizontal'
@@ -106,20 +109,20 @@
             size_hint: 1, 0.1
             theme_bg_color: 'Custom'
             md_bg_color: 'white'
-            pos_hint: {'center_x': 0.45, 'center_y': 0.32}
-            padding: [40, 0, 40, 0]
+            pos_hint: {'center_x': 0.5, 'center_y': 0.32}
+            padding: [dp(40), 0, dp(40), 0]
 
             MDBoxLayout:
                 size_hint: 0.2, 1
                 theme_bg_color: 'Custom'
                 md_bg_color: 'white'
-                spacing: 5
-                padding: [20, 0, 0, 0]
+                spacing: dp(5)
+                padding: [dp(20), 0, 0, 0]
 
                 MDIconButton:
                     icon: 'circle'
                     theme_font_size: 'Custom'
-                    font_size: '40'
+                    font_size: dp(80)
                     theme_icon_color: 'Custom'
                     icon_color: 'red'
                     pos_hint: {'center_y': 0.5}
@@ -130,18 +133,17 @@
                     text_color: 'black'
                     bold: True
 
-
             MDBoxLayout:
                 size_hint: 0.2, 1
                 theme_bg_color: 'Custom'
                 md_bg_color: 'white'
-                spacing: 5
-                padding: [20, 0, 0, 0]
+                spacing: dp(5)
+                padding: [dp(20), 0, 0, 0]
 
                 MDIconButton:
                     icon: 'circle'
                     theme_font_size: 'Custom'
-                    font_size: '40'
+                    font_size: dp(80)
                     theme_icon_color: 'Custom'
                     icon_color: 0.0, 1.0, 0.0, 1.0
                     pos_hint: {'center_y': 0.5}
@@ -158,15 +160,5 @@
             pos_hint: {'center_x': 0.5, 'center_y': 0.1}
             theme_bg_color: 'Custom'
             md_bg_color: 'white'
-            size_hint: 0.8, 0.3  # Ajuste o tamanho da caixa onde a pizza vai ser colocada
-            padding: [10, 20, 20, 20]
-
-            PizzaWidget:
-                dias_trabalhados: 15
-                dias_falta: 5
-                size_hint: None, None  # Desativa o ajuste de tamanho automático
-                size: 200, 200  # Tamanho fixo para a pizza
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}  # Centraliza a pizza dentro do layout
-                halign: 'center'
-                valign: 'center'
-
+            size_hint: 0.8, 0.3
+            padding: [dp(10), dp(20), dp(20), dp(20)]
