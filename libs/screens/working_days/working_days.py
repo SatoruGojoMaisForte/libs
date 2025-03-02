@@ -1,14 +1,8 @@
-import os
-import threading
-import cloudinary
-from kivy.clock import Clock
+from kivy.network.urlrequest import UrlRequest
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
-import plotly.graph_objects as go
-from PIL import Image
-import io
 
 
 class WorkingDays(MDScreen):
@@ -24,14 +18,6 @@ class WorkingDays(MDScreen):
     sex = 0
     sab = 0
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        cloudinary.config(
-            cloud_name="dsmgwupky",
-            api_key="256987432736353",
-            api_secret="K8oSFMvqA6N2eU4zLTnLTVuArMU"
-        )
-
     def on_enter(self):
         if self.scale in '6x1':
             self.faults = 6
@@ -44,71 +30,20 @@ class WorkingDays(MDScreen):
         self.upload_days()
 
     def upload_graphic(self):
-        # Dados
-        dias_trabalhados = self.days_work
-        faltas = self.faults
-
-        # Criar o gráfico de pizza com Plotly
-        fig = go.Figure(data=[go.Pie(
-            labels=['Dias Trabalhados', 'Faltas'],
-            values=[dias_trabalhados, faltas],
-            marker_colors=[[1.0, 0.0, 1.0, 0.0], 'red'],
-
-        )])
-
-        fig.update_traces(
-            textinfo='percent',
-            textfont_size=30,
-            textfont_color='black',
-            hoverinfo='label+percent'
+        url = f'https://api-graphic.onrender.com/graphic?days_work={self.days_work}&faults={self.faults}&employee_name={self.employee_name}'
+        UrlRequest(
+            url,
+            method='GET',
+            on_success=self.graphic_update
         )
 
-        fig.update_layout(
-            showlegend=False,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        # Salvar a imagem localmente
-        local_image_path = 'chart.png'
-        img_bytes = fig.to_image(format="png", width=600, height=600)
-        img = Image.open(io.BytesIO(img_bytes))
-        img.save(local_image_path, "PNG")
-
-        # Executar o upload em uma thread separada
-        threading.Thread(target=self.perform_upload, args=(local_image_path,)).start()
-
-    def perform_upload(self, local_image_path):
-        try:
-            # Upload da imagem com corte circular
-            response = cloudinary.uploader.upload(
-                local_image_path,
-                public_id=self.employee_name,
-                overwrite=True,
-                transformation=[
-                    {'width': 1000, 'height': 1000, 'crop': 'thumb', 'gravity': 'face', 'radius': 'max'}
-                ]
-            )
-
-            # Agendar a atualização da interface gráfica no thread principal do Kivy
-            Clock.schedule_once(lambda dt: self.update_graphic_source(response['secure_url']))
-
-        except Exception as e:
-            print(f"Erro ao enviar imagem para o Cloudinary: {e}")
-
-        finally:
-            # Excluir a imagem local após o upload
-            if os.path.exists(local_image_path):
-                os.remove(local_image_path)
-                print("Imagem local excluída.")
-
-    def update_graphic_source(self, image_url):
+    def graphic_update(self, isntance, image_url):
         """
         Atualiza a fonte da imagem no widget graphic.
         Esta função é chamada no thread principal do Kivy.
         """
-        self.ids.graphic.source = image_url
 
-    # O restante do código permanece o mesmo...
+        self.ids.graphic.source = image_url
 
     def upload_days(self):
         dias = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sabado']
