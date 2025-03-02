@@ -6,29 +6,44 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse
 
 
+from kivy.graphics import Color, Ellipse
+from kivy.uix.widget import Widget
+
+
 class PizzaWidget(Widget):
     def __init__(self, dias_trabalhados=1, dias_falta=1, **kwargs):
         super().__init__(**kwargs)
         self.dias_trabalhados = dias_trabalhados
         self.dias_falta = dias_falta
         self.calcular_porcentagens()
-        self.draw_pizza()
+        self.bind(size=self.redraw_pizza)  # Redesenha o gráfico quando o tamanho muda
 
     def calcular_porcentagens(self):
         total_dias = self.dias_trabalhados + self.dias_falta
         self.freq_presenca = (self.dias_trabalhados / total_dias) * 100
         self.freq_faltas = 100 - self.freq_presenca
 
+    def redraw_pizza(self, *args):
+        self.canvas.clear()  # Limpa o canvas antes de redesenhar
+        self.draw_pizza()
+
     def draw_pizza(self):
         angulo_presenca = (self.freq_presenca / 100) * 360
         angulo_faltas = 360 - angulo_presenca
 
         with self.canvas:
-            Color(0, 1, 0, 1)  # Cor da presença (verde)
-            Ellipse(pos=(90, 20), size=(160, 160), angle_start=0, angle_end=angulo_presenca)
+            # Calcula o tamanho da pizza com base no tamanho do widget
+            pizza_size = min(self.size) * 0.8  # 80% do menor lado (largura ou altura)
+            center_x = self.center_x - pizza_size / 23
+            center_y = self.center_y - pizza_size / 2
 
-            Color(1, 0, 0, 1)  # Cor das faltas (vermelho)
-            Ellipse(pos=(90, 20), size=(160, 160), angle_start=angulo_presenca, angle_end=360)
+            # Desenha a parte verde (presença)
+            Color(0, 1, 0, 1)  # Verde
+            Ellipse(pos=(center_x, center_y), size=(pizza_size, pizza_size), angle_start=0, angle_end=angulo_presenca)
+
+            # Desenha a parte vermelha (faltas)
+            Color(1, 0, 0, 1)  # Vermelho
+            Ellipse(pos=(center_x, center_y), size=(pizza_size, pizza_size), angle_start=angulo_presenca, angle_end=360)
 
 
 class WorkingDays(MDScreen):
