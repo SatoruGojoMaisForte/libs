@@ -1,5 +1,3 @@
-#:import get_color_from_hex kivy.utils.get_color_from_hex
-
 <WorkingDays>:
     name: 'WorkingDays'
     md_bg_color: 1, 1, 1, 1
@@ -47,18 +45,68 @@
                     icon_color: 'black'
                     pos_hint: {'center_x': 0.1, 'center_y': 0.6}
 
-        AsyncImage:
-            id: graphic
-            souce: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1739310220/lira.jpg'
-            size_hint: .6, 0.4
-            pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+        MDDivider:
+            orientation: 'horizontal'
+            size_hint_x: 1
+            color: 'black'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.87}
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
+            size_hint: 0.85, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y': .82}
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+                spacing: 5
+                padding: [20, 0, 0, 0]
+
+                MDLabel:
+                    text: 'Dias da semana'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+
+            MDBoxLayout:
+                theme_bg_color: 'Custom'
+                md_bg_color: 'white'
+                spacing: 5
+                padding: [40, 0, 0, 0]
+
+                MDLabel:
+                    text: 'Trabalhou?'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    font_style: 'Title'
+                    role: 'medium'
+                    bold: True
+
+        MDScrollView:
+            do_scroll_x: False
+            pos_hint: {'center_x': 0.5, 'center_y': 0.58}
+            size_hint: 0.98, 0.4
+
+            MDBoxLayout:
+                id: main_scroll
+                orientation: "vertical"
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+
+        MDDivider:
+            orientation: 'horizontal'
+            size_hint_x: 1
+            color: 'black'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.37}
 
         MDBoxLayout:
             orientation: 'horizontal'
             size_hint: 1, 0.1
             theme_bg_color: 'Custom'
             md_bg_color: 'white'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+            pos_hint: {'center_x': 0.45, 'center_y': 0.32}
             padding: [40, 0, 40, 0]
 
             MDBoxLayout:
@@ -71,7 +119,7 @@
                 MDIconButton:
                     icon: 'circle'
                     theme_font_size: 'Custom'
-                    font_size: '30'
+                    font_size: '40'
                     theme_icon_color: 'Custom'
                     icon_color: 'red'
                     pos_hint: {'center_y': 0.5}
@@ -93,9 +141,9 @@
                 MDIconButton:
                     icon: 'circle'
                     theme_font_size: 'Custom'
-                    font_size: '30'
+                    font_size: '40'
                     theme_icon_color: 'Custom'
-                    icon_color: 'blue'
+                    icon_color: 0.0, 1.0, 0.0, 1.0
                     pos_hint: {'center_y': 0.5}
 
                 MDLabel:
@@ -105,41 +153,20 @@
                     bold: True
 
         MDBoxLayout:
-            orientation: 'horizontal'
+            id: graphic
+            orientation: 'vertical'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
             theme_bg_color: 'Custom'
-            md_bg_color: 'black'
-            size_hint: 0.85, 0.05
-            pos_hint: {'center_x': 0.5, 'center_y': .47}
+            md_bg_color: 'white'
+            size_hint: 0.8, 0.3  # Ajuste o tamanho da caixa onde a pizza vai ser colocada
+            padding: [10, 20, 20, 20]
 
-            MDBoxLayout:
-                theme_bg_color: 'Custom'
-                md_bg_color: 'white'
-                spacing: 5
-                padding: [20, 0, 0, 0]
-
-                MDLabel:
-                    text: 'Dias da semana'
-                    theme_text_color: 'Custom'
-                    text_color: 'black'
-
-            MDBoxLayout:
-                theme_bg_color: 'Custom'
-                md_bg_color: 'white'
-                spacing: 5
-                padding: [40, 0, 0, 0]
-
-                MDLabel:
-                    text: 'Trabalhou?'
-                    theme_text_color: 'Custom'
-                    text_color: 'black'
-
-        MDScrollView:
-            do_scroll_x: False
-            pos_hint: {'center_x': 0.5, 'center_y': 0.23}
-            size_hint: 0.98, 0.4
-
-            MDBoxLayout:
-                id: main_scroll
-                orientation: "vertical"
-
+            PizzaWidget:
+                dias_trabalhados: 15
+                dias_falta: 5
+                size_hint: None, None  # Desativa o ajuste de tamanho automático
+                size: 200, 200  # Tamanho fixo para a pizza
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}  # Centraliza a pizza dentro do layout
+                halign: 'center'
+                valign: 'center'
 
