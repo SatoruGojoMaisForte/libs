@@ -26,8 +26,8 @@
 
             MDLabel:
                 text: 'Trabalho semanal'
-                font_style: 'Title'
-                role: 'large'
+                font_style: 'Headline'
+                role: 'small'
                 bold: True
                 halign: 'center'
                 valign: 'center'
@@ -50,12 +50,14 @@
             orientation: 'horizontal'
             size_hint_y: None
             height: dp(50)
-            padding: [dp(20), dp(10), dp(20), dp(10)]
+            padding: [dp(30), dp(20), dp(20), dp(10)]
 
             MDLabel:
                 text: 'Dias da semana'
                 theme_text_color: 'Custom'
                 text_color: 'black'
+                font_style: 'Title'
+                role: 'large'
                 bold: True
                 size_hint_x: 0.6
 
@@ -63,6 +65,8 @@
                 text: 'Trabalhou?'
                 theme_text_color: 'Custom'
                 text_color: 'black'
+                font_style: 'Title'
+                role: 'large'
                 bold: True
                 halign: 'right'
                 size_hint_x: 0.4
@@ -128,7 +132,7 @@
                     theme_font_size: 'Custom'
                     font_size: dp(30)
                     theme_icon_color: 'Custom'
-                    icon_color: 0, 1, 0, 1  # Verde
+                    icon_color: 'blue'
                     size_hint: None, None
                     size: dp(40), dp(40)
 
@@ -153,6 +157,8 @@
         MDListItem:
             pos_hint: {'center_x': 0.5 , 'center_y': 0.010}
             size_hint_x: 0.8
+            theme_bg_color: 'Custom'
+            md_bg_color: 'white'
 
             MDListItemSupportingText:
                 id: faults
@@ -165,5 +171,5 @@
                 id: present
                 text: '10%'
                 theme_text_color: 'Custom'
-                text_color: 0.0, 1.0, 0.0, 1.0
+                text_color: 'blue'
                 bold: True
