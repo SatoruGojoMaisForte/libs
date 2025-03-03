@@ -65,6 +65,7 @@ class WorkingDays(MDScreen):
     sab = 0
 
     def on_enter(self):
+
         # Limpa widgets existentes para evitar duplicatas ao reentrar na tela
         self.ids.main_scroll.clear_widgets()
         self.ids.graphic.clear_widgets()
@@ -81,6 +82,16 @@ class WorkingDays(MDScreen):
         self.upload_days()
         self.upload_graphic()
 
+    def calcular_porcentagens(self):
+        total_dias = self.days_work + self.faults
+        if total_dias > 0:  # Previne divisão por zero
+            self.freq_presenca = (self.days_work / total_dias) * 100
+        else:
+            self.freq_presenca = 0
+        self.freq_faltas = 100 - self.freq_presenca
+        self.ids.faults.text = f'{self.freq_faltas}%'
+        self.ids.present.text = f'{self.freq_presenca}%'
+
     def upload_graphic(self):
         # Cria o widget do gráfico de pizza
         pizza_widget = PizzaWidget(dias_trabalhados=self.days_work, dias_falta=self.faults)
@@ -94,6 +105,8 @@ class WorkingDays(MDScreen):
 
         # Adiciona ao layout
         self.ids.graphic.add_widget(pizza_widget)
+        # Calcular a porra das porcentagens
+        self.calcular_porcentagens()
 
     def upload_days(self):
         dias = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sabado']
@@ -107,7 +120,9 @@ class WorkingDays(MDScreen):
                     text=dia
                 ),
                 pos_hint={'center_x': 0.5},
-                size_hint=(1, None)
+                size_hint=(1, None),
+                theme_bg_color='Custom',
+                md_bg_color='white'
             )
             safe_dia = dia.replace('-', '_')
 
@@ -137,8 +152,6 @@ class WorkingDays(MDScreen):
                 self.ids[f"icon_{safe_dia}"] = folga_label
                 list_item.add_widget(folga_label)
                 self.ids.main_scroll.add_widget(list_item)
-
-
 
     def on_checkbox_press(self, dia):
         # Mapeamento dos nomes dos dias para suas variáveis de controle
