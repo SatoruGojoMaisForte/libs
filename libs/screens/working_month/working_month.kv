@@ -1,0 +1,211 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+<WorkingMonth>:
+    name: 'WorkingMonth'
+    md_bg_color: 1, 1, 1, 1
+
+    MDFloatLayout:
+
+        # Barra superior com título e botões
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(60)
+            padding: [dp(5), dp(10), dp(5), dp(5)]
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.95}
+
+
+            MDIconButton:
+                icon: 'arrow-left'
+                theme_font_size: 'Custom'
+                font_size: dp(30)
+                theme_icon_color: 'Custom'
+                icon_color: 'black'
+                on_release: root.back_evaluation()
+
+            MDLabel:
+                text: 'Trabalho semanal'
+                font_style: 'Headline'
+                role: 'small'
+                bold: True
+                halign: 'center'
+                valign: 'center'
+                padding: [0, 10, 0, 0]
+
+
+            MDIconButton:
+                icon: 'account-circle'
+                theme_font_size: 'Custom'
+                font_size: dp(30)
+                theme_icon_color: 'Custom'
+                icon_color: 'black'
+
+
+        MDLabel:
+            text: 'Complete a frequência referente às quatro semanas.'
+            halign: 'center'
+            font_style: 'Title'
+            role: 'medium'
+            theme_text_color: 'Custom'
+            text_color: 'grey'
+            theme_width: 'Custom'
+            size_hint_x: 0.65
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+
+        MDScrollView:
+            do_scroll_x: False
+            size_hint_x: 0.8
+            size_hint_y: 0.4
+            pos_hint: {'center_x': 0.5, 'center_y': 0.53}
+
+            MDBoxLayout:
+                id: main_scroll
+                orientation: "vertical"
+                spacing: dp(5)
+                size_hint_y: None
+                height: self.minimum_height
+                md_bg_color: 1, 1, 1, 1
+
+                # Semana 1 -------------------------------------------
+                MDListItem:
+                    focus_behavior: False
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#E6E8E6')
+                    radius: [15,]
+                    MDListItemSupportingText:
+                        text: 'Semana 1'
+                        font_style: 'Title'
+                        role: 'medium'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#363635')
+
+                    MDListItemTrailingIcon:
+                        icon: 'arrow-right'
+                        theme_icon_color: 'Custom'
+                        icon_color: get_color_from_hex('#9DD9D2')
+
+                # Semana 2 -------------------------------------------
+                MDListItem:
+                    focus_behavior: False
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#E6E8E6')
+                    radius: [15,]
+                    MDListItemSupportingText:
+                        text: 'Semana 2'
+                        font_style: 'Title'
+                        role: 'medium'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#363635')
+
+                    MDListItemTrailingIcon:
+                        icon: 'arrow-right'
+                        theme_icon_color: 'Custom'
+                        icon_color: get_color_from_hex('#9DD9D2')
+
+                # Semana 3 -------------------------------------------
+                MDListItem:
+                    focus_behavior: False
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#E6E8E6')
+                    radius: [15,]
+                    MDListItemSupportingText:
+                        text: 'Semana 3'
+                        font_style: 'Title'
+                        role: 'medium'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#363635')
+
+                    MDListItemTrailingIcon:
+                        icon: 'arrow-right'
+                        theme_icon_color: 'Custom'
+                        icon_color: get_color_from_hex('#9DD9D2')
+
+                # Semana 4 -------------------------------------------
+                MDListItem:
+                    focus_behavior: False
+                    theme_bg_color: 'Custom'
+                    md_bg_color: get_color_from_hex('#E6E8E6')
+                    radius: [15,]
+                    MDListItemSupportingText:
+                        text: 'Semana 4'
+                        font_style: 'Title'
+                        role: 'medium'
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#363635')
+
+                    MDListItemTrailingIcon:
+                        icon: 'arrow-right'
+                        theme_icon_color: 'Custom'
+                        icon_color: get_color_from_hex('#9DD9D2')
+
+        MDCard:
+            style: 'elevated'
+            size_hint: .8, 0.08
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+            theme_bg_color: 'Custom'
+            md_bg_color: "white"
+            md_bg_color_disabled: "white"
+            MDRelativeLayout:
+
+                MDIconButton:
+                    icon: 'circle'
+                    theme_font_size: 'Custom'
+                    font_size: dp(30)
+                    theme_icon_color: 'Custom'
+                    icon_color: 234/255, 43/255, 31/255, 1
+                    size_hint: None, None
+                    size: dp(40), dp(40)
+                    pos_hint: {'center_x': 0.55, 'center_y': 0.7}
+
+
+                MDLabel:
+                    text: 'Faltas'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.7, 'center_y': 0.7}
+
+                MDLabel:
+                    id: percentege_faults
+                    text: '80%'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.7, 'center_y': 0.2}
+
+                MDIconButton:
+                    icon: 'circle'
+                    theme_font_size: 'Custom'
+                    font_size: dp(30)
+                    theme_icon_color: 'Custom'
+                    icon_color: 46/255, 249/255, 255/255, 1
+                    size_hint: None, None
+                    size: dp(40), dp(40)
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.7}
+
+
+                MDLabel:
+                    text: 'Presença'
+                    theme_text_color: 'Custom'
+                    text_color: 'black'
+                    bold: True
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.3, 'center_y': 0.7}
+
+                MDLabel:
+                    id: percentege_present
+                    text: '20%'
+                    halign: 'center'
+                    pos_hint: {'center_x': 0.3, 'center_y': 0.2}
+
+        # Área do gráfico
+        MDBoxLayout:
+            id: graphic
+            orientation: 'vertical'
+            size_hint_y: 0.25
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            padding: [dp(10), dp(5), dp(10), dp(5)]
