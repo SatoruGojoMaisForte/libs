@@ -2,163 +2,149 @@
     name: 'WorkingDays'
     md_bg_color: 1, 1, 1, 1
 
-    FloatLayout:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 0
+        padding: 0
 
+        # Barra superior com título e botões
         MDBoxLayout:
-            orientation: 'vertical'
-            size_hint_y: None
-            height: self.minimum_height
-            padding: [10, 10, 0, 0]
-            spacing: dp(50)
-            theme_bg_color: 'Custom'
-            md_bg_color: 1, 1, 1, 1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}
-
-            BoxLayout:
-                size_hint: 1, None
-                height: dp(60)
-                padding: [0, 0, dp(15), 0]
-
-                MDIconButton:
-                    icon: 'arrow-left'
-                    theme_font_size: 'Custom'
-                    font_size: dp(34)
-                    theme_icon_color: 'Custom'
-                    icon_color: 'black'
-                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
-                    on_release: root.back_evaluation()
-
-                MDLabel:
-                    text: 'Trabalho semanal'
-                    font_style: 'Title'
-                    role: 'large'
-                    bold: True
-                    halign: 'center'
-                    pos_hint: {'center_x': 0.5}
-
-                MDIconButton:
-                    icon: 'check-all'
-                    theme_font_size: 'Custom'
-                    font_size: dp(34)
-                    theme_icon_color: 'Custom'
-                    icon_color: 'black'
-                    pos_hint: {'center_x': 0.9, 'center_y': 0.6}
-
-        MDDivider:
             orientation: 'horizontal'
-            size_hint_x: 1
+            size_hint_y: None
+            height: dp(60)
+            padding: [dp(5), dp(10), dp(5), dp(5)]
+            md_bg_color: 1, 1, 1, 1
+
+            MDIconButton:
+                icon: 'arrow-left'
+                theme_font_size: 'Custom'
+                font_size: dp(30)
+                theme_icon_color: 'Custom'
+                icon_color: 'black'
+                size_hint_x: None
+                width: dp(48)
+                on_release: root.back_evaluation()
+
+            MDLabel:
+                text: 'Trabalho semanal'
+                font_style: 'Title'
+                role: 'large'
+                bold: True
+                halign: 'center'
+                valign: 'center'
+
+            MDIconButton:
+                icon: 'check-all'
+                theme_font_size: 'Custom'
+                font_size: dp(30)
+                theme_icon_color: 'Custom'
+                icon_color: 'black'
+                size_hint_x: None
+                width: dp(48)
+
+        # Divisor horizontal
+        MDDivider:
             color: 'black'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.87}
 
+        # Cabeçalho dos dias da semana
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(50)
+            padding: [dp(20), dp(10), dp(20), dp(10)]
 
+            MDLabel:
+                text: 'Dias da semana'
+                theme_text_color: 'Custom'
+                text_color: 'black'
+                bold: True
+                size_hint_x: 0.6
 
-        MDScrollView:
+            MDLabel:
+                text: 'Trabalhou?'
+                theme_text_color: 'Custom'
+                text_color: 'black'
+                bold: True
+                halign: 'right'
+                size_hint_x: 0.4
+
+        # Área de rolagem com os dias da semana
+        ScrollView:
             do_scroll_x: False
-            pos_hint: {'center_x': 0.5, 'center_y': 0.62}
-            size_hint: 0.98, 0.45
+            size_hint_y: 0.4
 
             MDBoxLayout:
                 id: main_scroll
                 orientation: "vertical"
-                theme_bg_color: 'Custom'
+                spacing: dp(5)
+                padding: [dp(0), dp(5), dp(20), dp(5)]
+                size_hint_y: None
+                height: self.minimum_height
                 md_bg_color: 1, 1, 1, 1
 
 
-                MDBoxLayout:
-                    orientation: 'horizontal'
-                    theme_bg_color: 'Custom'
-                    md_bg_color: 'white'
-                    size_hint: 0.85, 0.03
-                    pos_hint: {'center_x': 0.5, 'center_y': 1}
-
-                    MDBoxLayout:
-                        theme_bg_color: 'Custom'
-                        md_bg_color: 'white'
-                        spacing: dp(5)
-                        padding: [dp(20), 0, 0, 0]
-
-                        MDLabel:
-                            text: 'Dias da semana'
-                            theme_text_color: 'Custom'
-                            text_color: 'black'
-                            bold: True
-
-                    MDBoxLayout:
-                        theme_bg_color: 'Custom'
-                        md_bg_color: 'white'
-                        spacing: dp(5)
-                        padding: [dp(40), 0, 0, 0]
-
-                        MDLabel:
-                            text: 'Trabalhou?'
-                            theme_text_color: 'Custom'
-                            text_color: 'black'
-                            font_style: 'Title'
-                            halign: 'right'
-                            role: 'medium'
-                            bold: True
-
+        # Divisor horizontal
         MDDivider:
-            orientation: 'horizontal'
-            size_hint_x: 1
             color: 'black'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.37}
 
+        # Área de legenda (faltas e presenças)
         MDBoxLayout:
             orientation: 'horizontal'
-            size_hint: 1, 0.1
-            theme_bg_color: 'Custom'
-            md_bg_color: 'white'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.32}
-            padding: [dp(40), 0, dp(40), 0]
+            size_hint_y: None
+            height: dp(60)
+            padding: [dp(20), dp(10), dp(20), dp(10)]
 
+            # Legenda de faltas
             MDBoxLayout:
-                size_hint: 0.2, 1
-                theme_bg_color: 'Custom'
-                md_bg_color: 'white'
-                spacing: dp(5)
-                padding: [dp(20), 0, 0, 0]
+                orientation: 'horizontal'
+                size_hint_x: 0.5
+                spacing: dp(10)
+                padding: [dp(10), 0, 0, 0]
 
                 MDIconButton:
                     icon: 'circle'
                     theme_font_size: 'Custom'
-                    font_size: dp(80)
+                    font_size: dp(30)
                     theme_icon_color: 'Custom'
-                    icon_color: 'red'
-                    pos_hint: {'center_y': 0.5}
+                    icon_color: 1, 0, 0, 1  # Vermelho
+                    size_hint: None, None
+                    size: dp(40), dp(40)
 
                 MDLabel:
                     text: 'Faltas'
                     theme_text_color: 'Custom'
                     text_color: 'black'
                     bold: True
+                    valign: 'center'
 
+            # Legenda de presenças
             MDBoxLayout:
-                size_hint: 0.2, 1
-                theme_bg_color: 'Custom'
-                md_bg_color: 'white'
-                spacing: dp(5)
-                padding: [dp(20), 0, 0, 0]
+                orientation: 'horizontal'
+                size_hint_x: 0.5
+                spacing: dp(10)
+                padding: [dp(10), 0, 0, 0]
 
                 MDIconButton:
                     icon: 'circle'
                     theme_font_size: 'Custom'
-                    font_size: dp(80)
+                    font_size: dp(30)
                     theme_icon_color: 'Custom'
-                    icon_color: 0.0, 1.0, 0.0, 1.0
-                    pos_hint: {'center_y': 0.5}
+                    icon_color: 0, 1, 0, 1  # Verde
+                    size_hint: None, None
+                    size: dp(40), dp(40)
 
                 MDLabel:
                     text: 'Presença'
                     theme_text_color: 'Custom'
                     text_color: 'black'
                     bold: True
+                    valign: 'center'
 
+        # Área do gráfico
         MDBoxLayout:
             id: graphic
             orientation: 'vertical'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+            size_hint_y: 0.2
             theme_bg_color: 'Custom'
-            md_bg_color: 'white'
-            size_hint: 0.8, 0.3
-            padding: [dp(10), dp(20), dp(20), dp(20)]
+            md_bg_color: 1, 1, 1, 1
+            padding: [dp(10), dp(5), dp(10), dp(5)]
