@@ -41,7 +41,7 @@ class PizzaWidget(Widget):
             center_y = self.center_y - pizza_size / 2  # Centraliza a pizza verticalmente
 
             # Desenha a parte verde (presença)
-            Color(0, 1, 0, 1)  # Verde
+            Color(0, 0, 1, 1)  # Verde
             Ellipse(pos=(center_x, center_y), size=(pizza_size, pizza_size), angle_start=0, angle_end=angulo_presenca)
 
             # Desenha a parte vermelha (faltas)
@@ -122,15 +122,27 @@ class WorkingDays(MDScreen):
                 pos_hint={'center_x': 0.5},
                 size_hint=(1, None),
                 theme_bg_color='Custom',
-                md_bg_color='white'
+                theme_focus_color='Custom',
+                md_bg_color=[1, 1, 1, 1],
+                md_bg_color_disabled=[1, 1, 1, 1],
+                ripple_color=(1, 1, 1, 1),
+                focus_behavior=False
+
+
             )
             safe_dia = dia.replace('-', '_')
 
             if not is_folga:
                 # Cria botão de checkbox
                 icon_button = MDListItemTrailingCheckbox(
-
+                        padding=[0, 0, 20, 0],
+                        theme_focus_color='Custom',
+                        color_active='blue',
+                        color_disabled='black',
+                        _current_color='purple',
+                        focus_behavior=False
                 )
+                icon_button.icon = 'checkbox-blank-circle-outline'
 
                 # Armazena referência e vincula evento
                 self.ids[f"icon_{safe_dia}"] = icon_button
@@ -145,6 +157,7 @@ class WorkingDays(MDScreen):
                     theme_text_color='Custom',
                     text_color=[0.0, 1.0, 0.0, 1.0],  # Verde
                     halign='right',
+                    padding=[0, 0, 15, 0],
                     valign='center'
                 )
 
