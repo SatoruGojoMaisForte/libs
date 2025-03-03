@@ -1,13 +1,12 @@
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
+from kivymd.uix.list import MDListItem, MDListItemHeadlineText, MDListItemTrailingIcon, \
+    MDListItemTrailingSupportingText, MDListItemTrailingCheckbox
 from kivymd.uix.screen import MDScreen
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse
-
-
-from kivy.graphics import Color, Ellipse
-from kivy.uix.widget import Widget
+from kivy.metrics import dp
 
 
 class PizzaWidget(Widget):
@@ -16,15 +15,19 @@ class PizzaWidget(Widget):
         self.dias_trabalhados = dias_trabalhados
         self.dias_falta = dias_falta
         self.calcular_porcentagens()
-        self.bind(size=self.redraw_pizza)  # Redesenha o gráfico quando o tamanho muda
+        self.bind(size=self.redraw_pizza)
+        self.bind(pos=self.redraw_pizza)  # Redesenha quando a posição muda também
 
     def calcular_porcentagens(self):
         total_dias = self.dias_trabalhados + self.dias_falta
-        self.freq_presenca = (self.dias_trabalhados / total_dias) * 100
+        if total_dias > 0:  # Previne divisão por zero
+            self.freq_presenca = (self.dias_trabalhados / total_dias) * 100
+        else:
+            self.freq_presenca = 0
         self.freq_faltas = 100 - self.freq_presenca
 
     def redraw_pizza(self, *args):
-        self.canvas.clear()  # Limpa o canvas antes de redesenhar
+        self.canvas.clear()
         self.draw_pizza()
 
     def draw_pizza(self):
@@ -32,10 +35,10 @@ class PizzaWidget(Widget):
         angulo_faltas = 360 - angulo_presenca
 
         with self.canvas:
-            # Calcula o tamanho da pizza com base no tamanho do widget
-            pizza_size = min(self.size) * 0.8  # 80% do menor lado (largura ou altura)
-            center_x = self.center_x - pizza_size / 23
-            center_y = self.center_y - pizza_size / 2
+            # Calcula o tamanho da pizza apropriadamente com base nas dimensões do widget
+            pizza_size = min(self.width, self.height) * 0.8
+            center_x = self.center_x - pizza_size / 2  # Centraliza a pizza horizontalmente
+            center_y = self.center_y - pizza_size / 2  # Centraliza a pizza verticalmente
 
             # Desenha a parte verde (presença)
             Color(0, 1, 0, 1)  # Verde
@@ -47,11 +50,13 @@ class PizzaWidget(Widget):
 
 
 class WorkingDays(MDScreen):
-    scale = '5x2'
+    scale = '5x2'  # Escala padrão
     method_salary = 'Diaria'
     employee_name = 'Helem'
     days_work = 0
-    faults = 5
+    faults = 5  # Padrão para escala 5x2
+
+    # Variáveis de controle dos dias
     seg = 0
     terc = 0
     quart = 0
@@ -59,383 +64,117 @@ class WorkingDays(MDScreen):
     sex = 0
     sab = 0
 
-
     def on_enter(self):
-        if self.scale in '6x1':
+        # Limpa widgets existentes para evitar duplicatas ao reentrar na tela
+        self.ids.main_scroll.clear_widgets()
+        self.ids.graphic.clear_widgets()
+
+        # Inicializa faltas com base na escala de trabalho
+        if self.scale == '6x1':
             self.faults = 6
-        elif self.scale in '5x2':
+        elif self.scale == '5x2':
             self.faults = 5
-        else:
+        else:  # 4x3
             self.faults = 4
 
+        # Cria a lista de dias e o gráfico
         self.upload_days()
         self.upload_graphic()
 
     def upload_graphic(self):
-        # Cria o widget PizzaWidget com as variáveis de dias trabalhados e faltas
+        # Cria o widget do gráfico de pizza
         pizza_widget = PizzaWidget(dias_trabalhados=self.days_work, dias_falta=self.faults)
 
-        # Defina o tamanho fixo do widget
-        pizza_widget.size = (200, 200)  # Aqui você define o tamanho do PizzaWidget
-        pizza_widget.size_hint = None, None  # Isso desabilita o redimensionamento automático
+        # Define tamanho fixo e desativa redimensionamento automático
+        pizza_widget.size_hint = (None, None)
+        pizza_widget.size = (dp(180), dp(180))  # Tamanho ajustado para melhores proporções
 
-        # Centraliza o widget dentro do layout
+        # Centraliza o widget no layout
         pizza_widget.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
 
-        # Adiciona o PizzaWidget ao layout
+        # Adiciona ao layout
         self.ids.graphic.add_widget(pizza_widget)
-
 
     def upload_days(self):
         dias = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sabado']
 
         for dia in dias:
-            if self.scale in '6x1':
-                # Layout principal horizontal
-                main_layout = MDBoxLayout(
-                    orientation='horizontal',
-                    theme_bg_color='Custom',
-                    md_bg_color='white',
-                    size_hint=(0.86, 0.02),
-                    pos_hint={'center_x': 0.5, 'center_y': 0.47},
-                    padding=[0, 0, 35, 0]
+            # Verifica se é um dia de folga com base na escala
+            is_folga = (self.scale == '5x2' and dia == 'Sabado') or \
+                       (self.scale == '4x3' and (dia == 'Sexta-feira' or dia == 'Sabado'))
+            list_item = MDListItem(
+                MDListItemHeadlineText(
+                    text=dia
+                ),
+                pos_hint={'center_x': 0.5},
+                size_hint=(1, None)
+            )
+            safe_dia = dia.replace('-', '_')
+
+            if not is_folga:
+                # Cria botão de checkbox
+                icon_button = MDListItemTrailingCheckbox(
+
                 )
 
-                # Primeiro MDBoxLayout (para o rótulo "Terça-feira")
-                label_layout = MDBoxLayout(
-                    theme_bg_color='Custom',
-                    md_bg_color='white',
-                    spacing=5,
-                    padding=[20, 0, 0, 0]
-                )
-
-                label = MDLabel(
-                    text=dia,
-                    theme_text_color='Custom',
-                    text_color='black'
-                )
-                label_layout.add_widget(label)
-
-                # Segundo MDBoxLayout (para o ícone de checkbox)
-                icon_layout = MDBoxLayout(
-                    theme_bg_color='Custom',
-                    md_bg_color='white',
-                    spacing=0,
-                    size_hint=(None, None),  # Define o tamanho do botão como None para que ele não ocupe todo o espaço
-                    size=(48, 48),
-                    pos_hint={'center_x': 0.9}
-                )
-
-                icon_button = MDIconButton(
-                    icon='checkbox-blank-circle-outline',
-                    halign='center',
-                    size_hint=(None, None),
-                    pos_hint={'center_x': 0.5, 'center_y': 0.5}
-                )
-
-                self.ids[f"icon_{dia.replace('-', '_')}"] = icon_button
-                print(icon_button.id)
+                # Armazena referência e vincula evento
+                self.ids[f"icon_{safe_dia}"] = icon_button
                 icon_button.bind(on_release=lambda instance, d=dia: self.on_checkbox_press(d))
-                icon_layout.add_widget(icon_button)
+                list_item.add_widget(icon_button)
+                self.ids.main_scroll.add_widget(list_item)
 
-                # Adicionar os layouts ao layout principal
-                main_layout.add_widget(label_layout)
-                main_layout.add_widget(icon_layout)
-                self.ids.main_scroll.add_widget(main_layout)
-
-            elif self.scale in '5x2':
-                if dia not in 'Sabado':
-                    # Layout principal horizontal
-                    main_layout = MDBoxLayout(
-                        orientation='horizontal',
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        size_hint=(0.86, 0.02),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.47},
-                        padding=[0, 0, 35, 0]
-                    )
-
-                    # Primeiro MDBoxLayout (para o rótulo "Terça-feira")
-                    label_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=5,
-                        padding=[20, 0, 0, 0]
-                    )
-
-                    label = MDLabel(
-                        text=dia,
-                        theme_text_color='Custom',
-                        text_color='black'
-                    )
-                    label_layout.add_widget(label)
-
-                    # Segundo MDBoxLayout (para o ícone de checkbox)
-                    icon_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=0,
-                        size_hint=(None, None),
-                        # Define o tamanho do botão como None para que ele não ocupe todo o espaço
-                        size=(48, 48),
-                        pos_hint={'center_x': 0.9}
-                    )
-
-                    icon_button = MDIconButton(
-                        icon='checkbox-blank-circle-outline',
-                        halign='center',
-                        size_hint=(None, None),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.5}
-                    )
-
-                    self.ids[f"icon_{dia.replace('-', '_')}"] = icon_button
-                    print(icon_button.id)
-                    icon_button.bind(on_release=lambda instance, d=dia: self.on_checkbox_press(d))
-                    icon_layout.add_widget(icon_button)
-
-                    # Adicionar os layouts ao layout principal
-                    main_layout.add_widget(label_layout)
-                    main_layout.add_widget(icon_layout)
-                    self.ids.main_scroll.add_widget(main_layout)
-                else:
-                    # Layout principal horizontal
-                    main_layout = MDBoxLayout(
-                        orientation='horizontal',
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        size_hint=(0.86, 0.02),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.47},
-                        padding=[0, 0, 40, 0]
-                    )
-
-                    # Primeiro MDBoxLayout (para o rótulo "Terça-feira")
-                    label_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=15,
-                        padding=[20, 0, 0, 0]
-                    )
-
-                    label = MDLabel(
-                        text=dia,
-                        theme_text_color='Custom',
-                        text_color='black'
-                    )
-                    label_layout.add_widget(label)
-
-                    # Segundo MDBoxLayout (para o ícone de checkbox)
-                    icon_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=5,
-                        padding=[0, 0, 0, 0]
-                    )
-
-                    icon_button = MDLabel(
-                        text='Folga',
-                        theme_text_color='Custom',
-                        text_color=[0.0, 1.0, 0.0, 1.0],
-                        pos_hint={'center_x': 0.9, 'center_y': 0.5},
-                        halign='right'
-                    )
-
-                    self.ids[f"icon_{dia.replace('-', '_')}"] = icon_button
-                    print(icon_button.id)
-                    icon_button.bind(on_release=lambda instance, d=dia: self.on_checkbox_press(d))
-                    icon_layout.add_widget(icon_button)
-
-                    # Adicionar os layouts ao layout principal
-                    main_layout.add_widget(label_layout)
-                    main_layout.add_widget(icon_layout)
-                    self.ids.main_scroll.add_widget(main_layout)
             else:
+                # Cria rótulo "Folga" para dias de folga
+                folga_label = MDListItemTrailingSupportingText(
+                    text='Folga',
+                    theme_text_color='Custom',
+                    text_color=[0.0, 1.0, 0.0, 1.0],  # Verde
+                    halign='right',
+                    valign='center'
+                )
 
-                if dia not in ('Sexta-feira', 'Sabado'):
-                    # Layout principal horizontal
-                    main_layout = MDBoxLayout(
-                        orientation='horizontal',
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        size_hint=(0.86, 0.02),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.47},
-                        padding=[0, 0, 35, 0]
-                    )
+                # Armazena referência
+                self.ids[f"icon_{safe_dia}"] = folga_label
+                list_item.add_widget(folga_label)
+                self.ids.main_scroll.add_widget(list_item)
 
-                    # Primeiro MDBoxLayout (para o rótulo "Terça-feira")
-                    label_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=5,
-                        padding=[20, 0, 0, 0]
-                    )
 
-                    label = MDLabel(
-                        text=dia,
-                        theme_text_color='Custom',
-                        text_color='black'
-                    )
-                    label_layout.add_widget(label)
-
-                    # Segundo MDBoxLayout (para o ícone de checkbox)
-                    icon_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=0,
-                        size_hint=(None, None),
-                        # Define o tamanho do botão como None para que ele não ocupe todo o espaço
-                        size=(48, 48),
-                        pos_hint={'center_x': 0.9}
-                    )
-
-                    icon_button = MDIconButton(
-                        icon='checkbox-blank-circle-outline',
-                        halign='center',
-                        size_hint=(None, None),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.5}
-                    )
-
-                    self.ids[f"icon_{dia.replace('-', '_')}"] = icon_button
-                    print(icon_button.id)
-                    icon_button.bind(on_release=lambda instance, d=dia: self.on_checkbox_press(d))
-                    icon_layout.add_widget(icon_button)
-
-                    # Adicionar os layouts ao layout principal
-                    main_layout.add_widget(label_layout)
-                    main_layout.add_widget(icon_layout)
-                    self.ids.main_scroll.add_widget(main_layout)
-                else:
-                    # Layout principal horizontal
-                    main_layout = MDBoxLayout(
-                        orientation='horizontal',
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        size_hint=(0.86, 0.02),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.47},
-                        padding=[0, 0, 40, 0]
-                    )
-
-                    # Primeiro MDBoxLayout (para o rótulo "Terça-feira")
-                    label_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=5,
-                        padding=[20, 0, 0, 0]
-                    )
-
-                    label = MDLabel(
-                        text=dia,
-                        theme_text_color='Custom',
-                        text_color='black'
-                    )
-                    label_layout.add_widget(label)
-
-                    # Segundo MDBoxLayout (para o ícone de checkbox)
-                    icon_layout = MDBoxLayout(
-                        theme_bg_color='Custom',
-                        md_bg_color='white',
-                        spacing=5,
-                        padding=[0, 0, 0, 0]
-                    )
-
-                    icon_button = MDLabel(
-                        text='Folga',
-                        theme_text_color='Custom',
-                        text_color=[0.0, 1.0, 0.0, 1.0],
-                        pos_hint={'center_x': 0.9, 'center_y': 0.5},
-                        halign='right'
-                    )
-
-                    self.ids[f"icon_{dia.replace('-', '_')}"] = icon_button
-                    print(icon_button.id)
-                    icon_button.bind(on_release=lambda instance, d=dia: self.on_checkbox_press(d))
-                    icon_layout.add_widget(icon_button)
-
-                    # Adicionar os layouts ao layout principal
-                    main_layout.add_widget(label_layout)
-                    main_layout.add_widget(icon_layout)
-                    self.ids.main_scroll.add_widget(main_layout)
 
     def on_checkbox_press(self, dia):
-        if dia == 'Segunda-feira':
-            if self.seg == 0:
-                self.seg += 1
-                self.faults -= 1
+        # Mapeamento dos nomes dos dias para suas variáveis de controle
+        mapa_dias = {
+            'Segunda-feira': 'seg',
+            'Terça-feira': 'terc',
+            'Quarta-feira': 'quart',
+            'Quinta-feira': 'quint',
+            'Sexta-feira': 'sex',
+            'Sabado': 'sab'
+        }
+
+        # Obtém o valor atual para este dia
+        var_dia = mapa_dias.get(dia)
+        if var_dia:
+            valor_atual = getattr(self, var_dia)
+            dia_seguro = dia.replace('-', '_')
+
+            if valor_atual == 0:
+                # Marca como trabalhado
+                setattr(self, var_dia, 1)
                 self.days_work += 1
-
-                self.ids.icon_Segunda_feira.icon = 'checkbox-blank-circle'
-            else:
-                self.seg = 0
-                self.faults += 1
-                self.days_work -= 1
-
-                self.ids.icon_Segunda_feira.icon = 'checkbox-blank-circle-outline'
-
-        elif dia == 'Terça-feira':
-            if self.terc == 0:
-                self.terc += 1
                 self.faults -= 1
-                self.days_work += 1
-
-                self.ids.icon_Terça_feira.icon = 'checkbox-blank-circle'
+                self.ids[f"icon_{dia_seguro}"].icon = 'checkbox-blank-circle'
             else:
-                self.terc = 0
-                self.faults += 1
+                # Marca como não trabalhado
+                setattr(self, var_dia, 0)
                 self.days_work -= 1
-
-                self.ids.icon_Terça_feira.icon = 'checkbox-blank-circle-outline'
-
-        elif dia == 'Quarta-feira':
-            if self.quart == 0:
-                self.quart += 1
-                self.faults -= 1
-                self.days_work += 1
-
-                self.ids.icon_Quarta_feira.icon = 'checkbox-blank-circle'
-            else:
-                self.quart = 0
                 self.faults += 1
-                self.days_work -= 1
-                self.ids.icon_Quarta_feira.icon = 'checkbox-blank-circle-outline'
+                self.ids[f"icon_{dia_seguro}"].icon = 'checkbox-blank-circle-outline'
 
-        elif dia == 'Quinta-feira':
-            if self.quint == 0:
-                self.quint += 1
-                self.ids.icon_Quinta_feira.icon = 'checkbox-blank-circle'
-                self.faults -= 1
-                self.days_work += 1
+            # Atualiza o gráfico após alterar os dados de presença
+            self.ids.graphic.clear_widgets()
+            self.upload_graphic()
 
-            else:
-                self.quint = 0
-                self.faults += 1
-                self.days_work -= 1
-
-                self.ids.icon_Quinta_feira.icon = 'checkbox-blank-circle-outline'
-
-        elif dia == 'Sexta-feira':
-            if self.sex == 0:
-                self.sex += 1
-                self.ids.icon_Sexta_feira.icon = 'checkbox-blank-circle'
-                self.faults -= 1
-                self.days_work += 1
-
-            else:
-                self.sex = 0
-                self.faults += 1
-                self.days_work -= 1
-                self.ids.icon_Sexta_feira.icon = 'checkbox-blank-circle-outline'
-
-        else:
-            if self.sab == 0:
-                self.sab += 1
-                self.ids.icon_Sabado.icon = 'checkbox-blank-circle'
-                self.faults -= 1
-                self.days_work += 1
-
-            else:
-                self.sab = 0
-                self.faults += 1
-                self.days_work -= 1
-                self.ids.icon_Sabado.icon = 'checkbox-blank-circle-outline'
-
-        self.upload_graphic()
-
+    def back_evaluation(self):
+        # Método para lidar com o pressionamento do botão voltar
+        # Você precisará implementar isso com base na navegação do seu aplicativo
+        pass
