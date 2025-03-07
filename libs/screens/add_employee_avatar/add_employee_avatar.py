@@ -209,7 +209,11 @@ class EmployeeAvatar(MDScreen):
             'scale': self.scale,
             'feedback': 0,
             'frequency': 0,
-            'punctuality': 0
+            'punctuality': 0,
+            'work_days_week1': '[]',
+            'work_days_week2': '[]',
+            'work_days_week3': '[]',
+            'work_days_week4': '[]'
         }
 
         UrlRequest(
