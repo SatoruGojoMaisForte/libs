@@ -1,4 +1,3 @@
-
 import locale
 from datetime import datetime
 from kivy.network.urlrequest import UrlRequest
@@ -95,8 +94,29 @@ class EvaluationScreen(MDScreen):
 
     def format_salary(self, salario):
         """Formata um valor float para o padrão monetário brasileiro."""
-        locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')  # Define o local como Brasil
-        return locale.currency(salario, grouping=True, symbol="R$")
+        try:
+            locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')  # Define o local como Brasil
+            return locale.currency(salario, grouping=True, symbol="R$")
+        except locale.Error:
+            # Formatação manual caso o locale falhe (comum em Android)
+            return self.format_brazilian_currency(salario)
+
+    def format_brazilian_currency(self, valor):
+        """Formata um valor para o padrão monetário brasileiro sem usar locale."""
+        # Separa parte inteira e decimal
+        valor_str = f"{valor:.2f}"
+        parte_inteira, parte_decimal = valor_str.split('.')
+
+        # Formata parte inteira com separador de milhar
+        if len(parte_inteira) > 3:
+            grupos = []
+            while parte_inteira:
+                grupos.append(parte_inteira[-3:])
+                parte_inteira = parte_inteira[:-3]
+            parte_inteira = '.'.join(reversed(grupos))
+
+        # Retorna valor formatado
+        return f"R$ {parte_inteira},{parte_decimal}"
 
     def calculate_time(self):
         data_str = self.day
@@ -199,6 +219,7 @@ class EvaluationScreen(MDScreen):
                         self.ids.number_four.icon = x
                     else:
                         self.ids.number_five.icon = x
+
     def _finally_work(self):
         """Verificar forma de recebimento e finalizar o pagamento com base nisso"""
         if self.method_salary in ('Diaria', 'Semanal'):
@@ -306,14 +327,24 @@ class EvaluationScreen(MDScreen):
         percentage, day_value = self._get_percentage_and_day_value("biweekly")
         self.ids.percentage.text = f"{percentage:.2f}%"
         salary = day_value * self.days_work
-        self.ids.value_salary.text = f"R${salary:,.2f}"
+        try:
+            # Tenta usar formatação locale
+            self.ids.value_salary.text = f"R${salary:,.2f}"
+        except:
+            # Fallback para formatação manual
+            self.ids.value_salary.text = self.format_brazilian_currency(salary)
 
     def _calculate_month(self):
         """Calcula o salário mensal"""
         percentage, day_value = self._get_percentage_and_day_value("month")
         self.ids.percentage.text = f"{percentage:.2f}%"
         salary = day_value * self.days_work
-        self.ids.value_salary.text = f"R${salary:,.2f}"
+        try:
+            # Tenta usar formatação locale
+            self.ids.value_salary.text = f"R${salary:,.2f}"
+        except:
+            # Fallback para formatação manual
+            self.ids.value_salary.text = self.format_brazilian_currency(salary)
 
     def _calculate_undertakes(self):
         """Calcula o salário por empreita"""
@@ -351,7 +382,20 @@ class EvaluationScreen(MDScreen):
             self.ids.salary.text_color = "red"
             self.ids.text_salary.text = "Não definido"
         else:
-            self.ids.text_salary.text = f"{self.method_salary}: R$ {int(self.salary):,}"
+            try:
+                # Tenta usar formatação locale
+                salary_text = f"{int(self.salary):,}"
+            except:
+                # Fallback para formatação manual simples
+                salary_text = str(int(self.salary))
+                if len(salary_text) > 3:
+                    grupos = []
+                    while salary_text:
+                        grupos.append(salary_text[-3:])
+                        salary_text = salary_text[:-3]
+                    salary_text = '.'.join(reversed(grupos))
+
+            self.ids.text_salary.text = f"{self.method_salary}: R$ {salary_text}"
 
     def _navigate_to_screen(self, screen_name):
         """Navega para uma tela específica, transferindo dados do funcionário"""
@@ -365,7 +409,7 @@ class EvaluationScreen(MDScreen):
             "employee_name", "employee_function", "avatar", "contractor",
             "method_salary", "assess", "coexistence", "punctuality",
             "efficiency", "scale", "week_1", "week_2", "week_3", "week_4",
-            "work_days_week1", "work_days_week2", "work_days_week3", "work_days_week4","key"
+            "work_days_week1", "work_days_week2", "work_days_week3", "work_days_week4", "key"
         ]
         if screen_name == 'WorkingMonth':
             attributes.append('days_work')
