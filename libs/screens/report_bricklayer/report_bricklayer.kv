@@ -43,32 +43,33 @@
 
         MDBoxLayout:
             orientation: 'horizontal'
-            size_hint: 1, 0.1
+            size_hint_y: None
+            height: "85dp"  # Fixed height for the entire container
             theme_bg_color: 'Custom'
             padding: [20, 0, 0, 0]
             md_bg_color: 1, 1, 1, 1
             spacing: 15
-            pos_hint: {'center_x': 0.5, 'center_y': 0.77}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.79}
 
-            MDBoxLayout:
-                # Removido adaptive_width e adaptive_height
-                size_hint: None, None
-                padding: "4dp"
+            MDCard:  # Using MDCard for better control of the avatar
+                size_hint: 1, 1
+                md_bg_color: 1, 1, 1, 1
+                radius: [30, 30, 30, 30]
+                pos_hint: {'center_y': 0.5}
+                elevation: 0
 
                 FitImage:
                     id: avatar
                     source: root.avatar
-                    size_hint: None, None
-                    radius: [30, 30, 30, 30]  # Opcional: bordas arredondadas
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    size_hint: 0.5, 1
+                    radius: [30, 30, 30, 30]
 
             MDBoxLayout:
                 orientation: 'vertical'
                 theme_bg_color: 'Custom'
-                size_hint: 1, 0.8
                 md_bg_color: 1, 1, 1, 1
-                padding: [10, 0, 0, 0]
-                pos_hint: {'center_y': 0.7}
+                padding: [0, 10, 0, 10]
+                pos_hint: {'center_y': 0.5}
 
                 MDLabel:
                     id: name
@@ -76,12 +77,16 @@
                     role: 'large'
                     bold: True
                     text: root.employee_name
+                    size_hint_y: None
+                    height: self.texture_size[1]
 
                 MDLabel:
                     id: function
                     text: root.function
                     font_style: 'Title'
                     role: 'medium'
+                    size_hint_y: None
+                    height: self.texture_size[1]
 
         MDBoxLayout:
             orientation: 'vertical'
