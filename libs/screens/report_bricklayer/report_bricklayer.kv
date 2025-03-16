@@ -19,7 +19,6 @@
                 height: '60dp'
                 padding: [0, 0, 15, 0]
 
-
                 MDIconButton:
                     icon: 'arrow-left'
                     theme_font_size: 'Custom'
@@ -46,22 +45,21 @@
             orientation: 'horizontal'
             size_hint: 1, 0.1
             theme_bg_color: 'Custom'
-            padding: [20 , 0, 0, 0]
+            padding: [20, 0, 0, 0]
             md_bg_color: 1, 1, 1, 1
+            spacing: 15
             pos_hint: {'center_x': 0.5, 'center_y': 0.77}
 
             MDBoxLayout:
-                adaptive_width: True
-                adaptive_height: True
-                padding: "8dp"
+                # Removido adaptive_width e adaptive_height
+                size_hint: None, None
+                padding: "4dp"
 
                 FitImage:
                     id: avatar
                     source: root.avatar
-                    allow_stretch: True
-                    keep_ratio: False
                     size_hint: None, None
-                    halign: 'center'
+                    radius: [30, 30, 30, 30]  # Opcional: bordas arredondadas
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
             MDBoxLayout:
@@ -89,7 +87,7 @@
             orientation: 'vertical'
             size_hint: 1, 0.1
             theme_bg_color: 'Custom'
-            padding: [30 , 0, 20, 0]
+            padding: [30, 0, 20, 0]
             spacing: 30
             md_bg_color: 1, 1, 1, 1
             pos_hint: {'center_x': 0.5, 'center_y': 0.64}
@@ -128,7 +126,7 @@
             orientation: 'horizontal'
             size_hint: 1, 0.06
             theme_bg_color: 'Custom'
-            padding: [30 , 0, 20, 0]
+            padding: [30, 0, 20, 0]
             spacing: 30
             md_bg_color: 1, 1, 1, 1
             pos_hint: {'center_x': 0.5, 'center_y': 0.51}
@@ -152,7 +150,6 @@
                     theme_icon_color: 'Custom'
                     icon_color: 'white'
 
-
                 MDButtonText:
                     text: 'Novo'
                     theme_text_color: 'Custom'
@@ -161,7 +158,7 @@
         MDScrollView:
             do_scroll_x: False
             size_hint: 1, 0.35
-            pos_hint: {'center_x': 0.5 ,'center_y': 0.29}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.29}
 
             MDBoxLayout:
                 id: valleys
