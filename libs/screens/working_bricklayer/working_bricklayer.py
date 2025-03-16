@@ -170,8 +170,8 @@ class WorkingBricklayer(MDScreen):
         evaluation = screenmanager.get_screen('Evaluation')
         evaluation.salary = self.ids.salary.text
         day = self.days_work()
-        evaluation.day = f'{day['day']}'
-        evaluation.days_work = f'{int(day['days_work'])}'
+        evaluation.day = f"{day['day']}"
+        evaluation.days_work = f"{int(day['days_work'])}"
         evaluation.ultimate = f'{self.ids.data_picker.text}'
         evaluation.observations = f'{self.ids.text_field}'
         screenmanager.transition = SlideTransition(direction='right')
