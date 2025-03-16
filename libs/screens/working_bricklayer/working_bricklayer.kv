@@ -5,9 +5,9 @@
 
     FloatLayout:
         MDBoxLayout:
-            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            orientation: 'vertical'
             size_hint_y: None
-            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            height: self.minimum_height
             padding: [10, 10, 0, 0]
             spacing: "50dp"
             theme_bg_color: 'Custom'
@@ -56,92 +56,32 @@
                 text_color: 'black'
                 bold: True
 
+            # Substituindo MDTextField por MDCard com MDLabel
             MDBoxLayout:
-                size_hint: 1, 0.5
-                adaptive_height: True
-                MDTextField:
-                    id: data_picker
-                    validator: "date"
-                    date_format: "dd/mm/yyyy"
-                    readonly: True
-                    on_focus: root.show_modal_date_picker()
-                    MDTextFieldTrailingIcon:
-                        icon: "calendar"
-
-            MDLabel:
-                text: 'Data limite para conclusão do serviço'
-                theme_text_color: 'Custom'
-                text_color: 'grey'
-
-       #: import get_color_from_hex kivy.utils.get_color_from_hex
-<WorkingBricklayer>:
-    name: 'WorkingBricklayer'
-    md_bg_color: 1, 1, 1, 1
-
-    FloatLayout:
-        MDBoxLayout:
-            orientation: 'vertical'  # Organiza os widgets em uma coluna
-            size_hint_y: None
-            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
-            padding: [10, 10, 0, 0]
-            spacing: "50dp"
-            theme_bg_color: 'Custom'
-            md_bg_color: get_color_from_hex('#7692FF')
-            pos_hint: {'center_x': 0.5, 'top': 1}
-
-            BoxLayout:
                 size_hint: 1, None
-                height: '60dp'
-                padding: [0, 0, 15, 0]
+                height: "48dp"
 
-                MDIconButton:
-                    icon: 'arrow-left'
-                    theme_font_size: 'Custom'
-                    font_size: dp(30)
-                    height: '60dp'
-                    theme_icon_color: 'Custom'
-                    icon_color: 'white'
-                    on_release: root.cancel()
+                MDCard:
+                    size_hint: 1, 1
+                    padding: [12, 0, 12, 0]
+                    on_release: root.show_modal_date_picker()
 
-                MDLabel:
-                    text: 'Ajustando Empreita'
-                    font_style: 'Headline'
-                    height: '60dp'
-                    theme_text_color: 'Custom'
-                    text_color: 'white'
-                    role: 'small'
-                    bold: True
-                    halign: 'center'
-                    valign: 'center'
-                    padding: [0, 10, 0, 0]
-                    pos_hint: {'center_x': 0.5 }
+                    MDBoxLayout:
+                        orientation: 'horizontal'
 
-        MDBoxLayout:
-            orientation: 'vertical'
-            size_hint: 0.9, 0.15
-            theme_bg_color: 'Custom'
-            md_bg_color: 'white'
-            spacing: "20dp"
-            adaptive_height: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.78}
+                        MDLabel:
+                            id: data_picker
+                            text: 'Selecione uma data'
+                            theme_text_color: "Secondary"
+                            size_hint_x: 0.9
+                            valign: 'center'
 
-            MDLabel:
-                text: 'Prazo para finalizar o serviço:'
-                theme_text_color: 'Custom'
-                text_color: 'black'
-                bold: True
-
-            MDBoxLayout:
-                size_hint: 1, 0.5
-                adaptive_height: True
-                MDTextField:
-                    id: data_picker
-                    validator: "date"
-                    date_format: "dd/mm/yyyy"
-                    readonly: True
-                    on_focus: root.show_modal_date_picker()
-                    MDTextFieldTrailingIcon:
-                        icon: "calendar"
+                        MDIconButton:
+                            icon: 'calendar'
+                            pos_hint: {'center_y': 0.5}
+                            size_hint_x: 0.1
+                            theme_icon_color: 'Custom'
+                            icon_color: 'black'
 
             MDLabel:
                 text: 'Data limite para conclusão do serviço'
@@ -151,9 +91,10 @@
         # Substituído MDCard por um MDBoxLayout com sombra
         MDBoxLayout:
             size_hint: 0.9, None
+            height: "130dp"
             theme_bg_color: 'Custom'
             md_bg_color: 1, 1, 1, 1
-            pos_hint: {'center_x': 0.45, 'top': 0.65}
+            pos_hint: {'center_x': 0.45, 'top': 0.7}
             padding: "16dp"
             shadow_softness: 8
             shadow_offset: (0, 4)
@@ -218,7 +159,6 @@
                                 size_hint_x: 0.1
                                 theme_icon_color: 'Custom'
                                 icon_color: 'black'
-                                # O evento aqui é propagado para o botão transparente pai
 
         # Substituído MDCard por MDBoxLayout
         MDBoxLayout:
