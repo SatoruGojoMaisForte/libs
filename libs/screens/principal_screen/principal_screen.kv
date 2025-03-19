@@ -10,21 +10,16 @@
 
         MDBoxLayout:
             theme_bg_color: 'Custom'
-            md_bg_color: get_color_from_hex('#2176FF')
+            md_bg_color: 1, 1, 1, 1
             size_hint: 0.95, 0.2
             radius: [15,]
             pos_hint: {'center_x': 0.5, 'top': 0.98}
 
         AsyncImage:
-            source: 'https://res.cloudinary.com/dsmgwupky/image/upload/v1742404159/image_yz4olc.png'
-            pos_hint: {'center_x': 0.5, 'top': 0.93}
-            size_hint: 0.35, 0.28
-
-        AsyncImage:
             id: perfil
             source: root.avatar
-            size_hint: 0.37, 0.16
-            pos_hint: {'center_x': 0.5, 'top': 0.87}
+            size_hint: 0.4, 0.2
+            pos_hint: {'center_x': 0.5, 'top': 0.94}
 
         MDBoxLayout:
             orientation: 'vertical'
@@ -33,7 +28,7 @@
             size_hint: 0.95, 0.08
             padding: [0, 10, 0, 0]
             radius: [15,]
-            pos_hint: {'center_x': 0.5, 'top': 0.7}
+            pos_hint: {'center_x': 0.5, 'top': 0.72}
 
             MDLabel:
                 id: username
@@ -59,7 +54,7 @@
             theme_bg_color: 'Custom'
             md_bg_color: 1, 1, 1, 1
             size_hint: 0.95, 0.1
-            pos_hint: {'center_x': 0.5, 'top': 0.6}
+            pos_hint: {'center_x': 0.5, 'top': 0.62}
 
             MDBoxLayout:
                 orientation: 'horizontal'
@@ -120,7 +115,7 @@
 
 
         MDButton:
-            pos_hint: {'center_x': 0.5, 'center_y': 0.52}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.54}
             halign: 'center'
             theme_bg_color: 'Custom'
             md_bg_color: 0, 0, 1, 1
@@ -135,13 +130,12 @@
 
         MDCard:
             style: 'elevated'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.28}  # Posicionamento ajustado
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}  # Posicionamento ajustado
             size_hint: 0.9, 0.1  # Altura ajustada para uniformidade
             theme_bg_color: 'Custom'
             radius: [10,]
             md_bg_color: 'white'
             theme_shadow_color: 'Custom'
-            shadow_color: 'grey'
             theme_shadow_offset: "Custom"
             shadow_offset: (1, -2)
             theme_shadow_softness: "Custom"
@@ -169,13 +163,13 @@
 
         MDCard:
             style: 'elevated'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.4}  # Posicionamento ajustado
+            pos_hint: {'center_x': 0.5, 'center_y': 0.42}  # Posicionamento ajustado
             size_hint: 0.9, 0.1  # Altura ajustada para uniformidade
             theme_bg_color: 'Custom'
             radius: [10,]
             md_bg_color: 'white'
+            md_bg_color_disabled: 'white'
             theme_shadow_color: 'Custom'
-            shadow_color: 'grey'
             theme_shadow_offset: "Custom"
             shadow_offset: (1, -2)
             theme_shadow_softness: "Custom"
@@ -217,7 +211,7 @@
             shadow_softness: 1
             theme_elevation_level: "Custom"
             elevation_level: 2
-            pos_hint: {'center_x': 0.5, 'center_y': 0.17}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.19}
             halign: 'center'
             on_release: root.functions()
 
