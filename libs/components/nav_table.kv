@@ -1,0 +1,25 @@
+<Navigations>:
+    animation: False  # Desativa a animação
+
+
+    MDNavigationItem:
+        on_release: root.bricklayer()
+        active: True
+
+        MDNavigationItemIcon:
+            id: table
+            icon: 'table'
+            theme_icon_color: 'Custom'
+            icon_color_normal: 'blue'
+            icon_color_active: 'blue'
+
+
+    MDNavigationItem:
+        id: perfil
+        on_release: root.passo()
+
+        MDNavigationItemIcon:
+            icon: 'account-outline'
+            theme_icon_color: 'Custom'
+            icon_color_active: 'blue'
+
