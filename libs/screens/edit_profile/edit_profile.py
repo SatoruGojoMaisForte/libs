@@ -8,7 +8,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.network.urlrequest import UrlRequest
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, get_color_from_hex
 from kivy.uix.image import AsyncImage
 from kivy.uix.screenmanager import SlideTransition
 from kivy.uix.scrollview import ScrollView
@@ -26,14 +26,14 @@ from kivy.core.window import Window
 
 
 class EditProfile(MDScreen):
-    telefone = StringProperty()
+    telefone = StringProperty('(62) 99356-0986')
     city = StringProperty()
     state = StringProperty()
-    email = StringProperty()
+    email = StringProperty('viitiinmec@gmail.com')
     company = StringProperty()
-    name_user = StringProperty()
+    name_user = StringProperty('Solitude')
     dont = 'Sim'
-    avatar = StringProperty()
+    avatar = StringProperty('https://res.cloudinary.com/dsmgwupky/image/upload/v1742508462/Homen%20de%20ferro.jpg')
 
     # Funções de inicialização -----------------------------------------------------------------------------------------
     def __init__(self, **kwargs):
@@ -65,7 +65,10 @@ class EditProfile(MDScreen):
         Clock.schedule_once(self.check_connection, 2)
 
     def on_enter(self):
-        self.on_text_two(self, self.telefone)
+        self.ids.telefone.text = f"{self.telefone}"
+        self.ids.name_user.text = f"{self.name_user}"
+        self.ids.email.text = f"{self.email}"
+        self.ids.perfil.source = f"{self.avatar}"
 
     # Inicializando tela de finalização de atualização dos dados -------------------------------------------------------
     def screen_finalize(self):
@@ -267,24 +270,6 @@ class EditProfile(MDScreen):
                 size_hint_x=0.8,
             ).open()
 
-    # Funções de permissão ---------------------------------------------------------------------------------------------
-    def on_permissions_granted(self):
-        """
-        Ações a serem executadas se as permissões forem concedidas.
-        """
-        print("Permissões concedidas, execute a funcionalidade necessária.")
-        self.ids.image_perfil.text = 'Editar foto de perfil'
-        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/c_crop,g_face,w_300,h_300/r_max/v1736891104/Vein%20do%20grau.jpg'
-
-    def on_permissions_denied(self):
-        """
-        Ações a serem executadas se as permissões forem negadas.
-        """
-        print("Permissões negadas, mostre uma mensagem ou desative a funcionalidade.")
-        self.ids.image_perfil.text = 'Função bloqueada'
-        self.ids.perfil.source = 'https://res.cloudinary.com/dsmgwupky/image/upload/v1726685784/a8da222be70a71e7858bf752065d5cc3-fotor-20240918154039_dokawo.png'
-        self.ids.botton_perfil.disabled = True
-
     # Funções de formatação --------------------------------------------------------------------------------------------
     def is_email_valid(self, text: str) -> bool:
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
@@ -296,16 +281,15 @@ class EditProfile(MDScreen):
 
         if len(numero) == 11:  # Número com código do país
             self.ids.telefone.text = f"({numero[0:2]}) {numero[2:7]}-{numero[7:]}"
-            self.ids.erro1.text = ""
-            self.ids.erro1.text = ""
+
             self.ids.telefone.focus = False
         else:
-            self.ids.erro1.text = "Número inválido"
+            self.ids.telefone.error = True
 
     def step_one(self):
         """Verificar se algum dos campos não estão corretos"""
         print(self.name_user)
-        if self.ids.telefone.text in '' or self.ids.erro1.text != '':
+        if self.ids.telefone.text in '':
             self.ids.telefone.focus = True
             return
 
@@ -317,19 +301,10 @@ class EditProfile(MDScreen):
             self.ids.name_user.focus = True
             return
 
-        if self.ids.erro2.text != '' and self.ids.erro2.text != 'Formato de email invalido':
-            self.ids.email.focus = True
-            return
-
-        if self.ids.erro4.text != '':
-            self.ids.name_user.focus = True
-            return
-
         email = self.ids.email.text
         valid = self.is_email_valid(email)
         print(valid)
         if valid:
-            self.ids.erro2.text = ''
             print('Chamando Função')
 
             if self.ids.email.text != self.email or self.ids.telefone.text != self.telefone or self.ids.name_user.text != self.name_user:
@@ -341,7 +316,7 @@ class EditProfile(MDScreen):
                     MDSnackbarText(
                         text="Apresente novos dados para atualização",
                         theme_text_color='Custom',
-                        text_color='black',
+                        text_color='white',
                         bold=True
                     ),
                     y=dp(24),
@@ -349,7 +324,7 @@ class EditProfile(MDScreen):
                     halign='center',
                     size_hint_x=0.8,
                     theme_bg_color='Custom',
-                    background_color='cyan'
+                    background_color=get_color_from_hex('#00b894')
 
                 ).open()
                 return
