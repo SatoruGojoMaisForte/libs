@@ -1,7 +1,6 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivymd.uix.screenmanager import MDScreenManager
-
 from libs.screens.edit_profile.edit_profile import EditProfile
 from libs.screens.edit_profile_employee.edit_profile_employee import EditProfileEmployee
 from libs.screens.edit_profile_two.edit_profile_two import EditProfileTwo
@@ -37,7 +36,6 @@ from libs.screens_login.register_funcionario.register_funcionario import Registe
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
 
