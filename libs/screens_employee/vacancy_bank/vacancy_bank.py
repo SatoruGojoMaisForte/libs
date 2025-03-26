@@ -14,17 +14,7 @@ from kivymd.uix.divider import MDDivider
 from kivymd.uix.chip import MDChip, MDChipText
 from kivy.utils import get_color_from_hex
 from kivy.properties import StringProperty
-
-
-from kivy.metrics import dp
-from kivy.utils import get_color_from_hex
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.label import MDLabel
-from kivymd.uix.divider import MDDivider
-from kivymd.uix.chip import MDChip, MDChipText
-from kivy.properties import StringProperty
-from kivymd.uix.snackbar import MDSnackbarText
+from kivymd.uix.snackbar import MDSnackbarText, MDSnackbar
 
 
 class OpportunityCard(MDBoxLayout):
@@ -133,12 +123,12 @@ class OpportunityCard(MDBoxLayout):
         )
 
         chip_text = MDChipText(
-                text=self.text_chip,
-                theme_text_color='Custom',
-                text_color='white',
-                font_style='Label',
-                role='medium',
-                bold=True
+            text=self.text_chip,
+            theme_text_color='Custom',
+            text_color='white',
+            font_style='Label',
+            role='medium',
+            bold=True
         )
         self.ids['text_chip'] = chip_text
         chip = MDChip(
@@ -216,6 +206,11 @@ class VacancyBank(MDScreen):
     # Tracking loaded function keys to prevent duplicates
     loaded_function_keys = ListProperty([])
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Cria um evento de debounce que pode ser cancelado
+        self.search_trigger = Clock.create_trigger(self.perform_debounced_search, timeout=0.5)
+
     def on_enter(self, *args):
         print(self.key)
         # Limpa qualquer conteúdo anterior
@@ -253,7 +248,6 @@ class VacancyBank(MDScreen):
                     'State': item['State'],
                     'Salary': item['Salary'],
                     'Option Payment': item['Option Payment'],
-                    
                 }
                 filtered_functions.append(function_data)
 
@@ -272,43 +266,49 @@ class VacancyBank(MDScreen):
         if start_index >= len(self.all_functions):
             return False
 
-        # Carrega cards para a página atual
-        for item in self.all_functions[start_index:end_index]:
-            # Check if this function key has already been loaded
-            if item['key'] not in self.loaded_function_keys:
-                card = OpportunityCard(
-                    function=item['occupation'],
-                    city=item['City'],
-                    state=item['State'],
-                    salary=item['Salary'],
-                    method=item['Option Payment'],
-                    text_chip='Candidatar-se',
-                    color_divider='blue',
-                    function_key=item['key'],
-                    employee_key=self.key,
-                    request=item['requests']
-                )
-                self.ids.main_scroll.add_widget(card)
+        # Função para adicionar cards com um pequeno atraso
+        def add_cards_with_delay(dt=None):
+            loaded_count = 0
+            for item in self.all_functions[start_index:end_index]:
+                # Check if this function key has already been loaded
+                if item['key'] not in self.loaded_function_keys:
+                    card = OpportunityCard(
+                        function=item['occupation'],
+                        city=item['City'],
+                        state=item['State'],
+                        salary=item['Salary'],
+                        method=item['Option Payment'],
+                        text_chip='Candidatar-se',
+                        color_divider='blue',
+                        function_key=item['key'],
+                        employee_key=self.key,
+                        request=item['requests']
+                    )
+                    self.ids.main_scroll.add_widget(card)
+                    self.loaded_function_keys.append(item['key'])
+                    loaded_count += 1
+                else:
+                    card = OpportunityCard(
+                        function=item['occupation'],
+                        city=item['City'],
+                        state=item['State'],
+                        salary=item['Salary'],
+                        method=item['Option Payment'],
+                        text_chip='Submetido',
+                        color_divider='green',
+                        function_key=item['key'],
+                        employee_key=self.key,
+                        request=item['requests']
+                    )
+                    self.ids.main_scroll.add_widget(card)
+                    self.loaded_function_keys.append(item['key'])
+                    loaded_count += 1
 
-                # Add the key to loaded keys to prevent duplicates
-                self.loaded_function_keys.append(item['key'])
-            else:
-                card = OpportunityCard(
-                    function=item['occupation'],
-                    city=item['City'],
-                    state=item['State'],
-                    salary=item['Salary'],
-                    method=item['Option Payment'],
-                    text_chip='Submetido',
-                    color_divider='green',
-                    function_key=item['key'],
-                    employee_key=self.key,
-                    request=item['requests']
-                )
-                self.ids.main_scroll.add_widget(card)
+                # Pequeno atraso entre cada card
+                Clock.schedule_once(lambda dt: None, 0.1 * loaded_count)
 
-                # Add the key to loaded keys to prevent duplicates
-                self.loaded_function_keys.append(item['key'])
+        # Agenda a adição de cards
+        Clock.schedule_once(add_cards_with_delay, 0)
 
         # Incrementa o número da página
         self.current_page += 1
@@ -335,44 +335,58 @@ class VacancyBank(MDScreen):
                     print('Acabaram os widgets')
 
     def search(self, instance, text):
-        self.add = False
-        # Normalize search text
-        self.text_search = text.strip().lower()
+        # Cancela qualquer busca pendente
+        self.search_trigger.cancel()
 
-        # Validate search input
-        if not self.text_search:
-            self.show_no_input_warning()
+        # Se texto estiver vazio, recarrega cards originais
+        if not text or text.strip() == '':
+            Clock.schedule_once(self.reset_cards, 0)
             return
 
-        # Clear previous results
+        # Agenda nova busca com debounce
+        self.text_search = text.strip().lower()
+        self.search_trigger()
+
+    def reset_cards(self, dt=None):
+        self.ids.main_scroll.clear_widgets()
+        self.current_page = 0
+        self.loaded_function_keys = []
+        self.load_more_functions()
+        self.add = True
+
+    def perform_debounced_search(self, dt):
+        # Limpa resultados anteriores
         self.ids.main_scroll.clear_widgets()
 
-        # Perform search
-        self.number += 1
-        if self.number == 2:
-            self.perform_search()
-            self.number = 0
-
-    def perform_search(self):
-        url = f"https://obra-7ebd9-default-rtdb.firebaseio.com/Functions/.json"
-
-        # Show loading indicator
+        # Mostra indicador de carregamento
         self.show_loading_indicator()
+
+        # Agenda busca na thread principal
+        Clock.schedule_once(self.fetch_search_results, 0)
+
+    def fetch_search_results(self, dt):
+        url = f"https://obra-7ebd9-default-rtdb.firebaseio.com/Functions/.json"
 
         UrlRequest(
             url,
-            on_success=self.analyze_search_results,
+            on_success=self.process_search_results,
+            on_failure=self.handle_search_error,
+            timeout=10
         )
 
-    def analyze_search_results(self, instance, data):
+    def process_search_results(self, instance, data):
+        Clock.schedule_once(lambda dt: self.filter_and_display_results(data), 0)
+
+    def filter_and_display_results(self, data):
         # Hide loading indicator
         self.hide_loading_indicator()
 
-        # Store matched results
+        # Limitar o número de resultados
+        MAX_RESULTS = 30
         matched_results = []
 
-        for key, item in data.items():
-            # Check if search matches location or function based on current type
+        for key, item in list(data.items())[:MAX_RESULTS]:
+            # Lógica de correspondência baseada em type
             if self.type == 'loc':
                 match_condition = (
                         self.text_search in item['City'].lower() or
@@ -385,19 +399,15 @@ class VacancyBank(MDScreen):
             else:
                 match_condition = False
 
-            # Process matched items
+            # Processa itens correspondentes
             if match_condition:
                 requests = eval(item['requests'])
 
-                # Determine chip text and color based on request status
-                if self.key not in requests:
-                    chip_text = 'Candidatar-se'
-                    divider_color = 'blue'
-                else:
-                    chip_text = 'Submetido'
-                    divider_color = 'green'
+                # Determina texto e cor do chip
+                chip_text = 'Candidatar-se' if self.key not in requests else 'Submetido'
+                divider_color = 'blue' if self.key not in requests else 'green'
 
-                # Create opportunity card
+                # Cria card de oportunidade
                 card = OpportunityCard(
                     function=item['occupation'],
                     city=item['City'],
@@ -405,23 +415,55 @@ class VacancyBank(MDScreen):
                     salary=item['Salary'],
                     method=item['Option Payment'],
                     text_chip=chip_text,
-                    color_divider=divider_color
+                    color_divider=divider_color,
+                    function_key=key,
+                    employee_key=self.key,
+                    request=requests
                 )
 
                 matched_results.append(card)
 
-        # Handle search results
+                # Para se atingir limite máximo
+                if len(matched_results) >= MAX_RESULTS:
+                    break
+
+        # Atualiza visualização
+        Clock.schedule_once(lambda dt: self.update_search_view(matched_results), 0)
+
+    def update_search_view(self, matched_results):
+        # Limpa widgets anteriores
+        self.ids.main_scroll.clear_widgets()
+
         if matched_results:
-            # Add matched cards to scroll view
             for card in matched_results:
                 self.ids.main_scroll.add_widget(card)
-
-
-            # Optional: Scroll to top of results
             self.scroll_to_top()
         else:
-            # Show no results found message
             self.show_no_results_message()
+
+        # Reativa busca
+        self.add = True
+
+    def handle_search_error(self, instance, error):
+        # Tratar erros de busca
+        Clock.schedule_once(self.show_search_error, 0)
+
+    def show_search_error(self, dt=None):
+        MDSnackbar(
+            MDSnackbarText(
+                text='Erro na busca. Verifique sua conexão.',
+                theme_text_color='Custom',
+                text_color='white',
+                bold=True
+            ),
+            y=dp(24),
+            pos_hint={"center_x": 0.5},
+            halign='center',
+            size_hint_x=0.8,
+            theme_bg_color='Custom',
+            background_color=get_color_from_hex('#FF6B6B')
+        ).open()
+        self.add = True
 
     def show_loading_indicator(self):
         # Create and show a loading spinner or message
@@ -448,11 +490,8 @@ class VacancyBank(MDScreen):
         self.add = True
         self.ids.main_scroll.add_widget(no_results_label)
 
-
     def show_no_input_warning(self):
         # Show a warning if no search input is provided
-        from kivymd.uix.snackbar import MDSnackbar
-
         MDSnackbar(
             MDSnackbarText(
                 text='Coloque um termo para a busca',
@@ -474,11 +513,6 @@ class VacancyBank(MDScreen):
             self.ids.main_scroll.parent.scroll_y = 1
         except Exception:
             pass
-
-    def add_search_results(self, matched_results):
-        # Add matched cards to scroll view
-        for card in matched_results:
-            self.ids.main_scroll.add_widget(card)
 
     def loc(self):
         self.type = 'loc'
@@ -530,4 +564,3 @@ class VacancyBank(MDScreen):
         # Navega para a tela de perfil
         screenmanager.transition = SlideTransition(direction='right')
         screenmanager.current = 'PrincipalScreenEmployee'
-
