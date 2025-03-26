@@ -183,6 +183,7 @@ class OpportunityCard(MDBoxLayout):
 
 
 class VacancyBank(MDScreen):
+    cant = True
     current_nav_state = StringProperty('vacancy')
     add = True
     type = ''
@@ -324,8 +325,8 @@ class VacancyBank(MDScreen):
             self.load_more_functions()
 
     def check_scroll(self, scroll_view, *args):
-        # Verifica se está no final do scroll
-        if self.add:
+        # Verifica se está no final do scroll E não está em modo de busca
+        if self.add and (not hasattr(self, 'text_search') or self.ids.tp.text.strip() == ''):
             if scroll_view.scroll_y <= 0:
                 # Tenta carregar mais cards
                 more_items = self.load_more_functions()
