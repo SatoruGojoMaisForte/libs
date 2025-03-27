@@ -272,21 +272,22 @@ class VacancyBank(MDScreen):
             if not filtered_functions:
                 print("Nenhuma vaga encontrada. Adicionando label...")
 
-                label = MDLabel(
-                    text='O banco de vagas está vazio',
-                    pos_hint={'center_x': 0.5, 'center_y': 0.5},
-                    size_hint_x=0.8,
-                    halign='center',
-                    theme_text_color='Custom',
-                    text_color='grey'
-                )
-
-                self.add_widget(label)  # Adiciona o label à tela
+                if not hasattr(self, "label") or self.label not in self.children:
+                    self.label = MDLabel(
+                        text='O banco de vagas está vazio',
+                        pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                        size_hint_x=0.8,
+                        halign='center',
+                        theme_text_color='Custom',
+                        text_color='grey'
+                    )
+                    self.add_widget(self.label)  # Adiciona o label à tela
 
             else:
                 # Remove o label antigo se houver vagas disponíveis
                 if hasattr(self, "label") and self.label in self.children:
                     self.remove_widget(self.label)
+                    del self.label  # Remove a referência ao label
 
                 self.load_more_functions()
 
