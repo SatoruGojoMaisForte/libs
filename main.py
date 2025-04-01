@@ -1,7 +1,6 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivymd.uix.screenmanager import MDScreenManager
-
 from libs.screens.edit_profile.edit_profile import EditProfile
 from libs.screens.edit_profile_employee.edit_profile_employee import EditProfileEmployee
 from libs.screens.edit_profile_two.edit_profile_two import EditProfileTwo
@@ -24,7 +23,6 @@ from libs.screens.working_month.working_month import WorkingMonth
 from libs.screens.first_week.first_week import FirstWeek
 from libs.screens.second_week.second_week import SecondWeek
 from kivy.core.window import Window
-
 from libs.screens_employee.edit_profile_employee.edit_profile_employee import EditEmployee
 from libs.screens_employee.edit_profile_employee_two.edit_profile_employe_two import EditEmployeeTwo
 from libs.screens_employee.principal_screen_employee.principal_screen_employee import PrincipalScreenEmployee
@@ -39,15 +37,14 @@ from libs.screens_login.register_funcionario.register_funcionario import Registe
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
 
         # Parte do cadastro ou login inicial
         self.screenmanager.add_widget(InitScreen(name='Init'))
-        #self.screenmanager.add_widget(RegisterContractor(name='RegisterContractor'))
-        #self.screenmanager.add_widget(RegisterFuncionario(name='RegisterFuncionario'))
-        #self.screenmanager.add_widget(ChoiceAccount(name='ChoiceAccount'))
+        self.screenmanager.add_widget(RegisterContractor(name='RegisterContractor'))
+        self.screenmanager.add_widget(RegisterFuncionario(name='RegisterFuncionario'))
+        self.screenmanager.add_widget(ChoiceAccount(name='ChoiceAccount'))
 
         # Parte do aplicativo principal (Funcionario)
         self.screenmanager.add_widget(RequestsVacancy(name='RequestsVacancy'))
