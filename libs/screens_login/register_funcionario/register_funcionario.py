@@ -139,7 +139,7 @@ class RegisterFuncionario(MDScreen):
         )
 
     def cadastrado(self, req, result):
-        url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/{result['name']}.json'
+        url = f"https://obra-7ebd9-default-rtdb.firebaseio.com/Funcionarios/{result['name']}.json"
 
         UrlRequest(
             url,
