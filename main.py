@@ -1,6 +1,7 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivymd.uix.screenmanager import MDScreenManager
+
 from libs.screens.edit_profile.edit_profile import EditProfile
 from libs.screens.edit_profile_employee.edit_profile_employee import EditProfileEmployee
 from libs.screens.edit_profile_two.edit_profile_two import EditProfileTwo
@@ -23,16 +24,19 @@ from libs.screens.working_month.working_month import WorkingMonth
 from libs.screens.first_week.first_week import FirstWeek
 from libs.screens.second_week.second_week import SecondWeek
 from kivy.core.window import Window
+
 from libs.screens_employee.edit_profile_employee.edit_profile_employee import EditEmployee
 from libs.screens_employee.edit_profile_employee_two.edit_profile_employe_two import EditEmployeeTwo
 from libs.screens_employee.principal_screen_employee.principal_screen_employee import PrincipalScreenEmployee
+from libs.screens_employee.request_sent.request_sent import RequestSent
 from libs.screens_employee.requests_vacancy.requests_vacancy import RequestsVacancy
+from libs.screens_employee.review_screen.review_screen import ReviewScreen
 from libs.screens_employee.vacancy_bank.vacancy_bank import VacancyBank
+from libs.screens_employee.without_contractor.without_contractor import WithoutContractor
 from libs.screens_login.choice_account.choice_account import ChoiceAccount
 from libs.screens_login.init_screen.init_screen import InitScreen
 from libs.screens_login.register_contractor.register_contractor import RegisterContractor
 from libs.screens_login.register_funcionario.register_funcionario import RegisterFuncionario
-
 
 class MainApp(MDApp):
 
@@ -47,7 +51,10 @@ class MainApp(MDApp):
         self.screenmanager.add_widget(ChoiceAccount(name='ChoiceAccount'))
 
         # Parte do aplicativo principal (Funcionario)
+        self.screenmanager.add_widget(RequestSent(name='RequestSent'))
         self.screenmanager.add_widget(RequestsVacancy(name='RequestsVacancy'))
+        self.screenmanager.add_widget(WithoutContractor(name='WithoutContractor'))
+        self.screenmanager.add_widget(ReviewScreen(name='ReviewScreen'))
         self.screenmanager.add_widget(PrincipalScreenEmployee(name='PrincipalScreenEmployee'))
         self.screenmanager.add_widget(VacancyBank(name='VacancyBank'))
         self.screenmanager.add_widget(EditEmployeeTwo(name='EditEmployeeTwo'))
@@ -103,11 +110,14 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens/report_bricklayer/report_bricklayer.kv')
 
         # telas do funcionario -------------
+        Builder.load_file('libs/screens_employee/request_sent/request_sent.kv')
+        Builder.load_file('libs/screens_employee/without_contractor/without_contractor.kv')
         Builder.load_file('libs/screens_employee/principal_screen_employee/principal_screen_employe.kv')
         Builder.load_file('libs/screens_employee/vacancy_bank/vacancy_bank.kv')
         Builder.load_file('libs/screens_employee/edit_profile_employee/edit_profile_employee.kv')
         Builder.load_file('libs/screens_employee/edit_profile_employee_two/edit_profile_employee_two.kv')
         Builder.load_file('libs/screens_employee/requests_vacancy/requests_vacancy.kv')
+        Builder.load_file('libs/screens_employee/review_screen/review_screen.kv')
         Builder.load_file('libs/components/nav_table.kv')
 
         # Telas de inicio (login e cadastro)
