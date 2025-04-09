@@ -1,6 +1,5 @@
 import ast
 import json
-
 from kivy.metrics import dp
 from kivy.network.urlrequest import UrlRequest
 from kivy.properties import StringProperty, NumericProperty, BooleanProperty
@@ -388,16 +387,16 @@ class ReviewScreen(MDScreen):
                     if status == '✅ PAGO':
                         text_numb = f''
                         if month_payment[f'{mes}']['Payment Type'] in 'Mensal':
-                            text_numb = f'Mês: {month_payment[f'{mes}']['Numb Month']} - {month_payment[f'{mes}']['Month']}'
+                            text_numb = f"Mês: {month_payment[f'{mes}']['Numb Month']} - {month_payment[f'{mes}']['Month']}"
                         elif month_payment[f'{mes}']['Payment Type'] in 'Semanal':
-                            text_numb = f'Semana: {month_payment[f'{mes}']['Numb Month']} - {month_payment[f'{mes}']['Month']}'
+                            text_numb = f"Semana: {month_payment[f'{mes}']['Numb Month']} - {month_payment[f'{mes}']['Month']}"
 
                         print(month_payment[f'{mes}'])
                         self.tot_salary += float(month_payment[f'{mes}']['Paid Salary'])
                         card = PaymentCard(
                             payment_date=month_payment[f'{mes}']['Data'],
                             payment_type=month_payment[f'{mes}']['Payment Type'],
-                            payment_amount=f'{format_currency(month_payment[f'{mes}']['Paid Salary'], 'BRL', locale='pt_BR')}',
+                            payment_amount=f"{format_currency(month_payment[f'{mes}']['Paid Salary'], 'BRL', locale='pt_BR')}",
                             payment_status='Pago',
                             month=month_payment[f'{mes}']['Month'],
                             current_data=text_numb,
@@ -405,7 +404,7 @@ class ReviewScreen(MDScreen):
                             text_color='#ffffff',
                             color='#68D89B'
                         )
-                        typ = f'{month_payment[f'{mes}']['Payment Type']}'
+                        typ = f"{month_payment[f'{mes}']['Payment Type']}"
                         self.ids.main_scroll.add_widget(card)
                     else:
                         text_numb = ''
@@ -429,7 +428,7 @@ class ReviewScreen(MDScreen):
                 numb = 0
                 break
 
-        self.ids.received.text = f'{format_currency(self.tot_salary, 'BRL', locale='pt_BR')}'
+        self.ids.received.text = f"{format_currency(self.tot_salary, 'BRL', locale='pt_BR')}"
 
     def vacancy(self):
         """
