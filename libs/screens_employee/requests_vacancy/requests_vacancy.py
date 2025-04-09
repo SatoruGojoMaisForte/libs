@@ -1,3 +1,4 @@
+import ast
 import json
 
 from kivy.metrics import dp
@@ -121,8 +122,12 @@ class RequestsVacancy(MDScreen):
 
         for key, request in requests.items():
             try:
-                reqs = json.loads(request['requests'])  # deve ser uma string JSON, tipo '["key1", "key2"]'
-                decline = json.loads(request['decline'])
+                req_str = request.get('requests', '[]')
+                decline_str = request.get('decline', '[]')
+
+                # Usando ast.literal_eval para avaliar strings como listas
+                reqs = ast.literal_eval(req_str) if req_str else []
+                decline = ast.literal_eval(decline_str) if decline_str else []
             except Exception as e:
                 print(f"Erro ao carregar requests/decline: {e}")
                 continue
