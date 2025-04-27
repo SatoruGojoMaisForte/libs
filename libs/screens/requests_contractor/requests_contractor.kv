@@ -1,0 +1,33 @@
+<RequestsContractor>:
+    name: 'RequestsContractor'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: get_color_from_hex('49d49d')
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+                MDLabel:
+                    text: 'Solicitações'
+                    font_style: 'Headline'
+                    height: '60dp'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    role: 'small'
+                    bold: True
+                    halign: 'center'
+                    valign: 'center'
+                    padding: [0, 10, 0, 0]
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+

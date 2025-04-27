@@ -1,0 +1,65 @@
+
+<FunctionsScreen>:
+    name: 'Functions'
+    md_bg_color: 1, 1, 1, 1
+
+    FloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'  # Organiza os widgets em uma coluna
+            size_hint_y: None
+            height: self.minimum_height  # Ajusta a altura do layout para permitir rolagem
+            padding: [10, 10, 0, 0]
+            spacing: "50dp"
+            theme_bg_color: 'Custom'
+            md_bg_color: 0, 0, 1, 1
+            pos_hint: {'center_x': 0.5, 'top': 1}
+
+            BoxLayout:
+                size_hint: 1, None
+                height: '60dp'
+                padding: [0, 0, 15, 0]
+
+                MDIconButton:
+                    icon: 'arrow-left'
+                    theme_font_size: 'Custom'
+                    font_size: '37dp'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.6}
+                    on_release: root.perfil()
+
+                MDLabel:
+                    text: 'Funções'
+                    font_style: 'Headline'
+                    theme_text_color: 'Custom'
+                    text_color: 'white'
+                    role: 'medium'
+                    bold: True
+                    pos_hint: {'center_x': 0.2, 'center_y': 0.5}
+                    halign: 'center'
+
+                MDIconButton:
+                    icon: 'plus'
+                    theme_icon_color: 'Custom'
+                    icon_color: 'white'
+                    theme_font_size: 'Custom'
+                    font_size: '40dp'
+                    pos_hint: {'center_x': 0.95, 'center_y': 0.6}
+                    on_release: root.page_functions()
+
+        ScrollView:
+            do_scroll_x: False
+            size_hint: 1, 0.75
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0  # Cor de fundo (cinza escuro)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            MDBoxLayout:
+                id: main_scroll
+                orientation: "vertical"
+                adaptive_height: True
