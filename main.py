@@ -51,28 +51,8 @@ from libs.screens_login.register_funcionario.register_funcionario import Registe
 
 
 class MainApp(MDApp):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # Desabilitar a tela de carregamento padrão do KivyMD
-        self.use_default_loading_screen = False
-
-    def on_enter(self):
-        # Mostrar sua própria tela de carregamento
-        self.splash_screen = AsyncImage(
-            source='https://res.cloudinary.com/dsmgwupky/image/upload/v1745757741/image_3_wrr3qq.png',  # Sua imagem personalizada
-            size_hint=(1, 1),
-            pos_hint={'center_x': .5, 'center_y': .5}
-        )
-        Window.add_widget(self.splash_screen)
-
-        # Remover a splash screen após alguns segundos
-        Clock.schedule_once(self.remover_splash_screen, 3)
-
-    def remover_splash_screen(self, dt):
-        Window.remove_widget(self.splash_screen)
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
 
