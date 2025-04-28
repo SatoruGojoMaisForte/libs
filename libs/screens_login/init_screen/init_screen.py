@@ -28,38 +28,22 @@ class InitScreen(MDScreen):
         pass
 
     def state_contractor(self):
-        """
-        Define o estado visual para seleção de Contratante.
+        self.ids.contractor_card.md_bg_color = get_color_from_hex('#0000FF')  # azul
+        self.ids.text_contractor.text_color = get_color_from_hex('#FFFFFF')  # branco
 
-        Atualiza os elementos visuais para indicar que o tipo de usuário
-        'Contratante' foi selecionado.
-        """
-        # Mudando cor do card de contratante
-        self.ids.contractor_card.md_bg_color = 'blue'
-        self.ids.text_contractor.text_color = 'white'
-
-        # Resetando o estado do card de funcionário
-        self.ids.employee_card.md_bg_color = 'white'
-        self.ids.employee_text.text_color = 'black'
+        self.ids.employee_card.md_bg_color = get_color_from_hex('#FFFFFF')  # branco
+        self.ids.employee_text.text_color = get_color_from_hex('#000000')  # preto
 
         self.type = 'Contratante'
 
     def state_employee(self):
-        """
-        Define o estado visual para seleção de Funcionário.
+        self.ids.contractor_card.md_bg_color = get_color_from_hex('#FFFFFF')  # branco
+        self.ids.text_contractor.text_color = get_color_from_hex('#000000')  # preto
 
-        Atualiza os elementos visuais para indicar que o tipo de usuário
-        'Funcionário' foi selecionado.
-        """
-        # Resetando o estado do card de contratante
-        self.ids.contractor_card.md_bg_color = 'white'
-        self.ids.text_contractor.text_color = 'black'
+        self.ids.employee_card.md_bg_color = get_color_from_hex('#0000FF')  # azul
+        self.ids.employee_text.text_color = get_color_from_hex('#FFFFFF')  # branco
 
-        # Mudando cor do card de funcionário
-        self.ids.employee_card.md_bg_color = 'blue'
-        self.ids.employee_text.text_color = 'white'
-
-        self.type = 'Functionario'
+        self.type = 'Funcionario'
 
     def carregar_usuarios(self):
         """
