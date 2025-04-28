@@ -126,7 +126,7 @@
             pos_hint: {"center_y": 0.4, "center_x": 0.5}
             size_hint: 0.75, 0.07
             theme_bg_color: "Custom"
-            md_bg_color: "white"
+            md_bg_color: 1, 1, 1, 1
             padding: [2,]
             spacing: 5
             md_bg_color_disabled: "white"
@@ -135,8 +135,8 @@
                 id: contractor_card
                 theme_bg_color: 'Custom'
                 theme_line_color: 'Custom'
-                line_color: 'blue'
-                md_bg_color: 'white'
+                line_color: 0, 0, 1, 1
+                md_bg_color:  1, 1, 1, 1
                 on_release: root.state_contractor()
 
                 MDRelativeLayout:
@@ -144,7 +144,7 @@
                         id: text_contractor
                         text: 'Contratante'
                         theme_text_color: 'Custom'
-                        text_color: 'black'
+                        text_color: 0, 0, 0, 1
                         halign: 'center'
                         bold: True
                         theme_font_size: 'Custom'
@@ -154,9 +154,9 @@
             MDCard:
                 id: employee_card
                 theme_bg_color: 'Custom'
-                md_bg_color: 'white'
+                md_bg_color:  1, 1, 1, 1
                 theme_line_color: 'Custom'
-                line_color: 'blue'
+                line_color: 0, 0, 1, 1
                 on_release: root.state_employee()
 
                 MDRelativeLayout:
@@ -164,7 +164,7 @@
                         id: employee_text
                         text: 'Funcionario'
                         theme_text_color: 'Custom'
-                        text_color: 'black'
+                        text_color: 0, 0, 0, 1
                         halign: 'center'
                         bold: True
                         theme_font_size: 'Custom'
@@ -180,9 +180,9 @@
 
             MDCard:
                 theme_bg_color: 'Custom'
-                md_bg_color: 'blue'
+                md_bg_color: 0, 0, 1, 1
                 theme_line_color: 'Custom'
-                line_color: 'blue'
+                line_color: 0, 0, 1, 1
                 size_hint: 1, 1
                 on_release: root.etapa1()
 
@@ -223,4 +223,3 @@
                         bold: True
                         halign: 'center'
                         pos_hint: {'center_x': 0.53 ,'center_y': 0.5}
-
