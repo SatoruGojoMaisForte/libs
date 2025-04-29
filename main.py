@@ -51,6 +51,9 @@ from libs.screens_login.register_funcionario.register_funcionario import Registe
 
 
 class MainApp(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.add_widget(MDLabel(text="Carregando...", theme_font_size='Custom', theme_text_color='Custom', text_color='white', font_size='24sp'))
 
     def build(self):
         self.load_all_kv_files()
