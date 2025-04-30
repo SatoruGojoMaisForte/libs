@@ -125,40 +125,42 @@
             size_hint: 0.75, 0.07
             padding: [2,]
             spacing: 5
-
-
+            
+            # Inicialização ao carregar o KV
+            on_kv_post: root.initialize_states()
+        
             MDCard:
                 id: contractor_card
                 theme_line_color: 'Custom'
                 line_color: 0.129, 0.588, 0.953, 1
                 theme_bg_color: 'Custom'
                 md_bg_color: 1, 1, 1, 1
-                # Evite efeitos de animação adicionais
-                ripple_behavior: False
+                # Importante: definir ripple_behavior explicitamente
+                ripple_behavior: True
                 on_release: root.state_contractor()
-
+        
                 MDRelativeLayout:
                     MDLabel:
                         id: text_contractor
                         text: 'Contratante'
                         # Correção importante: use theme_text_color, não theme_line_color
-                        theme_text_color: 'Custom'
+                        theme_text_color: 'Custom'  
                         text_color: 0, 0, 0, 1
                         halign: 'center'
                         bold: True
                         font_size: '14sp'
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-
+        
             MDCard:
                 id: employee_card
                 theme_line_color: 'Custom'
                 line_color: 0.129, 0.588, 0.953, 1
                 theme_bg_color: 'Custom'
                 md_bg_color: 1, 1, 1, 1
-                # Evite efeitos de animação adicionais
-                ripple_behavior: False
+                # Importante: definir ripple_behavior explicitamente
+                ripple_behavior: True
                 on_release: root.state_employee()
-
+        
                 MDRelativeLayout:
                     MDLabel:
                         id: employee_text
@@ -169,7 +171,6 @@
                         bold: True
                         font_size: '14sp'
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-
         MDBoxLayout:
             size_hint: 0.75, 0.07
             theme_bg_color: 'Custom'
