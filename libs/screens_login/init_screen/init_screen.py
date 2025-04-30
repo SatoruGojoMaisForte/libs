@@ -28,22 +28,26 @@ class InitScreen(MDScreen):
         pass
 
     def state_contractor(self):
-        self.ids.contractor_card.md_bg_color = get_color_from_hex('#0000FF')  # azul
-        self.ids.text_contractor.text_color = get_color_from_hex('#FFFFFF')  # branco
+        self.ids.contractor_card.md_bg_color = get_color_from_hex('#0000FF')
+        self.ids.text_contractor.text_color = get_color_from_hex('#FFFFFF')
+        self.ids.contractor_card.canvas.ask_update()
 
-        self.ids.employee_card.md_bg_color = get_color_from_hex('#FFFFFF')  # branco
-        self.ids.employee_text.text_color = get_color_from_hex('#000000')  # preto
+        self.ids.employee_card.md_bg_color = get_color_from_hex('#FFFFFF')
+        self.ids.employee_text.text_color = get_color_from_hex('#000000')
+        self.ids.employee_card.canvas.ask_update()
 
         self.type = 'Contratante'
 
     def state_employee(self):
-        self.ids.contractor_card.md_bg_color = get_color_from_hex('#FFFFFF')  # branco
-        self.ids.text_contractor.text_color = get_color_from_hex('#000000')  # preto
+        self.ids.contractor_card.md_bg_color = get_color_from_hex('#FFFFFF')
+        self.ids.text_contractor.text_color = get_color_from_hex('#000000')
+        self.ids.contractor_card.canvas.ask_update()
 
-        self.ids.employee_card.md_bg_color = get_color_from_hex('#0000FF')  # azul
-        self.ids.employee_text.text_color = get_color_from_hex('#FFFFFF')  # branco
+        self.ids.employee_card.md_bg_color = get_color_from_hex('#0000FF')
+        self.ids.employee_text.text_color = get_color_from_hex('#FFFFFF')
+        self.ids.employee_card.canvas.ask_update()
 
-        self.type = 'Funcionario'
+        self.type = 'Funcionário'
 
     def carregar_usuarios(self):
         """
