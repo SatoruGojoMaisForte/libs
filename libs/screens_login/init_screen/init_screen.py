@@ -76,178 +76,178 @@ class InitScreen(MDScreen):
     """
 
     def initialize_states(self):
-    """
-    Inicializa as propriedades de estado uma vez durante a criação.
-    Deve ser chamado no __init__ ou no método on_kv_post.
-    """
-    TransitionDebugger.log_transition("Init", "Inicializando estados")
+        """
+        Inicializa as propriedades de estado uma vez durante a criação.
+        Deve ser chamado no __init__ ou no método on_kv_post.
+        """
+        TransitionDebugger.log_transition("Init", "Inicializando estados")
+        
+        # Define estados iniciais para evitar indefinições
+        self.azul = get_color_from_hex('#2196F3')
+        self.branco = get_color_from_hex('#FFFFFF')
+        self.preto = get_color_from_hex('#000000')
+        
+        # Defina um estado inicial (para não começar indefinido)
+        self.type = 'Contratante'  # ou o padrão que preferir
+        
+        # Verifica a plataforma para ajustes específicos
+        from kivy.utils import platform
+        self.is_mobile = platform in ('android', 'ios') 
+        TransitionDebugger.log_transition("Platform", f"Plataforma detectada: {platform}, is_mobile={self.is_mobile}")
+        
+        # Duração da animação - mais curta em plataformas móveis
+        self.animation_duration = 0.12 if self.is_mobile else 0.2
+        
+        # Inicialize os widgets com o estado correto
+        self.apply_state(self.type, immediate=True)
     
-    # Define estados iniciais para evitar indefinições
-    self.azul = get_color_from_hex('#2196F3')
-    self.branco = get_color_from_hex('#FFFFFF')
-    self.preto = get_color_from_hex('#000000')
+    def state_contractor(self):
+        """Muda para estado de contratante com animação suave"""
+        TransitionDebugger.log_transition("StateChange", "Mudando para estado de contratante")
+        self.apply_state('Contratante')
     
-    # Defina um estado inicial (para não começar indefinido)
-    self.type = 'Contratante'  # ou o padrão que preferir
+    def state_employee(self):
+        """Muda para estado de funcionário com animação suave"""
+        TransitionDebugger.log_transition("StateChange", "Mudando para estado de funcionário")
+        self.apply_state('Funcionario')
     
-    # Verifica a plataforma para ajustes específicos
-    from kivy.utils import platform
-    self.is_mobile = platform in ('android', 'ios') 
-    TransitionDebugger.log_transition("Platform", f"Plataforma detectada: {platform}, is_mobile={self.is_mobile}")
-    
-    # Duração da animação - mais curta em plataformas móveis
-    self.animation_duration = 0.12 if self.is_mobile else 0.2
-    
-    # Inicialize os widgets com o estado correto
-    self.apply_state(self.type, immediate=True)
-
-def state_contractor(self):
-    """Muda para estado de contratante com animação suave"""
-    TransitionDebugger.log_transition("StateChange", "Mudando para estado de contratante")
-    self.apply_state('Contratante')
-
-def state_employee(self):
-    """Muda para estado de funcionário com animação suave"""
-    TransitionDebugger.log_transition("StateChange", "Mudando para estado de funcionário")
-    self.apply_state('Funcionario')
-
-def apply_state(self, state_type, immediate=False):
-    """
-    Método unificado para aplicar estados com animação suave.
-    
-    Args:
-        state_type: 'Contratante' ou 'Funcionario'
-        immediate: Se True, aplica imediatamente sem animação
-    """
-    self.type = state_type
-    TransitionDebugger.log_transition("Apply", f"Aplicando estado: {state_type}, immediate={immediate}")
-    
-    # Determinar configurações baseadas no tipo
-    if state_type == 'Contratante':
-        # Configurações para contratante
-        card1_color = self.azul
-        text1_color = self.branco
-        card2_color = self.branco
-        text2_color = self.preto
-    else:  # Funcionario
-        # Configurações para funcionário
-        card1_color = self.branco
-        text1_color = self.preto
-        card2_color = self.azul
-        text2_color = self.branco
-    
-    # Obter widgets
-    card1 = self.ids.contractor_card
-    text1 = self.ids.text_contractor
-    card2 = self.ids.employee_card
-    text2 = self.ids.employee_text
-    
-    # ======= IMPLEMENTAÇÃO PARA DEVICES MÓVEIS =======
-    if getattr(self, 'is_mobile', False):
-        TransitionDebugger.log_transition("Mobile", "Usando estratégia otimizada para mobile")
+    def apply_state(self, state_type, immediate=False):
+        """
+        Método unificado para aplicar estados com animação suave.
         
-        if immediate:
-            # Aplicar mudanças imediatamente sem animação
-            card1.md_bg_color = card1_color
-            card2.md_bg_color = card2_color
-            text1.text_color = text1_color
-            text2.text_color = text2_color
-            
-            # Forçar atualização imediata
-            Clock.schedule_once(lambda dt: self.force_redraw(), 0)
-            return
+        Args:
+            state_type: 'Contratante' ou 'Funcionario'
+            immediate: Se True, aplica imediatamente sem animação
+        """
+        self.type = state_type
+        TransitionDebugger.log_transition("Apply", f"Aplicando estado: {state_type}, immediate={immediate}")
         
-        # Em dispositivos móveis, usamos uma abordagem com camadas para prevenir o flash
+        # Determinar configurações baseadas no tipo
+        if state_type == 'Contratante':
+            # Configurações para contratante
+            card1_color = self.azul
+            text1_color = self.branco
+            card2_color = self.branco
+            text2_color = self.preto
+        else:  # Funcionario
+            # Configurações para funcionário
+            card1_color = self.branco
+            text1_color = self.preto
+            card2_color = self.azul
+            text2_color = self.branco
         
-        # 1. Primeiro, preparamos uma transição suave com Animations
-        anim_duration = self.animation_duration
-        
-        # 2. Criamos animações separadas para cada elemento
-        anim_card1 = Animation(md_bg_color=card1_color, duration=anim_duration)
-        anim_card2 = Animation(md_bg_color=card2_color, duration=anim_duration)
-        
-        # 3. Desativar temporariamente ripple para evitar conflitos visuais durante a transição
-        ripple_state1 = card1.ripple_behavior
-        ripple_state2 = card2.ripple_behavior
-        card1.ripple_behavior = False
-        card2.ripple_behavior = False
-        
-        # 4. Iniciar as animações de cards
-        anim_card1.start(card1)
-        anim_card2.start(card2)
-        
-        # 5. Para textos, aplicamos diretamente (menos propenso a problemas)
-        text1.text_color = text1_color
-        text2.text_color = text2_color
-        
-        # 6. Monitorar as mudanças para debug
-        TransitionDebugger.monitor_color_change(card1, card1_color, "Card1")
-        TransitionDebugger.monitor_color_change(card2, card2_color, "Card2")
-        
-        # 7. Restaurar ripple após a transição
-        def restore_ripple(dt):
-            card1.ripple_behavior = ripple_state1
-            card2.ripple_behavior = ripple_state2
-            TransitionDebugger.log_transition("Ripple", "Ripple behavior restaurado")
-        
-        Clock.schedule_once(restore_ripple, anim_duration + 0.05)
-        
-        # 8. Forçar uma segunda atualização após a transição para garantir consistência
-        Clock.schedule_once(lambda dt: self.force_redraw(), anim_duration + 0.1)
-        
-    # ======= IMPLEMENTAÇÃO PARA DESKTOP =======
-    else:
-        TransitionDebugger.log_transition("Desktop", "Usando estratégia padrão para desktop")
-        
-        if immediate:
-            # Aplicar mudanças imediatamente sem animação
-            card1.md_bg_color = card1_color
-            text1.text_color = text1_color
-            card2.md_bg_color = card2_color
-            text2.text_color = text2_color
-            return
-        
-        # Aplicar mudanças com animação
-        duration = self.animation_duration
-        
-        # Animação para os cards
-        Animation(md_bg_color=card1_color, duration=duration).start(card1)
-        Animation(md_bg_color=card2_color, duration=duration).start(card2)
-        
-        # Animação para os textos
-        Animation(text_color=text1_color, duration=duration).start(text1)
-        Animation(text_color=text2_color, duration=duration).start(text2)
-    
-    TransitionDebugger.log_transition("StateApplied", f"Estado {state_type} aplicado com sucesso")
-
-def force_redraw(self):
-    """
-    Força uma atualização completa de todos os elementos relevantes.
-    Especialmente importante para plataformas móveis.
-    """
-    TransitionDebugger.log_transition("Redraw", "Forçando redesenho dos componentes")
-    
-    try:
         # Obter widgets
         card1 = self.ids.contractor_card
         text1 = self.ids.text_contractor
         card2 = self.ids.employee_card
         text2 = self.ids.employee_text
         
-        # Forçar atualização do canvas de cada widget
-        for widget in [card1, card2, text1, text2]:
-            if hasattr(widget, 'canvas'):
-                widget.canvas.ask_update()
+        # ======= IMPLEMENTAÇÃO PARA DEVICES MÓVEIS =======
+        if getattr(self, 'is_mobile', False):
+            TransitionDebugger.log_transition("Mobile", "Usando estratégia otimizada para mobile")
+            
+            if immediate:
+                # Aplicar mudanças imediatamente sem animação
+                card1.md_bg_color = card1_color
+                card2.md_bg_color = card2_color
+                text1.text_color = text1_color
+                text2.text_color = text2_color
+                
+                # Forçar atualização imediata
+                Clock.schedule_once(lambda dt: self.force_redraw(), 0)
+                return
+            
+            # Em dispositivos móveis, usamos uma abordagem com camadas para prevenir o flash
+            
+            # 1. Primeiro, preparamos uma transição suave com Animations
+            anim_duration = self.animation_duration
+            
+            # 2. Criamos animações separadas para cada elemento
+            anim_card1 = Animation(md_bg_color=card1_color, duration=anim_duration)
+            anim_card2 = Animation(md_bg_color=card2_color, duration=anim_duration)
+            
+            # 3. Desativar temporariamente ripple para evitar conflitos visuais durante a transição
+            ripple_state1 = card1.ripple_behavior
+            ripple_state2 = card2.ripple_behavior
+            card1.ripple_behavior = False
+            card2.ripple_behavior = False
+            
+            # 4. Iniciar as animações de cards
+            anim_card1.start(card1)
+            anim_card2.start(card2)
+            
+            # 5. Para textos, aplicamos diretamente (menos propenso a problemas)
+            text1.text_color = text1_color
+            text2.text_color = text2_color
+            
+            # 6. Monitorar as mudanças para debug
+            TransitionDebugger.monitor_color_change(card1, card1_color, "Card1")
+            TransitionDebugger.monitor_color_change(card2, card2_color, "Card2")
+            
+            # 7. Restaurar ripple após a transição
+            def restore_ripple(dt):
+                card1.ripple_behavior = ripple_state1
+                card2.ripple_behavior = ripple_state2
+                TransitionDebugger.log_transition("Ripple", "Ripple behavior restaurado")
+            
+            Clock.schedule_once(restore_ripple, anim_duration + 0.05)
+            
+            # 8. Forçar uma segunda atualização após a transição para garantir consistência
+            Clock.schedule_once(lambda dt: self.force_redraw(), anim_duration + 0.1)
+            
+        # ======= IMPLEMENTAÇÃO PARA DESKTOP =======
+        else:
+            TransitionDebugger.log_transition("Desktop", "Usando estratégia padrão para desktop")
+            
+            if immediate:
+                # Aplicar mudanças imediatamente sem animação
+                card1.md_bg_color = card1_color
+                text1.text_color = text1_color
+                card2.md_bg_color = card2_color
+                text2.text_color = text2_color
+                return
+            
+            # Aplicar mudanças com animação
+            duration = self.animation_duration
+            
+            # Animação para os cards
+            Animation(md_bg_color=card1_color, duration=duration).start(card1)
+            Animation(md_bg_color=card2_color, duration=duration).start(card2)
+            
+            # Animação para os textos
+            Animation(text_color=text1_color, duration=duration).start(text1)
+            Animation(text_color=text2_color, duration=duration).start(text2)
         
-        # Forçar atualização do layout pai
-        parent = card1.parent
-        if parent:
-            parent.canvas.ask_update()
-            if hasattr(parent, 'do_layout'):
-                parent.do_layout()
-                TransitionDebugger.log_transition("Layout", "Layout pai atualizado")
-    except Exception as e:
-        TransitionDebugger.log_transition("Error", f"Erro ao forçar redesenho: {e}")
+        TransitionDebugger.log_transition("StateApplied", f"Estado {state_type} aplicado com sucesso")
+    
+    def force_redraw(self):
+        """
+        Força uma atualização completa de todos os elementos relevantes.
+        Especialmente importante para plataformas móveis.
+        """
+        TransitionDebugger.log_transition("Redraw", "Forçando redesenho dos componentes")
+        
+        try:
+            # Obter widgets
+            card1 = self.ids.contractor_card
+            text1 = self.ids.text_contractor
+            card2 = self.ids.employee_card
+            text2 = self.ids.employee_text
+            
+            # Forçar atualização do canvas de cada widget
+            for widget in [card1, card2, text1, text2]:
+                if hasattr(widget, 'canvas'):
+                    widget.canvas.ask_update()
+            
+            # Forçar atualização do layout pai
+            parent = card1.parent
+            if parent:
+                parent.canvas.ask_update()
+                if hasattr(parent, 'do_layout'):
+                    parent.do_layout()
+                    TransitionDebugger.log_transition("Layout", "Layout pai atualizado")
+        except Exception as e:
+            TransitionDebugger.log_transition("Error", f"Erro ao forçar redesenho: {e}")
 
     def carregar_usuarios(self):
         """
