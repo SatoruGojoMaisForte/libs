@@ -1,7 +1,7 @@
 import ast
 import time
 import bcrypt
-from kivy.metrics import dp
+from kivy.animation import Animation
 from kivy.properties import get_color_from_hex, StringProperty, Clock
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.app import MDApp
