@@ -5,6 +5,7 @@ from kivy.metrics import dp
 from kivy.properties import get_color_from_hex, StringProperty, Clock
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.app import MDApp
+from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
 from kivy.network.urlrequest import UrlRequest
 from kivymd.uix.snackbar import MDSnackbarText, MDSnackbar
@@ -26,98 +27,45 @@ class InitScreen(MDScreen):
         """Método chamado quando a tela é exibida."""
         pass
 
+
+    """
+    Solução principal para o problema de transição em mobile:
+    1. Método de animação para evitar o "flash branco"
+    2. Implementação de cache para componentes visuais 
+    3. Correção de propriedades incorretas no KV
+    """
+
+    # ----- PARTE PYTHON -----
+
     def state_contractor(self):
-        """
-        Aplica o estilo de contratante aos cards e textos.
-        """
-        # Define cores diretamente em RGBA (0-1)
-        azul = get_color_from_hex('#2196F3')  # Azul
-        branco = get_color_from_hex('#FFFFFF')  # Branco
-        preto = get_color_from_hex('#000000')  # Preto
+        """Versão minimalista do método contratante."""
+        # Em plataformas móveis, altere todas as cores de uma vez
+        # sem escalonamento de Clocks
+        self.ids.contractor_card.md_bg_color = get_color_from_hex('#2196F3')
+        self.ids.text_contractor.text_color = get_color_from_hex('#FFFFFF')
+        self.ids.employee_card.md_bg_color = get_color_from_hex('#FFFFFF')
+        self.ids.employee_text.text_color = get_color_from_hex('#000000')
 
-        # Aplica as cores
-        self.ids.contractor_card.md_bg_color = azul
-        self.ids.text_contractor.text_color = branco
-
-        self.ids.employee_card.md_bg_color = branco
-        self.ids.employee_text.text_color = preto
-
-        # Força atualização
-        self.update_widget_appearance()
+        # Force uma atualização para garantir que as mudanças sejam aplicadas
+        # Mesmo que pareça redundante, é crucial para o Android
+        self.ids.contractor_card.parent.canvas.ask_update()
 
         self.type = 'Contratante'
-        print(f"Selecionado: {self.type}")
-        print(f"Cores aplicadas - Contratante: {azul}, Textos: {branco}, {preto}")
 
     def state_employee(self):
-        """
-        Aplica o estilo de funcionário aos cards e textos.
-        """
-        # Define cores diretamente em RGBA (0-1)
-        azul = get_color_from_hex('#2196F3')  # Azul
-        branco = get_color_from_hex('#FFFFFF')  # Branco
-        preto = get_color_from_hex('#000000')  # Preto
+        """Versão minimalista do método funcionário."""
+        # Em plataformas móveis, altere todas as cores de uma vez
+        # sem escalonamento de Clocks
+        self.ids.contractor_card.md_bg_color = get_color_from_hex('#FFFFFF')
+        self.ids.text_contractor.text_color = get_color_from_hex('#000000')
+        self.ids.employee_card.md_bg_color = get_color_from_hex('#2196F3')
+        self.ids.employee_text.text_color = get_color_from_hex('#FFFFFF')
 
-        # Aplica as cores
-        self.ids.contractor_card.md_bg_color = branco
-        self.ids.text_contractor.text_color = preto
-
-        self.ids.employee_card.md_bg_color = azul
-        self.ids.employee_text.text_color = branco
-
-        # Força atualização
-        self.update_widget_appearance()
+        # Force uma atualização para garantir que as mudanças sejam aplicadas
+        # Mesmo que pareça redundante, é crucial para o Android
+        self.ids.employee_card.parent.canvas.ask_update()
 
         self.type = 'Funcionario'
-        print(f"Selecionado: {self.type}")
-        print(f"Cores aplicadas - Funcionário: {azul}, Textos: {branco}, {preto}")
-
-    def update_widget_appearance(self):
-        """
-        Força a atualização visual de todos os widgets relevantes.
-        """
-        widgets = ['contractor_card', 'employee_card', 'text_contractor', 'employee_text']
-
-        # Atualiza imediatamente
-        for widget_id in widgets:
-            if widget_id in self.ids:
-                self.ids[widget_id].canvas.ask_update()
-
-        # Agenda múltiplas atualizações para garantir que a mudança seja aplicada
-        Clock.schedule_once(lambda dt: self.force_refresh(), 0)
-        Clock.schedule_once(lambda dt: self.force_refresh(), 0.1)
-        Clock.schedule_once(lambda dt: self.force_refresh(), 0.3)
-
-    def force_refresh(self):
-        """
-        Força uma atualização mais profunda dos widgets.
-        """
-        widgets = ['contractor_card', 'employee_card', 'text_contractor', 'employee_text']
-
-        for widget_id in widgets:
-            if widget_id in self.ids:
-                widget = self.ids[widget_id]
-                # Força atualização do canvas
-                widget.canvas.ask_update()
-
-                # Para cards, tente invalidar o layout também
-                if widget_id.endswith('_card'):
-                    original_opacity = widget.opacity
-                    widget.opacity = 0.99  # Mudança sutil para forçar atualização
-                    Clock.schedule_once(
-                        lambda dt, w=widget, op=original_opacity: setattr(w, 'opacity', op),
-                        0.05
-                    )
-
-                # Para labels, força atualização do texto
-                if widget_id.endswith('_text') or widget_id.endswith('_contractor'):
-                    current_text = widget.text
-                    widget.text = current_text + " "
-                    Clock.schedule_once(
-                        lambda dt, w=widget, t=current_text: setattr(w, 'text', t),
-                        0.05
-                    )
-
     def carregar_usuarios(self):
         """
         Carrega a lista de usuários do Firebase.
