@@ -1,8 +1,7 @@
 import ast
-
 import bcrypt
 from kivy.metrics import dp
-from kivy.properties import get_color_from_hex, StringProperty
+from kivy.properties import get_color_from_hex, StringProperty, Clock
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
@@ -28,26 +27,50 @@ class InitScreen(MDScreen):
         pass
 
     def state_contractor(self):
-        self.ids.contractor_card.md_bg_color = get_color_from_hex('#0000FF')
-        self.ids.text_contractor.text_color = get_color_from_hex('#FFFFFF')
-        self.ids.contractor_card.canvas.ask_update()
+        # Cores RGBA
+        azul = [0, 0, 1, 1]
+        branco = [1, 1, 1, 1]
+        preto = [0, 0, 0, 1]
 
-        self.ids.employee_card.md_bg_color = get_color_from_hex('#FFFFFF')
-        self.ids.employee_text.text_color = get_color_from_hex('#000000')
+        self.ids.contractor_card.md_bg_color = azul
+        self.ids.text_contractor.text_color = branco
+
+        self.ids.employee_card.md_bg_color = branco
+        self.ids.employee_text.text_color = preto
+
+        # Força atualização imediata
+        self.ids.contractor_card.canvas.ask_update()
+        self.ids.text_contractor.canvas.ask_update()
         self.ids.employee_card.canvas.ask_update()
+        self.ids.employee_text.canvas.ask_update()
+
+        # Fallback visual no Android
+        Clock.schedule_once(lambda *args: self.force_refresh(), 0.1)
 
         self.type = 'Contratante'
 
+    def force_refresh(self):
+        for widget_id in ['contractor_card', 'employee_card', 'text_contractor', 'employee_text']:
+            self.ids[widget_id].canvas.ask_update()
     def state_employee(self):
-        self.ids.contractor_card.md_bg_color = get_color_from_hex('#FFFFFF')
-        self.ids.text_contractor.text_color = get_color_from_hex('#000000')
+        azul = [0, 0, 1, 1]
+        branco = [1, 1, 1, 1]
+        preto = [0, 0, 0, 1]
+
+        self.ids.contractor_card.md_bg_color = branco
+        self.ids.text_contractor.text_color = preto
+
+        self.ids.employee_card.md_bg_color = azul
+        self.ids.employee_text.text_color = branco
+
         self.ids.contractor_card.canvas.ask_update()
-
-        self.ids.employee_card.md_bg_color = get_color_from_hex('#0000FF')
-        self.ids.employee_text.text_color = get_color_from_hex('#FFFFFF')
+        self.ids.text_contractor.canvas.ask_update()
         self.ids.employee_card.canvas.ask_update()
+        self.ids.employee_text.canvas.ask_update()
 
-        self.type = 'Funcionário'
+        Clock.schedule_once(lambda *args: self.force_refresh(), 0.1)
+
+        self.type = 'Funcionario'
 
     def carregar_usuarios(self):
         """
