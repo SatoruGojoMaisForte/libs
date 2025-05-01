@@ -30,7 +30,7 @@ class ViewPaymentCompleted(MDScreen):
             size_hint_x=1,
             size_hint_y=None,
             pos_hint={'center_x': 0.5},
-            height=60
+            height=80
         )
         second_box = MDBoxLayout(
             theme_bg_color='Custom',
@@ -118,7 +118,8 @@ class ViewPaymentCompleted(MDScreen):
             orientation='horizontal',
             theme_bg_color='Custom',
             md_bg_color='white',
-            size_hint_x=1,
+            size_hint_x=None,
+            height=80,
             size_hint_y=0.5,
             pos_hint={'center_x': 0.5}
         )
