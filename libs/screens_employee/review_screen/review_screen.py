@@ -360,7 +360,7 @@ class PaymentCard(MDBoxLayout):
         confirm.telephone = telephone
         confirm.valleys = info['valleys']
         confirm.key = self.key
-        screenmanager.transition = SlideTransition(direction='right')
+        screenmanager.transition = SlideTransition(direction='left')
         screenmanager.current = 'ConfirmPaymentEmployee'
 
     def confirm_name_contractor(self, req, resulti):
@@ -387,7 +387,7 @@ class PaymentCard(MDBoxLayout):
                 view.method = self.payment_type
                 view.key = self.key
                 view.telephone = person['telefone']
-                screenmanager.transition = SlideTransition(direction='right')
+                screenmanager.transition = SlideTransition(direction='left')
                 screenmanager.current = 'NotificationPage'
 
 
@@ -769,6 +769,7 @@ class ReviewScreen(MDScreen):
         vac.employee_summary = self.employee_summary
         vac.skills = self.skills
         vac.request = self.request
+        vac.data_contractor = self.data_contractor
         vac.contractor = self.contractor
         vac.state = self.state
         vac.city = self.city
@@ -807,6 +808,7 @@ class ReviewScreen(MDScreen):
         vac.avatar = self.avatar
         vac.employee_summary = self.employee_summary
         vac.skills = self.skills
+        vac.data_contractor = self.data_contractor
         vac.request = self.request
         vac.contractor = self.contractor
         vac.state = self.state
@@ -844,6 +846,7 @@ class ReviewScreen(MDScreen):
         vac.avatar = self.avatar
         vac.employee_summary = self.employee_summary
         vac.skills = self.skills
+        vac.data_contractor = self.data_contractor
         vac.contractor = self.contractor
         vac.request = self.request
 
