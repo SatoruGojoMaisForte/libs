@@ -4,10 +4,11 @@ from kivy.metrics import dp
 from kivy.properties import get_color_from_hex, StringProperty, Clock
 from kivy.uix.screenmanager import SlideTransition
 from kivymd.app import MDApp
-from kivymd.uix.label import MDLabel
+from kivy.animation import Animation
 from kivymd.uix.screen import MDScreen
 from kivy.network.urlrequest import UrlRequest
 from kivymd.uix.snackbar import MDSnackbarText, MDSnackbar
+
 
 class InitScreen(MDScreen):
     """
@@ -24,7 +25,7 @@ class InitScreen(MDScreen):
 
     def on_enter(self, *args):
         """Método chamado quando a tela é exibida."""
-        pass
+        self.state_employee()
 
 
     """
@@ -39,10 +40,9 @@ class InitScreen(MDScreen):
     def state_contractor(self):
         """Seleciona o perfil de contratante e aplica as mudanças visuais."""
         # Aplica todas as mudanças de cores de uma vez
-        self.ids.contractor_card.md_bg_color = get_color_from_hex('#2196F3')
-        self.ids.text_contractor.text_color = get_color_from_hex('#FFFFFF')
-        self.ids.employee_card.md_bg_color = get_color_from_hex('#FFFFFF')
-        self.ids.employee_text.text_color = get_color_from_hex('#000000')
+        self.ids.employee_card.line_color = 'white'
+        anime = Animation(duration=0.2, line_color=[0, 0, 1, 1])
+        anime.start(self.ids.contractor_card)
 
         # Força uma atualização imediata do canvas
         self.ids.contractor_card.canvas.ask_update()
@@ -54,10 +54,10 @@ class InitScreen(MDScreen):
     def state_employee(self):
         """Seleciona o perfil de funcionário e aplica as mudanças visuais."""
         # Aplica todas as mudanças de cores de uma vez
-        self.ids.employee_card.md_bg_color = get_color_from_hex('#2196F3')
-        self.ids.employee_text.text_color = get_color_from_hex('#FFFFFF')
-        self.ids.contractor_card.md_bg_color = get_color_from_hex('#FFFFFF')
-        self.ids.text_contractor.text_color = get_color_from_hex('#000000')
+
+        self.ids.contractor_card.line_color = 'white'
+        anime = Animation(duration=0.2, line_color=[0, 0, 1, 1])
+        anime.start(self.ids.employee_card)
 
         # Força uma atualização imediata do canvas
         self.ids.employee_card.canvas.ask_update()
