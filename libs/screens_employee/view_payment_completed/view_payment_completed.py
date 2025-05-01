@@ -1,5 +1,4 @@
 import ast
-
 from babel.numbers import format_currency
 from kivy.properties import StringProperty, NumericProperty
 from kivy.uix.screenmanager import SlideTransition
@@ -28,9 +27,8 @@ class ViewPaymentCompleted(MDScreen):
             orientation='horizontal',
             theme_bg_color='Custom',
             md_bg_color='white',
-            size_hint_x=None,
+            size_hint_x=1,
             size_hint_y=None,
-            width=350,
             pos_hint={'center_x': 0.5},
             height=60
         )
@@ -120,10 +118,8 @@ class ViewPaymentCompleted(MDScreen):
             orientation='horizontal',
             theme_bg_color='Custom',
             md_bg_color='white',
-            size_hint_x=None,
-            size_hint_y=None,
-            width=350,
-            height=60,
+            size_hint_x=1,
+            size_hint_y=0.5,
             pos_hint={'center_x': 0.5}
         )
 
