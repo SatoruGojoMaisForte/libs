@@ -13,12 +13,10 @@ from libs.screens.perfil_employee.perfil_employee import PerfilEmployee
 from libs.screens.principal_screen.principal_screen import PerfilScreen
 from libs.screens.report_bricklayer.report_bricklayer import ReportBricklayer
 from libs.screens.request_contractor.request_contractor import RequestContractor
-from libs.screens.requests_contractor.requests_contractor import RequestsContractor
 from libs.screens.table_screen.table_screen import TableScreen
 from libs.screens.add_employee.add_employee import AddEmployee
 from libs.screens.add_employee_avatar.add_employee_avatar import EmployeeAvatar
 from libs.screens.function_screen.function_screen import FunctionScreen
-from libs.screens.functions_screen.functions_screen import FunctionsScreen
 from libs.screens.evaluation_screen.evaluation_screen import EvaluationScreen
 from libs.screens.asses_punctuality.asses_punctuality import AssesPunctuality
 from libs.screens.asses_effiency.asses_effiency import AssesEffiency
@@ -31,7 +29,6 @@ from libs.screens.working_month.working_month import WorkingMonth
 from libs.screens.first_week.first_week import FirstWeek
 from libs.screens.second_week.second_week import SecondWeek
 from kivy.core.window import Window
-
 from libs.screens_employee.confirm_payment.confirm_payment import ConfirmPaymentEmployee
 from libs.screens_employee.edit_profile_employee.edit_profile_employee import EditEmployee
 from libs.screens_employee.edit_profile_employee_two.edit_profile_employe_two import EditEmployeeTwo
@@ -46,6 +43,7 @@ from libs.screens_employee.view_payment_completed.view_payment_completed import 
 from libs.screens_employee.without_contractor.without_contractor import WithoutContractor
 from libs.screens_login.choice_account.choice_account import ChoiceAccount
 from libs.screens_login.init_screen.init_screen import InitScreen
+from libs.screens.functions_screen.functions_screen import FunctionsScreen
 from libs.screens_login.register_contractor.register_contractor import RegisterContractor
 from libs.screens_login.register_funcionario.register_funcionario import RegisterFuncionario
 
@@ -83,14 +81,14 @@ class MainApp(MDApp):
         self.screenmanager.add_widget(HiringProfile(name='HiringProfile'))
         self.screenmanager.add_widget(VacancyContractor(name='VacancyContractor'))
         self.screenmanager.add_widget(PerfilEmployee(name='PerfilEmployee'))
-        self.screenmanager.add_widget(RequestsContractor(name='RequestsContractor'))
         self.screenmanager.add_widget(PerfilScreen(name='Perfil'))
         self.screenmanager.add_widget(FunctionScreen(name='Function'))
+        self.screenmanager.add_widget(FunctionsScreen(name='FunctionsScreen'))
         self.screenmanager.add_widget(WorkingMonth(name='WorkingMonth'))
         self.screenmanager.add_widget(EditProfileTwo(name='EditProfileTwo'))
         self.screenmanager.add_widget(EditProfile(name='EditProfile'))
         self.screenmanager.add_widget(EmployeeAvatar(name='EmployeeAvatar'))
-        self.screenmanager.add_widget(FunctionsScreen(name='Functions'))
+
         self.screenmanager.add_widget(AddEmployee(name='Add'))
         self.screenmanager.add_widget(ReportBricklayer(name='ReportBricklayer'))
         self.screenmanager.add_widget(WorkingBricklayer(name='WorkingBricklayer'))
@@ -129,7 +127,6 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens/edit_profile_employee/edit_profile_employee.kv')
         Builder.load_file('libs/screens/working_bricklayer/working_bricklayer.kv')
         Builder.load_file('libs/screens/report_bricklayer/report_bricklayer.kv')
-        Builder.load_file('libs/screens/requests_contractor/requests_contractor.kv')
         Builder.load_file('libs/screens/vacancy_contractor/vacancy_contractor.kv')
         Builder.load_file('libs/screens/perfil_employee/perfil_employee.kv')
         Builder.load_file('libs/screens/request_contractor/request_contractor.kv')
@@ -149,6 +146,7 @@ class MainApp(MDApp):
         Builder.load_file('libs/screens_employee/notification_page/notification_page.kv')
         Builder.load_file('libs/screens_employee/view_payment_completed/view_payment_completed.kv')
         Builder.load_file('libs/screens_employee/confirm_payment/confirm_payment.kv')
+
         # Telas de inicio (login e cadastro)
         Builder.load_file('libs/screens_login/choice_account/choice_account.kv')
         Builder.load_file('libs/screens_login/init_screen/init_screen.kv')
