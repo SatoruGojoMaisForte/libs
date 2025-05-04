@@ -1,7 +1,6 @@
 import json
 import locale
-from typing import List, Dict, Any, Optional
-
+from typing import Dict, Any
 from kivy.metrics import dp
 from kivy.network.urlrequest import UrlRequest
 from kivy.properties import (
@@ -304,7 +303,7 @@ class EditProfileEmployee(MDScreen):
                         'week_3': 0,
                         'week_4': 0,
                         'ultimate': '',
-                        'valleys': "{}",
+                        'valleys': "[]",
                         'days_work': 0,
                         'tot': 0,
                         'work_days_week1': '[]',
@@ -351,7 +350,7 @@ class EditProfileEmployee(MDScreen):
             evaluation.work_days_week4 = data['work_days_week4']
             evaluation.day = data['day']
             evaluation.ultimate = data['ultimate']
-            evaluation.valleys = "{}"
+            evaluation.valleys = "[]"
             evaluation.tot = 0
             evaluation.week_1 = data['week_1']
             evaluation.week_2 = data['week_2']
