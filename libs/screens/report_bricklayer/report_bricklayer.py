@@ -2,7 +2,6 @@ import ast
 import json
 from ast import literal_eval
 from datetime import datetime
-
 from babel.dates import format_date
 from babel.numbers import format_currency
 from kivy.metrics import dp
@@ -207,14 +206,14 @@ class ReportBricklayer(MDScreen):
             for valley in valleys:
                 valor_formatado = format_currency(float(valley['value']), 'BRL', locale='pt_BR')
                 try:
-                    valley_value = float(valley['value'])
-                    total += valley_value
+                    valley_value = f"{format_currency(float(valley['value']), 'BRL', locale='pt_BR')}"
+                    total += float(valley['value'])
                     item = MDListItem(
                         MDListItemLeadingIcon(
                             icon='currency-usd',
                         ),
                         MDListItemHeadlineText(
-                            text=f'R$ {valley_value}'
+                            text=f'{valley_value}'
                         ),
                         MDListItemSupportingText(
                             text=f'retirado em {valley['data']}'
@@ -232,14 +231,14 @@ class ReportBricklayer(MDScreen):
         print(result)
         for data, valley in result.items():
             try:
-                valley_value = int(valley)
-                total += valley_value
+                valley_value = f"{format_currency(int(valley['value']), 'BRL', locale='pt_BR')}"
+                total += int(valley)
                 item = MDListItem(
                     MDListItemLeadingIcon(
                         icon='currency-usd',
                     ),
                     MDListItemHeadlineText(
-                        text=f'R$ {valley_value}'
+                        text=f'{valley_value}'
                     ),
                     MDListItemSupportingText(
                         text=f'retirado em {data}'
@@ -275,13 +274,13 @@ class ReportBricklayer(MDScreen):
             else:
 
                 today = datetime.today().strftime('%d/%m/%Y')  # Adicionando hora para evitar colisões
-
+                valley_value = f"{format_currency(float(valley), 'BRL', locale='pt_BR')}"
                 item = MDListItem(
                     MDListItemLeadingIcon(
                         icon='currency-usd',
                     ),
                     MDListItemHeadlineText(
-                        text=f'R$ {valley}'
+                        text=f'{valley_value}'
                     ),
                     MDListItemSupportingText(
                         text=f'retirado em {today}'
