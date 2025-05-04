@@ -11,7 +11,7 @@
             padding: [10, 10, 0, 0]
             spacing: "50dp"
             theme_bg_color: 'Custom'
-            md_bg_color: get_color_from_hex('#5320A6')
+            md_bg_color: get_color_from_hex('#35FF69')
             pos_hint: {'center_x': 0.5, 'top': 1}
 
             BoxLayout:
@@ -143,7 +143,7 @@
                 id: button_valley
                 style: 'elevated'
                 theme_bg_color: 'Custom'
-                md_bg_color: get_color_from_hex('#000022')
+                md_bg_color: get_color_from_hex('#35FF69')
                 on_release: root.dialog.open()
 
                 MDRelativeLayout:
@@ -151,7 +151,7 @@
                         icon: 'plus'
                         theme_icon_color: 'Custom'
                         icon_color: 'white'
-                        pos_hint: {'center_x': 0.35, 'center_y': 0.5}
+                        pos_hint: {'center_x': 0.25, 'center_y': 0.5}
 
                     MDButtonText:
                         text: 'Novo'
@@ -159,7 +159,7 @@
                         theme_text_color: 'Custom'
                         text_color: 'white'
                         halign: 'center'
-                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        pos_hint: {'center_x': 0.65, 'center_y': 0.5}
 
         MDScrollView:
             do_scroll_x: False
@@ -182,12 +182,12 @@
 
         MDCard:
             id: restart_card
-            size_hint: 0.35, 0.07
+            size_hint: 0.35, 0.06
             pos_hint: {'center_x': 0.75, 'center_y': 0.05}
             style: 'elevated'
             radius: [25,]
             theme_bg_color: 'Custom'
-            md_bg_color: get_color_from_hex('#000022')
+            md_bg_color: get_color_from_hex('#35FF69')
             on_release: root.restart_firebase()
 
             MDRelativeLayout:
@@ -202,5 +202,6 @@
                     text: 'Reiniciar'
                     theme_text_color: 'Custom'
                     text_color: 'white'
+                    bold: True
                     halign: 'center'
                     pos_hint: {'center_y': 0.5, 'center_x': 0.6}
