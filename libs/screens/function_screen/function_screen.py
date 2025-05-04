@@ -1,5 +1,4 @@
 import json
-
 from kivy.metrics import dp
 from kivy.properties import StringProperty, get_color_from_hex
 from kivy.uix.image import AsyncImage
@@ -176,7 +175,7 @@ class FunctionScreen(MDScreen):
         # apagando dados do salario
         self.ids.salary.text = ''
         self.manager.transition = SlideTransition(direction='right')
-        self.manager.current = 'Functions'
+        self.manager.current = 'FunctionsScreen'
 
     def menu_citys(self):
         menu_itens = []
@@ -397,4 +396,4 @@ class FunctionScreen(MDScreen):
 
     def page(self):
         self.manager.transition = SlideTransition(direction='right')
-        self.manager.current = 'Functions'
+        self.manager.current = 'FunctionsScreen'
