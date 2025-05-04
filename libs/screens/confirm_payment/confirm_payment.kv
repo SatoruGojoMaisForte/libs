@@ -1,6 +1,6 @@
-<ConfirmPayment>:
-    name: 'ConfirmPayment'
-    md_bg_color: 1, 1, 1, 1
+<ConfirmPaymentEmployee>:
+    name: 'ConfirmPaymentEmployee'
+    md_bg_color: 'white'
 
     MDFloatLayout:
         MDBoxLayout:
@@ -20,23 +20,23 @@
                     pos_hint: {'center_x': 0.1, 'center_y': 0.5}
 
                 MDLabel:
-                    text: 'Confirmação de pagamento'
+                    text: 'Confirmar pagamento'
                     halign: 'right'
                     theme_text_color: 'Custom'
                     text_color: 'white'
                     bold: True
                     theme_font_size: 'Custom'
                     font_size: '20sp'
-                    pos_hint: {'center_x': 0.4, 'center_y': 0.65}
+                    pos_hint: {'center_x': 0.3, 'center_y': 0.65}
 
                 MDLabel:
-                    text: 'Verifique os dados antes de confirmar'
-                    halign: 'right'
+                    text: 'Verifique os dados de pagamento enviado\n antes de confirmar'
+                    halign: 'center'
                     theme_text_color: 'Custom'
                     text_color: 'white'
                     theme_font_size: 'Custom'
-                    font_size: '13sp'
-                    pos_hint: {'center_x': 0.35, 'center_y': 0.4}
+                    font_size: '12sp'
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.35}
 
         MDBoxLayout:
             orientation: 'horizontal'
@@ -165,44 +165,6 @@
                         md_bg_color: 'white'
 
 
-                        MDBoxLayout:
-                            orientation: 'horizontal'
-                            theme_bg_color: 'Custom'
-                            md_bg_color: 'white'
-                            size_hint_x: None
-                            size_hint_y: None
-                            width: 350
-                            pos_hint: {'center_x': 0.5}
-                            height: 60
-
-                            MDBoxLayout:
-                                theme_bg_color: 'Custom'
-                                halign: [10, 0, 0, 0]
-
-                                MDRelativeLayout:
-                                    MDLabel:
-                                        text: 'Salario Bruto'
-                                        theme_text_color: 'Custom'
-                                        text_color: 'grey'
-                                        pos_hint: {'center_x': 0.6, 'center_y': 0.5}
-                                        halign: 'left'
-
-                            MDBoxLayout:
-                                orientation: 'vertical'
-                                theme_bg_color: 'Custom'
-                                md_bg_color: 'white'
-
-                                MDRelativeLayout:
-                                    MDLabel:
-                                        id: gross_salary
-                                        text: '- R$ 180,00'
-                                        theme_text_color: 'Custom'
-                                        text_color: 'red'
-                                        theme_font_size: 'Custom'
-                                        font_size: '14sp'
-                                        pos_hint: {'center_x': 0.4, 'center_y': 0.5}
-                                        halign: 'right'
-
             MDBoxLayout:
                 orientation: 'vertical'
                 theme_bg_color: 'Custom'
@@ -278,26 +240,55 @@
                 theme_bg_color: 'Custom'
                 md_bg_color: 'white'
 
+        MDBoxLayout:
+            size_hint: 0.43, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.27, 'center_y': 0.08}
+
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: get_color_from_hex('#1C5D99')
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#1C5D99')
+                size_hint: 1, 1
+                on_release: root.confirm_payment()
+
                 MDRelativeLayout:
+                    MDLabel:
+                        text: 'Confirmar recebimento'
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        theme_font_size: 'Custom'
+                        font_size: '13sp'
+                        bold: True
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.5 ,'center_y': 0.5}
 
-                    MDCard:
-                        id: button
-                        theme_bg_color: 'Custom'
-                        md_bg_color: 'blue'
-                        size_hint: 0.9, 0.35
-                        pos_hint: {'center_x': 0.5, 'top': 1}
-                        on_release: root.get_valleys()
 
-                        MDRelativeLayout:
+        MDBoxLayout:
+            size_hint: 0.43, 0.07
+            theme_bg_color: 'Custom'
+            md_bg_color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.73, 'center_y': 0.08}
 
-                            MDLabel:
-                                id: label_button
-                                text: 'Confirmar Pagamento'
-                                bold: True
-                                theme_text_color: 'Custom'
-                                text_color: 'white'
-                                halign: 'center'
-                                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            MDCard:
+                theme_bg_color: 'Custom'
+                md_bg_color: 1, 1, 1, 1
+                theme_line_color: 'Custom'
+                line_color: get_color_from_hex('#3772FF')
+                size_hint: 1, 1
+                on_release: root.calling()
 
+                MDRelativeLayout:
+                    MDLabel:
+                        text: 'Entrar em contato'
+                        theme_text_color: 'Custom'
+                        text_color: get_color_from_hex('#3772FF')
+                        bold: True
+                        theme_font_size: 'Custom'
+                        font_size: '13sp'
+                        halign: 'center'
+                        pos_hint: {'center_x': 0.5 ,'center_y': 0.5}
 
 
