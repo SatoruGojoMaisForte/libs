@@ -1,7 +1,6 @@
 import ast
 import json
 from datetime import datetime
-
 from babel.dates import format_date
 from babel.numbers import format_currency
 from kivy.metrics import dp
@@ -288,13 +287,14 @@ class ConfirmPayment(MDScreen):
         right_box = MDBoxLayout(
             orientation='vertical',
             theme_bg_color='Custom',
-            md_bg_color='white'
+            md_bg_color='white',
+            spacing=5
         )
 
         right_relative = MDRelativeLayout()
-
+        text = f"R${format_currency(value, 'BRL', locale='pt_BR', format='#,##0.00')}"
         valor_label = MDLabel(
-            text=f'- {value}',
+            text=f'- {text}',
             theme_text_color='Custom',
             text_color='red',
             theme_font_size='Custom',
