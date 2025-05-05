@@ -53,7 +53,6 @@ from libs.screens_login.register_funcionario.register_funcionario import Registe
 class MainApp(MDApp):
 
     def build(self):
-        Window.size = (350, 700)
         self.load_all_kv_files()
         self.screenmanager = MDScreenManager()
 
