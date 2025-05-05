@@ -3,7 +3,8 @@ from kivy.uix.image import AsyncImage
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivymd.uix.screenmanager import MDScreenManager
-
+from android.permissions import request_permissions, check_permission, Permission
+from kivy.utils import platform
 from libs.screens.add_employee_password.add_employee_password import AddEmployeePassword
 from libs.screens.confirm_payment.confirm_payment import ConfirmPayment
 from libs.screens.edit_profile.edit_profile import EditProfile
@@ -105,8 +106,14 @@ class MainApp(MDApp):
         self.screenmanager.add_widget(AssesCoexistence(name='AssesCoexistence'))
         self.screenmanager.add_widget(AssesPunctuality(name='AssesPunctuality'))
         self.screenmanager.add_widget(TableScreen(name='Table'))
+        Clock.schedule_once(lambda dt: self.solicitar_permissoes(), 0.5)
 
         return self.screenmanager
+
+    def solicitar_permissoes(self):
+        if platform == 'android':
+            if not check_permission(Permission.READ_EXTERNAL_STORAGE):
+                request_permissions([Permission.READ_EXTERNAL_STORAGE])
 
     def load_all_kv_files(self):
         Builder.load_file('libs/screens/edit_profile/edit_profile.kv')
