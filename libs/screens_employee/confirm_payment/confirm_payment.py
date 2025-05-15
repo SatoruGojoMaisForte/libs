@@ -1,6 +1,5 @@
 import ast
 import json
-
 from babel.numbers import format_currency
 from kivy.network.urlrequest import UrlRequest
 from kivy.properties import StringProperty, NumericProperty, Clock
@@ -206,7 +205,7 @@ class ConfirmPaymentEmployee(MDScreen):
         right_relative = MDRelativeLayout()
 
         valor_label = MDLabel(
-            text=f'- {format_currency(value, 'BRL', locale='pt_BR')}',
+            text=f"- {format_currency(value, 'BRL', locale='pt_BR')}",
             theme_text_color='Custom',
             text_color='red',
             theme_font_size='Custom',
