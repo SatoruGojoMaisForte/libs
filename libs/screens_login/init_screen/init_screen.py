@@ -1,6 +1,5 @@
 import ast
 import json
-
 import bcrypt
 from kivy.metrics import dp
 from kivy.properties import get_color_from_hex, StringProperty, Clock
@@ -392,6 +391,9 @@ class InitScreen(MDScreen):
 
         headers = {"Content-Type": "application/json"}
 
+        def erro(req, erro_result):
+            self.show_error(f"Usuario não encontrado tente como Funcionário")
+
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
         UrlRequest(
             url,
@@ -399,9 +401,9 @@ class InitScreen(MDScreen):
             req_headers=headers,
             method='POST',
             on_success=self.contractors,
-            on_error=self.email_exists,
-            on_failure=self.email_exists,
-            on_cancel=self.email_exists
+            on_error=erro,
+            on_failure=erro,
+            on_cancel=erro
         )
 
     def contractors(self, req, result):
@@ -440,7 +442,7 @@ class InitScreen(MDScreen):
         """
         try:
             if not result:
-                self.show_error("Não foi possível carregar, tente como funcioanario")
+                self.show_error("Conexão indisponivel, tente como funcionário")
                 return
 
             app = MDApp.get_running_app()
