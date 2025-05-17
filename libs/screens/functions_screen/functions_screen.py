@@ -1,3 +1,4 @@
+import json
 from functools import partial
 
 from kivy.properties import StringProperty
@@ -12,9 +13,12 @@ from kivy.network.urlrequest import UrlRequest
 
 
 class FunctionsScreen(MDScreen):
+    local_id = StringProperty()
+    token_id = StringProperty()
     contractor = StringProperty()
     email = StringProperty()
     telephone = StringProperty()
+    refresh_token = StringProperty()
     company = StringProperty()
     infor = False
     key_contractor = StringProperty()
@@ -26,17 +30,23 @@ class FunctionsScreen(MDScreen):
     salary = ''
 
     def on_enter(self, *args):
+        print('Token de refresh: ', self.refresh_token)
+        def on_success(req, result):
+            print("Dados filtrados:", result)
+
+        def on_error(req, error):
+            print("Erro:", error)
+
+        def on_failure(req, result):
+            print("Falha:", result)
+
         self.ids.main_scroll.clear_widgets()
-        url = 'https://obra-7ebd9-default-rtdb.firebaseio.com/Functions'
-        UrlRequest(
-            f'{url}/.json',
-            method='GET',
-            on_success=self.functions
-        )
+        params = f'orderBy="IdLocal"&equalTo="{self.local_id}"'
+        url = f"https://obra-7ebd9-default-rtdb.firebaseio.com/Functions.json?{params}"
+        UrlRequest(url, self.functions, on_failure=on_failure, on_error=on_error)
 
     def functions(self, req, result):
-        print(result)
-
+        print('Resultados encontrados: ', result)
         try:
             for x, y in result.items():
                 for item, value in y.items():
@@ -106,17 +116,23 @@ class FunctionsScreen(MDScreen):
         except:
             self.show_no_requests_found()
 
+
     def click(self, occupation, key, *args):
         self.ids[f'{occupation}'].icon = 'trash-can-outline'
         self.oc = self.ids[f'{occupation}']
         self.delete_function(key)
 
     def delete_function(self, key):
-        url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Functions/{key}'
+        url = f'https://obra-7ebd9-default-rtdb.firebaseio.com/Functions/{key}/.json?auth={self.token_id}'
+        def erro(req, result):
+            print(result)
+
         UrlRequest(
-            f'{url}/.json',
+            f'{url}',
             method='DELETE',
-            on_success=self.final_delete
+            on_success=self.final_delete,
+            on_error=erro,
+            on_failure=erro
         )
 
     def final_delete(self, instance, result):
@@ -155,5 +171,8 @@ class FunctionsScreen(MDScreen):
         step.email = self.email
         step.telephone = self.telephone
         step.company = self.company
+        step.token_id = self.token_id
+        step.local_id = self.local_id
+        step.refresh_token = self.refresh_token
         step.key = self.key_contractor
         self.manager.current = 'Function'
