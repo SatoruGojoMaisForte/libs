@@ -1,5 +1,6 @@
 import ast
 import json
+
 import bcrypt
 from kivy.metrics import dp
 from kivy.properties import get_color_from_hex, StringProperty, Clock
@@ -408,8 +409,11 @@ class InitScreen(MDScreen):
 
     def contractors(self, req, result):
         print('Login feito, puxando os dados do funcionário...')
+        print(result)
+        refresh = result['refreshToken']
         id_token = result['idToken']
         id_local = result['localId']
+        print('Refresh token: ', refresh)
 
         def sucesso(req, data):
             print("Dados encontrados:", data)
@@ -421,18 +425,18 @@ class InitScreen(MDScreen):
         UrlRequest(
             f'https://obra-7ebd9-default-rtdb.firebaseio.com/Users/{id_local}.json?auth={id_token}',
             method='GET',
-            on_success=self.date,
+            on_success=lambda req, result, token_id=id_token, local_id=id_local, refresh_token=refresh: self.date(req, result, token_id, local_id,refresh_token),
             on_error=erro,
             on_failure=erro,
             on_cancel=erro,
             req_headers={"Content-Type": "application/json"}
         )
 
-    def date(self, req, result):
+    def date(self, req, result, token_id, local_id, refresh_token):
         print('Os resultados são: ', result)
-        self.next_perfil(result)
+        self.next_perfil(result, token_id, local_id, refresh_token)
 
-    def next_perfil(self, result):
+    def next_perfil(self, result, token_id, local_id, refresh_token):
         """
         Prepara a tela de perfil do contratante após login bem-sucedido.
 
@@ -458,6 +462,9 @@ class InitScreen(MDScreen):
             perfil.city = result.get('city', '')
             perfil.company = result.get('company', '')
             perfil.email = result.get('email', '')
+            perfil.local_id = local_id
+            perfil.token_id = token_id
+            perfil.refresh_token = refresh_token
             perfil.key = self.key
 
             self.type = result.get('type', '')
