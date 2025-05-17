@@ -12,7 +12,10 @@ class PerfilScreen(MDScreen):
     state = StringProperty()
     company = StringProperty()
     telefone = StringProperty()
+    local_id = StringProperty()
+    token_id = StringProperty()
     email = StringProperty()
+    refresh_token = StringProperty()
     contratando = 'Sim'
     function = StringProperty()
     adicionado = 0
@@ -21,7 +24,10 @@ class PerfilScreen(MDScreen):
     current_nav_state = StringProperty('perfil')
 
     def on_enter(self, *args):
+        print('Local id do usuario: ', self.local_id)
+        print('Token id do usuario: ', self.token_id)
         print('Key do funcionario: ', self.key)
+        print('Refresh Token: ', self.refresh_token)
         self.ids.perfil.source = self.avatar
         self.ids.username.text = self.username
         self.ids.company.text = self.company
@@ -44,6 +50,9 @@ class PerfilScreen(MDScreen):
             edit = screen_manager.get_screen('FunctionsScreen')
             edit.contractor = self.username
             edit.occupation = self.function
+            edit.token_id = self.token_id
+            edit.local_id = self.local_id
+            edit.refresh_token = self.refresh_token
             edit.email = self.email
             edit.key_contractor = self.key
             edit.telephone = self.telefone
